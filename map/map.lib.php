@@ -4,21 +4,17 @@
 	{
 		foreach ($maps as $map)
 		{
-			$pattern = swx_map_regex($map[0]);
+			$pattern = swx_map_regex_pattern($map[0]);
 
 			if (is_equal_(preg_match($pattern, $subject, $matches), 1))
 			{
-				if (!array_key_exists('handler', $matches) and array_key_exists('handler', $map[1]))
-				{
-					$matches['handler'] = $map[1]['handler'];
-				}
-				return $matches;
+				return (isset($map[1])) ? array_merge($matches, $map[1]) : $matches;
 			}
 		}
 	}
 	
 		//TODO: convert all \{ and \} to \x00<curllystart>, \x00<curllyend>
-		function swx_map_regex($map_pattern)
+		function swx_map_regex_pattern($map_pattern)
 		{
 			$map_pattern = _swx_map_convert_optional_parts($map_pattern);
 			$map_pattern = _swx_map_convert_names_parts($map_pattern);
