@@ -1,23 +1,25 @@
 <?php
 
-	function swx_map($maps, $subject)
+	function unsafe_swx_map($maps, $subject)
 	{
 		foreach ($maps as $map)
 		{
-			$pattern = swx_map_regex_pattern($map[0]);
+			$pattern = _unsafe_swx_map_regex_pattern($map[0]);
 
 			if (is_equal_(preg_match($pattern, $subject, $matches), 1))
 			{
 				return (isset($map[1])) ? array_merge($matches, $map[1]) : $matches;
 			}
 		}
+
+		return array();
 	}
 	
 		//TODO: convert all \{ and \} to \x00<curllystart>, \x00<curllyend>
-		function swx_map_regex_pattern($map_pattern)
+		function _unsafe_swx_map_regex_pattern($map_pattern)
 		{
 			$map_pattern = _swx_map_convert_optional_parts($map_pattern);
-			$map_pattern = _swx_map_convert_names_parts($map_pattern);
+			$map_pattern = _unsafe_swx_map_convert_named_parts($map_pattern);
 			$map_pattern = strtr($map_pattern, array('/' => '\/'));
 			return "/^$map_pattern\$/";
 		}
@@ -40,18 +42,18 @@
 				return $pattern;
 			}
 
-			function _swx_map_convert_names_parts($map_pattern)
+			function _unsafe_swx_map_convert_named_parts($map_pattern)
 			{
 				$named_parts = '/{([^}]*)}/';
-				$pattern = preg_replace_callback($named_parts, '_swx_replacement_callback', $map_pattern);
+				$pattern = preg_replace_callback($named_parts, '_unsafe_swx_replacement_callback', $map_pattern);
 				return $pattern;
 			}
-				function _swx_replacement_callback($matches)
+				function _unsafe_swx_replacement_callback($matches)
 				{
-					return _swx_map_expand_named_part_filters($matches, _swx_map_named_part_filters());
+					return _swx_map_expand_named_part_filters($matches, _unsafe_swx_map_named_part_filters());
 				}
 	
-					function _swx_map_named_part_filters()
+					function _unsafe_swx_map_named_part_filters()
 					{
 						require dirname(__FILE__).DIRECTORY_SEPARATOR.'filters.config.php';
 						return isset($filters) ? $filters : array();

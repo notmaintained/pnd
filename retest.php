@@ -69,13 +69,26 @@
 
 			function retest_source_file($test_file)
 			{
-				$source_file = preg_replace('/'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'/',
-				                            DIRECTORY_SEPARATOR,
-				                            $test_file);
-				$source_file = preg_replace('/\.test\.php$/', '.php', $source_file);
-				if (file_exists($source_file)) return $source_file;
-				else return false;
+				$source_file = retest_remove_test_extension($test_file);
+
+				if (file_exists($source_file))
+				{
+					return $source_file;
+				}
+				else
+				{
+					$source_file = preg_replace('/'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'/',
+												DIRECTORY_SEPARATOR,
+												$source_file);
+					if (file_exists($source_file)) return $source_file;
+				}
+
+				return false;
 			}
+				function retest_remove_test_extension($test_file)
+				{
+					return preg_replace('/\.test\.php$/', '.php', $test_file);
+				}
 
 			function retest_increment($counter_name)
 			{
