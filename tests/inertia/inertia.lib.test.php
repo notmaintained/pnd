@@ -40,10 +40,10 @@
 
 		unset($_SERVER['REMOTE_ADDR']);
 		should_return(getenv('REMOTE_ADDR'), when_passed('REMOTE_ADDR'));
-        
-        $env_var = 'FOO'.rand();
-        putenv("$env_var=bar");
-		should_return('bar', when_passed($env_var));        
+
+		$env_var = 'FOO'.rand();
+		putenv("$env_var=bar");
+		should_return('bar', when_passed($env_var));
 	}
 
 
