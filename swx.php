@@ -33,7 +33,7 @@
 	define('SWX_LIBRARY_FILE_EXT', '.lib.php');
 
 
-	function unsafe_uses()
+	function unsafe_swx_uses()
 	{
 		$libraries = func_get_args();
 		foreach ($libraries as $library) 

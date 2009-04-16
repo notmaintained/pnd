@@ -1,17 +1,18 @@
 <?php
 
-	function test_unsafe_swx_map()
+	function test_unsafe_swx_mapper_match()
 	{
-		should_return(array(0=>'foo'), when_passed(array(array('foo')), '/foo'));
-		should_return(array(0=>'bar', 'foo'=>'bar', 1=>'bar'), when_passed(array(array('{foo}')), 'bar'));
+		//TODO: Needs more tests!
+		should_return(array(0=>'foo'), when_passed('foo', array('foo'), array('bar')));
+		should_return(array(0=>'foo/baz', 'bar'=>'baz', 1=>'baz'), when_passed('foo/baz', array('bar/foo'), array('foo/{bar}')));
 	}
 
-	function test__unsafe_swx_map_regex_pattern()
+	function test__unsafe_swx_mapper_pattern()
 	{
 		should_return('/^(?P<foo>[^\\/]+)(bar)?$/', when_passed('{foo}[bar]'));
 	}
 
-	function test__swx_map_convert_optional_parts()
+	function test__swx_mapper_convert_optional_parts_to_regex()
 	{
 		should_return('foo(bar)?', when_passed('foo[bar]'));
 		should_return('(foo)?(bar)?', when_passed('[foo][bar]'));
@@ -19,13 +20,13 @@
 		should_return('foo(bar)?]', when_passed('foo[bar]]'));
 	}
 	
-	function test__unsafe_swx_map_convert_named_parts()
+	function test__unsafe_swx_mapper_convert_named_parts_to_regex()
 	{
 		should_return('foo(?P<bar>[^/]+)', when_passed('foo{bar}'));
 		should_return('foo(?P<bar>.+)', when_passed('foo{bar:any}'));
 	}
 
-	function test__swx_map_expand_named_part_filters()
+	function test__swx_mapper_convert_named_part_filters_to_regex()
 	{
 		$filters = array
 		(
