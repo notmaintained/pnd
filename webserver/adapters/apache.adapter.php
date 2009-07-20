@@ -8,14 +8,14 @@
  * Copyright (C) 2005 - date('Y') Collaboration Science,
  * http://collaborationscience.com/
  *
- * This file is part of Inertia.
+ * This file is part of Swx.
  *
- * Inertia is free software; you can redistribute it and/or modify it
+ * Swx is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; either version 2 of the License, or (at
  * your option) any later version.
  *
- * Inertia is distributed in the hope that it will be useful, but
+ * Swx is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.

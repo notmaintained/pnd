@@ -15,7 +15,7 @@
  * Free Software Foundation; either version 2 of the License, or (at
  * your option) any later version.
  *
- * Inertia is distributed in the hope that it will be useful, but
+ * Retest is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
@@ -30,7 +30,6 @@
 	// Show count of executable lines
 	// test output for following case: no test files, no tests function, no source
 	// write an error handler to capture count of error so that the count of failures is reflective of what actually is
-
 
 	retest_include_files();
 	retest_call_test_functions();
