@@ -30,15 +30,13 @@
  
 
 	define('SWX_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-	define('SWX_LIBRARY_FILE_EXT', '.lib.php');
 
-
-	function unsafe_swx_uses()
+	function requires()
 	{
 		$libraries = func_get_args();
 		foreach ($libraries as $library) 
 		{
-			$library_file = SWX_DIR.$library.DIRECTORY_SEPARATOR.$library.SWX_LIBRARY_FILE_EXT;
+			$library_file = SWX_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
 			if (file_exists($library_file))
 			{
 				require_once $library_file;
@@ -49,5 +47,41 @@
 			}
 		}
 	}
+
+ 	php_min_version_guard('4.3.0');
+	fix_magic_quotes_gpc();
+
+
+		function php_min_version_guard($min_php_version)
+		{
+			$is_min_php_version = (function_exists('version_compare')
+								   and version_compare(PHP_VERSION,  $min_php_version, '>='));
+
+			if (!$is_min_php_version)
+			{
+				echo sprintf("ERROR: Older version of PHP. Current version of PHP is %s Please upgrade to PHP %s.",
+							 PHP_VERSION, $min_php_version);
+				exit;
+			}
+		}
+
+
+		function fix_magic_quotes_gpc()
+		{
+			$funcname = 'array_stripslashes';
+
+			if (get_magic_quotes_gpc())
+			{
+				array_walk($_GET, $funcname);
+				array_walk($_POST, $funcname);
+				array_walk($_COOKIE, $funcname);
+				array_walk($_REQUEST, $funcname);
+			}
+		}
+
+			function array_stripslashes(&$value)
+			{
+				$value = is_array($value) ? array_walk($value, __FUNCTION__) : stripslashes($value);
+			}
 
 ?>
