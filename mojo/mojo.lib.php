@@ -2,10 +2,10 @@
 
 	requires ('helpers', 'webserver');
 
-	function map_requests_to_handlers($request_patterns=array())
+	function map_requests_to_handlers($custom_routes=array())
 	{
 		$request = request_();
-		$routes = routes_($request_patterns);
+		$routes = routes_($custom_routes);
 		if ($matches = matching_route_found($request, $routes)
 		    and ($handler = handler_func_exists($matches, $request)))
 		{
@@ -17,10 +17,10 @@
 		function request_()
 		{
 			return array('method' => request_method_(server_var('REQUEST_METHOD')),
-						 'path'   => request_path_(webserver_specific('request_path')),
-						 'query'  => $_GET,
-						 'headers'=> webserver_specific('request_headers'),
-						 'body'   => request_body_(file_get_contents('php://input')));
+			             'path'   => request_path_(webserver_specific('request_path')),
+			             'query'  => $_GET,
+			             'headers'=> webserver_specific('request_headers'),
+			             'body'   => request_body_(file_get_contents('php://input')));
 		}
 
 			function request_method_($method)
