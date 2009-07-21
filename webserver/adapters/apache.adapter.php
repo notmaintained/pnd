@@ -41,7 +41,7 @@
 	function apache_request_path_()
 	{
 		if (!apache_is_rewrite_engine_on_()) return default_request_path_();
-		return apache_request_path_helper_(server_var('REQUEST_URI'), uri_path_(server_var('PHP_SELF')));
+		return apache_request_path_helper_(server_var('REQUEST_URI'), uri_path(server_var('PHP_SELF')));
 	}
 		function apache_request_path_helper_($request_uri, $path_to_index_dot_php)
 		{

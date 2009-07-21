@@ -27,13 +27,13 @@
  */
 
 
-	define('WEB_SERVER_', webserver_(server_var('SERVER_SOFTWARE')));
+	define('WEB_SERVER', webserver(server_var('SERVER_SOFTWARE')));
 
-	require_webserver_adapter_(webserver_adapter_('default'));
-	require_webserver_adapter_(webserver_adapter_(WEB_SERVER_));
+	require_webserver_adapter(webserver_adapter('default'));
+	require_webserver_adapter(webserver_adapter(WEB_SERVER));
 
 
-		function webserver_($server_software)
+		function webserver($server_software)
 		{
 			$server_softwares = array('Apache'        => 'apache',
 									  'Microsoft-IIS' => 'iis',
@@ -53,12 +53,12 @@
 			return 'unknown';
 		}
 
-		function require_webserver_adapter_($webserver_adapter)
+		function require_webserver_adapter($webserver_adapter)
 		{
 			if (file_exists($webserver_adapter)) require_once $webserver_adapter;
 		}
 
-			function webserver_adapter_($webserver)
+			function webserver_adapter($webserver)
 			{//TODO: delete port line
 				return dirname(__FILE__).DIRECTORY_SEPARATOR.'adapters'.DIRECTORY_SEPARATOR.$webserver.'.adapter.php';
 			}
@@ -68,9 +68,9 @@
 	{
 		$params = func_get_args();
 		$func = array_shift($params);
-		return call_user_func_array(select_function_(WEB_SERVER_, $func), $params);
+		return call_user_func_array(select_function(WEB_SERVER, $func), $params);
 	}
-		function select_function_($webserver, $func)
+		function select_function($webserver, $func)
 		{
 			if ($selected_func = function_exists_("{$webserver}_{$func}_"))
 			{

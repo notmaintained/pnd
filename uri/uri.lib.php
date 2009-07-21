@@ -27,15 +27,15 @@
  */
 
 
-	define('SCHEME_', uri_scheme_(server_var('HTTPS')));
-	define('HOST_', uri_host_(server_var('HTTP_HOST')));
-	define('PORT_', uri_port_(server_var('HTTP_HOST')));
-	define('PATH_', uri_path_(server_var('PHP_SELF')));
-	define('ABSOLUTE_BASE_URI_', uri_absolute_base_(SCHEME_, HOST_, PORT_, PATH_));
-	define('RELATIVE_BASE_URI_', uri_relative_base_(PATH_));
+	define('SCHEME_', uri_scheme(server_var('HTTPS')));
+	define('HOST_', uri_host(server_var('HTTP_HOST')));
+	define('PORT_', uri_port(server_var('HTTP_HOST')));
+	define('PATH_', uri_path(server_var('PHP_SELF')));
+	define('ABSOLUTE_BASE_URI_', uri_absolute_base(SCHEME_, HOST_, PORT_, PATH_));
+	define('RELATIVE_BASE_URI_', uri_relative_base(PATH_));
 
 
-		function uri_scheme_($https)
+		function uri_scheme($https)
 		{
 			$ssl = !is_null($https) and is_equal('on', $https);
 			$scheme = $ssl ? 'https' : 'http';
@@ -43,7 +43,7 @@
 		}
 
 
-		function uri_host_($http_host)
+		function uri_host($http_host)
 		{
 			if (str_contains(':', $http_host)) $host = array_shift(explode(':', $http_host));
 			else $host = $http_host;
@@ -51,7 +51,7 @@
 		}
 
 
-		function uri_port_($http_host)
+		function uri_port($http_host)
 		{
 			if (!str_contains(':', $http_host)) return '';
 			else $port = array_pop(explode(':', $http_host));
@@ -59,7 +59,7 @@
 		}
 
 
-		function uri_path_($index_dot_php_path)
+		function uri_path($index_dot_php_path)
 		{
 			$base_path = dirname($index_dot_php_path);
 			$base_path_equals_directory_separator = (is_equal(strlen($base_path), 1) and is_equal(DIRECTORY_SEPARATOR, $base_path));
@@ -68,7 +68,7 @@
 		}
 
 
-		function uri_absolute_base_($inertia_scheme, $inertia_host, $inertia_port, $inertia_path)
+		function uri_absolute_base($inertia_scheme, $inertia_host, $inertia_port, $inertia_path)
 		{
 			$port = empty($inertia_port) ? '' : ":$inertia_port";
 			$base_uri = "$inertia_scheme://$inertia_host$port$inertia_path/";
@@ -76,7 +76,7 @@
 		}
 
 		
-		function uri_relative_base_($inertia_path)
+		function uri_relative_base($inertia_path)
 		{
 			return "$inertia_path/";
 		}
@@ -84,16 +84,16 @@
 
 
 	//TODO: shud take $query, $fragment - for all *uri_ functions below
-	function inertia_absolute_uri_($path=NULL)
+	function inertia_absolute_uri($path=NULL)
 	{
-		$base_uri = uri_absolute_base_(SCHEME_, HOST_, PORT_, PATH_);
-		return webserver_specific_('uri_', $base_uri, $path);
+		$base_uri = uri_absolute_base(SCHEME_, HOST_, PORT_, PATH_);
+		return webserver_specific('uri_', $base_uri, $path);
 	}
 
-	function inertia_relative_uri_($path=NULL)
+	function inertia_relative_uri($path=NULL)
 	{
-		$base_uri = uri_relative_base_(PATH_);
-		return webserver_specific_('uri_', $base_uri, $path);
+		$base_uri = uri_relative_base(PATH_);
+		return webserver_specific('uri_', $base_uri, $path);
 	}
 
 ?>

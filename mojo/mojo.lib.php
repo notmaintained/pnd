@@ -1,6 +1,6 @@
 <?php
 
-	requires ('helpers', 'webserver');
+	requires ('helpers', 'webserver', 'path');
 
 	function map_requests_to_handlers($custom_routes=array())
 	{
@@ -60,81 +60,23 @@
 		{
 			foreach ($routes as $route)
 			{
-				$path_pattern = path_pattern($route['path']);
+				//TODO handle missing keys in route
 				$request_query = !empty($request['query']);
 				$route_query = (isset($route['query']) and $route['query']);
-				//TODO handle missing keys in route
+				$method_matches = (is_equal($request['method'], $route['method']) or is_equal('', $route['method']));
+				$defaults = isset($route['defaults']) ? $route['defaults'] : array();
+				$path_matches = path_match($route['path'], $request['path'], $defaults);
+				$query_matches = is_equal($request_query, $route_query);
 
-				if ((is_equal($request['method'], $route['method']) or is_equal('', $route['method']))
-				    and is_equal(preg_match($path_pattern, $request['path'], $matches), 1)
-				    and is_equal($request_query, $route_query))
+				if ($method_matches and $path_matches and $query_matches)
 				{
-					return isset($route['defaults'])
-					       ? array_merge($route['defaults'], $matches)
-					       : $matches;
+					return $path_matches;
 				}
 			}
 			
 			return false;
 		}
-			//TODO: convert all \{ and \} to \x00<curllystart>, \x00<curllyend>
-			function path_pattern($pattern)
-			{
-				$pattern = convert_optional_parts_to_regex($pattern);
-				$pattern = convert_named_parts_to_regex($pattern);
-				$pattern = strtr($pattern, array('/' => '\/'));
-				return "/^$pattern\$/";
-			}
 
-				function convert_optional_parts_to_regex($pattern)
-				{
-					$optional_parts_pattern = '/\[([^\]\[]*)\]/';
-					$replacement = '(\1)?';
-
-					while (true)
-					{
-						$regex_pattern = preg_replace($optional_parts_pattern, $replacement, $pattern);
-						if (!is_equal($regex_pattern, $pattern)) 
-						{
-							$pattern = $regex_pattern;
-						}
-						else break;
-					}
-					
-					return $pattern;
-				}
-
-				function convert_named_parts_to_regex($pattern)
-				{
-					$named_parts = '/{([^}]*)}/';
-					$pattern = preg_replace_callback($named_parts, 'named_part_replacement_callback', $pattern);
-					return $pattern;
-				}
-
-					function named_part_replacement_callback($matches)
-					{
-						return convert_named_part_filters_to_regex($matches, named_part_filters());
-					}
-
-						function convert_named_part_filters_to_regex($matches, $filters)
-						{
-							if (str_contains(':', $matches[1]))
-							{
-								list($subpattern_name, $pattern) = explode(':', $matches[1], 2);
-								$pattern = isset($filters[$pattern]) ? $filters[$pattern] : $pattern;
-								return "(?P<$subpattern_name>$pattern)";
-							}
-							else
-							{
-								return "(?P<{$matches[1]}>{$filters['segment']})";
-							}
-						}
-		
-						function named_part_filters()
-						{
-							require dirname(__FILE__).DIRECTORY_SEPARATOR.'filters.config.php';
-							return isset($filters) ? $filters : array();
-						}
 
 		function handler_func_exists($matches)
 		{

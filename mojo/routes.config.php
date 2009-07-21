@@ -6,27 +6,27 @@
 		      'path'=>'/[{handler}/].*',
 		      'query'=>true,
 		      'defaults'=>array('handler'=>'',
-		                        'func'=>'query_')),
+		                        'func'=>'query')),
 
 		array('method'=>'GET',
 		      'path'=>'/[{handler}/]',
 		      'defaults'=>array('handler'=>'',
-		                        'func'=>'home_')),
+		                        'func'=>'home')),
 
 		array('method'=>'GET',
 		      'path'=>'/[{handler}/].*',
 		      'defaults'=>array('handler'=>'',
-		                        'func'=>'show_')),
+		                        'func'=>'show')),
 //TODO should put & delete work on collections /, /users/  ??
 		array('method'=>'PUT',
 		      'path'=>'/[{handler}/].*',
 		      'defaults'=>array('handler'=>'',
-		                        'func'=>'save_')),
+		                        'func'=>'save')),
 
 		array('method'=>'DELETE',
 		      'path'=>'/[{handler}/].*',
 		      'defaults'=>array('handler'=>'',
-		                        'func'=>'delete_')),
+		                        'func'=>'delete')),
 
 		array('method'=>'POST',
 		      'path'=>'/[{handler}/]{func}',
