@@ -29,6 +29,11 @@
 		                        'func'=>'delete')),
 
 		array('method'=>'POST',
+		      'path'=>'/[{handler}/]',
+		      'defaults'=>array('handler'=>'',
+		                        'func'=>'post')),
+
+		array('method'=>'POST',
 		      'path'=>'/[{handler}/]{func}',
 		      'defaults'=>array('handler'=>'')),
 	);
