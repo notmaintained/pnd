@@ -1,5 +1,7 @@
 
-Swx is a minimal yet complete set of libraries for developing web applications in PHP with ease and joy :)
+# Swx README
+
+Swx is a minimal yet complete set of libraries for developing web applications in PHP with ease and joy.
 
 	<?php
 
