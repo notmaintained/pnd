@@ -1,7 +1,4 @@
-
-# README
-
-## What is Swx?
+# What is Swx?
 
 Swx is a minimal yet complete set of libraries for developing web applications in PHP with ease and joy.
 
