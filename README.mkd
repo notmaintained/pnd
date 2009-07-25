@@ -1,8 +1,8 @@
 # What is Swx?
 
-Swx is a minimal yet complete set of libraries for developing [RESTful][1] web applications in [PHP][2] with ease and joy.
+Swx is a minimal yet complete set of libraries for developing [RESTful][1] web applications in [PHP][2] with [ease and joy][3].
 
-Swx is [free software][3] and distributed under the terms of the [GNU General Public License][4].
+Swx is [free software][4] and distributed under the terms of the [GNU General Public License][5].
 
 
 	<?php
@@ -19,5 +19,6 @@ Swx is [free software][3] and distributed under the terms of the [GNU General Pu
 
 [1]: http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 [2]: http://php.net/
-[3]: http://www.gnu.org/philosophy/free-sw.html
-[4]: http://www.gnu.org/licenses/gpl.html
+[3]: http://www.exampler.com/ease-and-joy.html
+[4]: http://www.gnu.org/philosophy/free-sw.html
+[5]: http://www.gnu.org/licenses/gpl.html
