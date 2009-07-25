@@ -26,6 +26,7 @@
  *-------10--------20--------30--------40--------50--------60---------72
  */
 
+	requires ('helpers', 'webserver');
 
 	define('SCHEME_', uri_scheme(server_var('HTTPS')));
 	define('HOST_', uri_host(server_var('HTTP_HOST')));
@@ -68,29 +69,29 @@
 		}
 
 
-		function uri_absolute_base($inertia_scheme, $inertia_host, $inertia_port, $inertia_path)
+		function uri_absolute_base($scheme, $host, $port, $path)
 		{
-			$port = empty($inertia_port) ? '' : ":$inertia_port";
-			$base_uri = "$inertia_scheme://$inertia_host$port$inertia_path/";
+			$port = empty($port) ? '' : ":$port";
+			$base_uri = "$scheme://$host$port$path/";
 			return str_sanitize($base_uri);
 		}
 
 		
-		function uri_relative_base($inertia_path)
+		function uri_relative_base($path)
 		{
-			return "$inertia_path/";
+			return "$path/";
 		}
 
 
 
-	//TODO: shud take $query, $fragment - for all *uri_ functions below
-	function inertia_absolute_uri($path=NULL)
+	//TODO: shud take $query, $fragment - for all *_uri functions below
+	function absolute_uri($path=NULL)
 	{
 		$base_uri = uri_absolute_base(SCHEME_, HOST_, PORT_, PATH_);
 		return webserver_specific('uri_', $base_uri, $path);
 	}
 
-	function inertia_relative_uri($path=NULL)
+	function relative_uri($path=NULL)
 	{
 		$base_uri = uri_relative_base(PATH_);
 		return webserver_specific('uri_', $base_uri, $path);

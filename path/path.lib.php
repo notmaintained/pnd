@@ -63,6 +63,7 @@
 		$pattern = path_pattern_to_pattern($path_pattern);
 		if (is_equal(preg_match($pattern, $path, $matches), 1))
 		{
+			foreach ($matches as $key=>$val) { if (is_int($key)) { unset($matches[$key]); }}
 			return array_merge($dafaults, $matches);
 		}
 		else $dafaults;

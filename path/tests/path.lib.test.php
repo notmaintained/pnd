@@ -63,4 +63,6 @@
 		should_return('foo', when_passed('foo/bar', 0, 1));
 	}
 
+	//TODO: test_path_match
+
 ?>

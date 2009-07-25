@@ -2,28 +2,11 @@
 
 	requires ('path', 'helpers');
 
-	function routes_($custom_routes=array())
-	{
-		return array_merge($custom_routes, default_routes());
-	}
-	
-		function default_routes()
-		{
-			if ($file = file_exists_(dirname(__FILE__).DIRECTORY_SEPARATOR.'routes.config.php'))
-			{
-				include $file;
-			}
-
-			return isset($routes) ? $routes : array();
-		}
-
-
-
 	function route_match($routes, $request)
 	{
 		foreach ($routes as $route)
 		{
-			//TODO handle missing keys in route
+			//TODO: handle missing keys in route
 			$request_query = !empty($request['query']);
 			$route_query = (isset($route['query']) and $route['query']);
 			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('', $route['method']));
@@ -38,6 +21,16 @@
 		}
 		
 		return false;
+	}
+
+	function default_routes()
+	{
+		if ($file = file_exists_(dirname(__FILE__).DIRECTORY_SEPARATOR.'default_routes.config.php'))
+		{
+			include $file;
+		}
+
+		return isset($routes) ? $routes : array();
 	}
 
 ?>
