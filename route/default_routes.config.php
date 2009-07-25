@@ -17,6 +17,7 @@
 		      'path'=>'/[{handler}/].*',
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'show')),
+
 		//TODO: should put & delete work on collections '/', '/users/'  ??
 		array('method'=>'PUT',
 		      'path'=>'/[{handler}/].*',
@@ -34,7 +35,7 @@
 		                        'func'=>'post')),
 
 		array('method'=>'POST',
-		      'path'=>'/{handler}/{func}')
+		      'path'=>'/[{handler}/]{func}')
 	);
 
 ?>
