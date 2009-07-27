@@ -1,8 +1,8 @@
-# What is Swx?
+# What is Bombay?
 
-Swx is a minimal yet complete set of libraries for developing [RESTful][1] web applications in [PHP][2] with [ease and joy][3].
+Bombay is a minimal yet complete set of libraries for developing [RESTful][1] web applications in [PHP][2] with [ease and joy][3].
 
-Swx is [free software][4] and distributed under the terms of the [GNU General Public License][5].
+Bombay is [free software][4] and distributed under the terms of the [GNU General Public License][5].
 
 
 	<?php
