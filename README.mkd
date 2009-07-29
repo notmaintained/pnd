@@ -7,7 +7,7 @@ Bombay is [free software][4] and distributed under the terms of the [GNU General
 
 	<?php
 
-		require '/path/to/swx.php';
+		require '/path/to/bombay.php';
 		requires ('mojo');
 
 		function _home()

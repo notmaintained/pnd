@@ -21,7 +21,7 @@
 			if (function_exists($handler_func)) return $handler_func;
 			if (function_exists($handler_catchall)) return $handler_catchall;
 			if (function_exists($catchall)) return $catchall;
-			print_r(get_defined_vars());
+
 			return false;
 		}
 

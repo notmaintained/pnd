@@ -63,6 +63,46 @@
 		should_return('foo', when_passed('foo/bar', 0, 1));
 	}
 
-	//TODO: test_path_match
+
+	function test_path_match()
+	{
+		//TODO: Needs more tests!
+		should_return(array('handler'=>'users'), when_passed('/{handler}/', '/users/'));
+	}
+
+	function test_path_pattern_to_pattern()
+	{
+		should_return('/^(?P<foo>[^\\/]+)(bar)?$/', when_passed('{foo}[bar]'));
+	}
+
+	function test_convert_optional_parts_to_regex()
+	{
+		should_return('foo(bar)?', when_passed('foo[bar]'));
+		should_return('(foo)?(bar)?', when_passed('[foo][bar]'));
+		should_return('foo((bar)?)?', when_passed('foo[[bar]]'));
+		should_return('foo(bar)?]', when_passed('foo[bar]]'));
+	}
+	
+	function test_convert_named_parts_to_regex()
+	{
+		should_return('foo(?P<bar>[^/]+)', when_passed('foo{bar}'));
+		should_return('foo(?P<bar>.+)', when_passed('foo{bar:any}'));
+	}
+
+	function test_convert_named_part_filters_to_regex()
+	{
+		$filters = array
+		(
+			'word'    => '\w+',
+			'alpha'   => '[a-zA-Z]+',
+			'digits'  => '\d+',
+			'number'  => '\d*.?\d+',
+			'segment' => '[^/]+',
+			'any'     => '.+'
+		);
+
+		should_return('(?P<foo>[^/]+)', when_passed(array('{foo}', 'foo'), $filters));
+		should_return('(?P<foo>.+)', when_passed(array('{foo:any}', 'foo:any'), $filters));
+	}
 
 ?>
