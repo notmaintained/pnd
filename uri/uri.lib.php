@@ -28,12 +28,12 @@
 
 	requires ('helpers', 'webserver');
 
-	define('SCHEME_', uri_scheme(server_var('HTTPS')));
-	define('HOST_', uri_host(server_var('HTTP_HOST')));
-	define('PORT_', uri_port(server_var('HTTP_HOST')));
-	define('PATH_', uri_path(server_var('PHP_SELF')));
-	define('ABSOLUTE_BASE_URI_', uri_absolute_base(SCHEME_, HOST_, PORT_, PATH_));
-	define('RELATIVE_BASE_URI_', uri_relative_base(PATH_));
+	define('URI_SCHEME', uri_scheme(server_var('HTTPS')));
+	define('URI_HOST', uri_host(server_var('HTTP_HOST')));
+	define('URI_PORT', uri_port(server_var('HTTP_HOST')));
+	define('URI_PATH', uri_path(server_var('PHP_SELF')));
+	define('URI_ABSOLUTE_BASE', uri_absolute_base(URI_SCHEME, URI_HOST, URI_PORT, URI_PATH));
+	define('URI_RELATIVE_BASE', uri_relative_base(URI_PATH));
 
 
 		function uri_scheme($https)
@@ -60,9 +60,9 @@
 		}
 
 
-		function uri_path($index_dot_php_path)
+		function uri_path($path_to_index_dot_php)
 		{
-			$base_path = dirname($index_dot_php_path);
+			$base_path = dirname($path_to_index_dot_php);
 			$base_path_equals_directory_separator = (is_equal(strlen($base_path), 1) and is_equal(DIRECTORY_SEPARATOR, $base_path));
 
 			return $base_path_equals_directory_separator ? '' : str_sanitize($base_path);
@@ -87,14 +87,12 @@
 	//TODO: shud take $query, $fragment - for all *_uri functions below
 	function absolute_uri($path=NULL)
 	{
-		$base_uri = uri_absolute_base(SCHEME_, HOST_, PORT_, PATH_);
-		return webserver_specific('uri_', $base_uri, $path);
+		return webserver_specific('uri', URI_ABSOLUTE_BASE, $path);
 	}
 
 	function relative_uri($path=NULL)
 	{
-		$base_uri = uri_relative_base(PATH_);
-		return webserver_specific('uri_', $base_uri, $path);
+		return webserver_specific('uri', URI_RELATIVE_BASE, $path);
 	}
 
 ?>

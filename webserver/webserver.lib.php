@@ -27,10 +27,10 @@
  */
 
 
-	define('WEB_SERVER', webserver(server_var('SERVER_SOFTWARE')));
+	define('WEBSERVER', webserver(server_var('SERVER_SOFTWARE')));
 
-	require_webserver_adapter(webserver_adapter('default'));
-	require_webserver_adapter(webserver_adapter(WEB_SERVER));
+	require_webserver_adapter('default');
+	require_webserver_adapter(WEBSERVER);
 
 
 		function webserver($server_software)
@@ -55,11 +55,12 @@
 
 		function require_webserver_adapter($webserver_adapter)
 		{
-			if (file_exists($webserver_adapter)) require_once $webserver_adapter;
+			$webserver_adapter_file = webserver_adapter_file($webserver_adapter);
+			if (file_exists($webserver_adapter_file)) require_once $webserver_adapter_file;
 		}
 
-			function webserver_adapter($webserver)
-			{//TODO: delete port line
+			function webserver_adapter_file($webserver)
+			{
 				return dirname(__FILE__).DIRECTORY_SEPARATOR.'adapters'.DIRECTORY_SEPARATOR.$webserver.'.adapter.php';
 			}
 
@@ -68,17 +69,18 @@
 	{
 		$params = func_get_args();
 		$func = array_shift($params);
-		return call_user_func_array(select_function(WEB_SERVER, $func), $params);
+		$webserver_specific_function = webserver_specific_function(WEBSERVER, $func);
+		return call_user_func_array($webserver_specific_function, $params);
 	}
-		function select_function($webserver, $func)
+		function webserver_specific_function($webserver, $func)
 		{
-			if ($selected_func = function_exists_("{$webserver}_{$func}_"))
+			if ($webserver_specific_function = function_exists_("{$webserver}_specific_{$func}"))
 			{
-				return $selected_func;
+				return $webserver_specific_function;
 			}
 			else
 			{
-				return "default_{$func}_";
+				return "default_{$func}";
 			}
 		}
 

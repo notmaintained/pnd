@@ -28,22 +28,22 @@
 
 	requires ('uri');
 
-	function apache_is_rewrite_engine_on_()
+	function apache_specific_is_rewrite_engine_on()
 	{
-		return apache_is_rewrite_engine_on_helper_(server_var('REWRITE_ENGINE'));
+		return _apache_specific_is_rewrite_engine_on(server_var('REWRITE_ENGINE'));
 	}
-		function apache_is_rewrite_engine_on_helper_($rewrite_engine)
+		function _apache_specific_is_rewrite_engine_on($rewrite_engine)
 		{
 			return is_equal('on', strtolower($rewrite_engine));
 		}
 
 
-	function apache_request_path_()
+	function apache_specific_request_path()
 	{
-		if (!apache_is_rewrite_engine_on_()) return default_request_path_();
-		return apache_request_path_helper_(server_var('REQUEST_URI'), uri_path(server_var('PHP_SELF')));
+		if (!apache_specific_is_rewrite_engine_on()) return default_request_path();
+		return _apache_specific_request_path(server_var('REQUEST_URI'), uri_path(server_var('PHP_SELF')));
 	}
-		function apache_request_path_helper_($request_uri, $path_to_index_dot_php)
+		function _apache_specific_request_path($request_uri, $path_to_index_dot_php)
 		{
 			$path = substr($request_uri, strlen($path_to_index_dot_php));
 			list($path, ) = (str_contains('?', $path)) ? explode('?', $path, 2) : array($path, '');
@@ -51,20 +51,20 @@
 		}
 
 
-	function apache_request_headers_()
+	function apache_specific_request_headers()
 	{
-		if (!function_exists('apache_request_headers')) return default_request_headers_();
+		if (!function_exists('apache_request_headers')) return default_request_headers();
 		return apache_request_headers();
 	}
 
 
-	function apache_uri_($base_uri, $path)
+	function apache_specific_uri($base_uri, $path)
 	{
-		if (!apache_is_rewrite_engine_on_()) return default_uri_($base_uri, $path);
-		return apache_uri_helper_($base_uri, $path);
+		if (!apache_specific_is_rewrite_engine_on()) return default_uri($base_uri, $path);
+		return _apache_specific_uri($base_uri, $path);
 
 	}
-		function apache_uri_helper_($base_uri, $path)
+		function _apache_specific_uri($base_uri, $path)
 		{
 			assert(substr($base_uri, -1) == '/');
 			return $base_uri.ltrim($path, '/');

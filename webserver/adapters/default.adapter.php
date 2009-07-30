@@ -27,27 +27,29 @@
  */
 
 
-	function default_is_rewrite_engine_on_()
+	define('PATH_IN_QUERY_HACK', '_path');
+
+	function default_is_rewrite_engine_on()
 	{
 		return false;
 	}
 	
-	function default_request_path_()
+	function default_request_path()
 	{
-		return default_request_path_helper_($_GET);
+		return _default_request_path($_GET);
 	}
-		function default_request_path_helper_($get)
+		function _default_request_path($get)
 		{
-			$path = isset($get['path_']) ? $get['path_'] : '/';
+			$path = isset($get[PATH_IN_QUERY_HACK]) ? $get[PATH_IN_QUERY_HACK] : '/';
 			return $path;
 		}
 
 
-	function default_request_headers_()
+	function default_request_headers()
 	{
-		extract_request_headers_($_SERVER);
+		_extract_request_headers($_SERVER);
 	}
-		function extract_request_headers_($server_vars)
+		function _extract_request_headers($server_vars)
 		{
 			$headers = array();
 			foreach ($server_vars as $key=>$value)
@@ -63,13 +65,13 @@
 		}
 
 
-	function default_uri_($base_uri, $path)
+	function default_uri($base_uri, $path)
 	{
 		assert(substr($base_uri, -1) == '/');
 		//$path = strtr($path, array('?'=>'&amp;'));
 		$path = strtr($path, array('?'=>'&'));
 		$path = '/'.ltrim($path, '/');
-		return $base_uri."index.php?path_=$path";
+		return $base_uri.'index.php?'.PATH_IN_QUERY_HACK."=$path";
 	}
 
 ?>
