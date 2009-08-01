@@ -19,7 +19,7 @@
 			$handler_func = "{$handler}_{$func}";
 			$handler_catchall = "{$handler}_catchall";
 			$catchall = '_catchall';
-			$handler_file = handler_file($matches['handler'], $handlers_dir);
+			$handler_file = handler_file($handler, $handlers_dir);
 			if (file_exists($handler_file)) include $handler_file;
 			if (function_exists($handler_func)) return $handler_func;
 			if (function_exists($handler_catchall)) return $handler_catchall;
