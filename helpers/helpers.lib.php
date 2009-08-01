@@ -64,7 +64,6 @@
 	function php_self_dir()
 	{
 		static $php_self_dir;
-		
 		if (isset($php_self_dir)) return $php_self_dir;
 		$php_self = array_pop(debug_backtrace());
 		$php_self_dir = dirname($php_self['file']).DIRECTORY_SEPARATOR;
