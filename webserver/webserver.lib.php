@@ -72,6 +72,7 @@
 		$webserver_specific_function = webserver_specific_function(WEBSERVER, $func);
 		return call_user_func_array($webserver_specific_function, $params);
 	}
+
 		function webserver_specific_function($webserver, $func)
 		{
 			if ($webserver_specific_function = function_exists_("{$webserver}_specific_{$func}"))

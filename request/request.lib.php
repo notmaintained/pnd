@@ -2,6 +2,7 @@
 
 	requires ('helpers', 'webserver');
 
+
 	function request_()
 	{
 		return array('method' => request_method_(server_var('REQUEST_METHOD')),

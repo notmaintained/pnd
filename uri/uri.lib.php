@@ -28,6 +28,7 @@
 
 	requires ('helpers', 'webserver');
 
+
 	define('URI_SCHEME', uri_scheme(server_var('HTTPS')));
 	define('URI_HOST', uri_host(server_var('HTTP_HOST')));
 	define('URI_PORT', uri_port(server_var('HTTP_HOST')));
