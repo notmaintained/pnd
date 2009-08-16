@@ -9,11 +9,12 @@
 
 
 		function map_request_to_handler($request, $routes, $app_dir)
-		{
+		{//TODO: _method hack
 			if ($matches = route_match($routes, $request)
 				and ($handler_func = handler_func_exists($matches['handler'], $matches['func'], $app_dir)))
 			{
-				forward($handler_func, $matches, $request);
+				$params = request_params($matches, $request);
+				forward($handler_func, $params, $request);
 			}
 			else send_404_response(); //todo: do i need this or shud i let the user handle this with _catchall?
 		}
@@ -25,7 +26,8 @@
 				$global_catchall = '_catchall';
 				$handler_file = handler_file($handler, $app_dir);
 
-				if (file_exists($handler_file)) include $handler_file;
+				require $handler_file;
+
 				if (function_exists($handler_func)) return $handler_func;
 				if (function_exists($handler_catchall)) return $handler_catchall;
 				if (function_exists($global_catchall)) return $global_catchall;
@@ -39,26 +41,43 @@
 					       .DIRECTORY_SEPARATOR."$handler.handler.php";
 				}
 
-			function forward($handler_func, $matches, $request)
+			function request_params($matches, $request)
 			{
-				$app_dir = php_self_dir();
+				unset($matches['handler']);
+				unset($matches['func']);
+				if (is_equal('GET', $request['method']))
+				{
+					return array_merge($matches, $request['query']);
+				}
+				elseif (is_equal('POST', $request['method']))
+				{
+					return array_merge($matches, $request['form_data']);
+				}
+				
+				return $matches;
+			}
+
+			function forward($handler_func, $params, $request)
+			{
+				$app_dir = php_self_dir(); //TODO: separate query from command
 				$referer = calling_function(debug_backtrace());
 				$wrappers = wrappers($app_dir);
 				foreach ($wrappers as $wrapper)
 				{
 					$wrapper_name = array_shift($wrapper);
+					$wrapper_func = "{$wrapper_name}_wrapper";
 					$wrapper_around = $wrapper['around'];
-					$is_self = is_equal($wrapper_name, $referer);
+					$is_self = is_equal($wrapper_func, $referer);
 					$wraps_handler_func = (is_equal($handler_func, $wrapper_around)
 					                      or is_equal('*', $wrapper_around));
 					if ($wraps_handler_func and !$is_self)
 					{
 						require wrapper_file($wrapper_name, $app_dir);
-						return $wrapper_name($handler_func, $matches, $request);
+						return $wrapper_func($handler_func, $params, $request);
 					}
 				}
 				
-				return $handler_func($matches, $request);
+				return $handler_func($params, $request);
 			}
 
 				function calling_function($debug_backtrace)
