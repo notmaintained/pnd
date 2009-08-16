@@ -58,15 +58,15 @@
 		}
 
 
-	function path_match($path_pattern, $path, $dafaults=array())
+	function path_match($path_pattern, $path, $defaults=array())
 	{
 		$pattern = path_pattern_to_pattern($path_pattern);
 		if (is_equal(preg_match($pattern, $path, $matches), 1))
 		{
 			foreach ($matches as $key=>$val) { if (is_int($key)) { unset($matches[$key]); }}
-			return array_merge($dafaults, $matches);
+			return array_merge($defaults, $matches);
 		}
-		else $dafaults;
+		else return false;
 	}
 
 		//TODO: convert all \{ and \} to \x00<curllystart>, \x00<curllyend>
