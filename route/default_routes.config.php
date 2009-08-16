@@ -3,7 +3,7 @@
 	$routes = array (
 
 		array('method'=>'GET',
-		      'path'=>'/[{handler}/].*',
+		      'path'=>'/[{handler}/][{id:any}]',
 		      'query'=>true,
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'query')),
@@ -14,18 +14,18 @@
 		                        'func'=>'home')),
 
 		array('method'=>'GET',
-		      'path'=>'/[{handler}/].*',
+		      'path'=>'/[{handler}/][{id:any}]',
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'show')),
 
 		//TODO: should put & delete work on collections '/', '/users/'  ??
 		array('method'=>'PUT',
-		      'path'=>'/[{handler}/].*',
+		      'path'=>'/[{handler}/][{id:any}]',
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'save')),
 
 		array('method'=>'DELETE',
-		      'path'=>'/[{handler}/].*',
+		      'path'=>'/[{handler}/][{id:any}]',
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'delete')),
 
