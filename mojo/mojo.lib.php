@@ -26,7 +26,7 @@
 				$global_catchall = '_catchall';
 				$handler_file = handler_file($handler, $app_dir);
 
-				require $handler_file;
+				if (!empty($handler)) require $handler_file;
 
 				if (function_exists($handler_func)) return $handler_func;
 				if (function_exists($handler_catchall)) return $handler_catchall;
