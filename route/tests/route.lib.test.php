@@ -23,12 +23,12 @@
 		                                                  'path'=>'/users/',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'', 'func'=>'show'),
+		should_return(array('handler'=>'', 'func'=>'show', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'GET',
 		                                                  'path'=>'/foo',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'users', 'func'=>'show'),
+		should_return(array('handler'=>'users', 'func'=>'show', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'GET',
 		                                                  'path'=>'/users/foo',
 		                                                  'query'=>array())));
@@ -43,12 +43,12 @@
 		                                                  'path'=>'/users/',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'', 'func'=>'save'),
+		should_return(array('handler'=>'', 'func'=>'save', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'PUT',
 		                                                  'path'=>'/foo',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'users', 'func'=>'save'),
+		should_return(array('handler'=>'users', 'func'=>'save', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'PUT',
 		                                                  'path'=>'/users/foo',
 		                                                  'query'=>array())));
@@ -63,12 +63,12 @@
 		                                                  'path'=>'/users/',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'', 'func'=>'delete'),
+		should_return(array('handler'=>'', 'func'=>'delete', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'DELETE',
 		                                                  'path'=>'/foo',
 		                                                  'query'=>array())));
 
-		should_return(array('handler'=>'users', 'func'=>'delete'),
+		should_return(array('handler'=>'users', 'func'=>'delete', 'id'=>'foo'),
 		              when_passed(default_routes(), array('method'=>'DELETE',
 		                                                  'path'=>'/users/foo',
 		                                                  'query'=>array())));
