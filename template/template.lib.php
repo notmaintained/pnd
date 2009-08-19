@@ -3,10 +3,15 @@
 	requires ('helpers');
 
 
-	function template_render($template, $template_vars=array(), $template_dir=NULL)
+	function template_render($template, $template_vars=array(), $layout=NULL, $layout_vars=array())
 	{
-		$template_dir = absolute_template_dir($template, $template_dir, debug_backtrace(), php_self_dir());
+		$template_dir = template_dir_absolute($template, template_dir(), debug_backtrace(), php_self_dir());
 		$template_file = template_file($template, $template_dir);
+
+		if (!is_array($template_vars))
+		{
+			list($template_vars, $layout, $layout_vars) = array(array(), $template_vars, $layout);
+		}
 
 		if (file_exists($template_file))
 		{
@@ -20,7 +25,15 @@
 			$buffer = ob_get_contents();
 			ob_end_clean();
 
+			if (isset($layout))
+			{
+				if (empty($layout_vars)) $layout_vars = array();
+				$layout_vars = array_merge($layout_vars, array('content' => $buffer));
+				return call_user_func('template_render', $layout, $layout_vars);
+			}
+
 			return $buffer;
+
 		}
 		else
 		{
@@ -30,12 +43,14 @@
 		return false;
 	}
 
-		function absolute_template_dir($template, $template_dir, $debug_backtrace, $php_self_dir)
+		function template_dir_absolute($template, $template_dir, $debug_backtrace, $php_self_dir)
 		{
 			if (empty($template_dir))
 			{
 				$is_absolute_path = is_equal('/', $template[0]);
-				$caller = array_shift($debug_backtrace);
+				$is_rendering_layout = isset($debug_backtrace[0]['file']);
+				$caller_index =  $is_rendering_layout ? 0 : 2;
+				$caller = $debug_backtrace[$caller_index];
 				$template_dir = $is_absolute_path ? $php_self_dir : dirname($caller['file']).DIRECTORY_SEPARATOR;
 			}
 
@@ -47,6 +62,13 @@
 			$template_dir = rtrim($template_dir, '/\\').DIRECTORY_SEPARATOR;
 			$template = ltrim($template, '/\\');
 			return slashes_to_directory_separator("$template_dir$template.php");
+		}
+
+		function template_dir($dir=NULL)
+		{
+			static $template_dir;
+			if (is_null($dir) and isset($template_dir)) return $template_dir;
+			return $template_dir = $dir;
 		}
 
 ?>
