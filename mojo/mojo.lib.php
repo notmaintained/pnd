@@ -1,8 +1,6 @@
 <?php
 
-//TODO: requires ('mojo') should eventually give you everything you need to create a web app (templates, forms, db, proxies, auth, ect.)
-
-	requires ('request', 'route', 'template', 'helpers', 'response');
+	requires ('request', 'route', 'template', 'helpers', 'response' /*, 'form', 'db'*/);
 
 
 	map_request_to_handler(request_(), default_routes(), php_self_dir());
@@ -16,7 +14,10 @@
 				$params = request_params($matches, $request);
 				forward($handler_func, $params, $request);
 			}
-			else send_404_response(); //TODO: trigger http error instead and send to custom error handler?
+			//TODO: instead trigger http error and send to custom error handler?
+			else flush_response(response_(STATUS_NOT_FOUND,
+			                              array(),
+			                              'Not Found')); 
 		}
 
 			function handler_func_exists($handler, $func, $app_dir)
@@ -112,11 +113,5 @@
 				{
 					return $app_dir.'wrappers'.DIRECTORY_SEPARATOR."$wrapper.wrapper.php";
 				}
-
-
-		function send_404_response()
-		{
-			echo 'Not Found';
-		}
 
 ?>
