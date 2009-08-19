@@ -41,7 +41,7 @@
 		function _default_request_path($get)
 		{
 			$path = isset($get[PATH_IN_QUERY_HACK]) ? $get[PATH_IN_QUERY_HACK] : '/';
-			return $path;
+			return str_sanitize($path); //TODO: if $_GET is sanitized we cud remove this!
 		}
 
 
@@ -57,7 +57,7 @@
 				if (preg_match('/^HTTP_(.*)/', $key, $matches))
 				{
 					$header = strtolower(strtr($matches[1], '_', '-'));
-					$headers[$header] = $value;
+					$headers[$header] = $value; //TODO: Need to sanitize but can't use str_sanitize cause it encodes ' and " which might be common in headers
 				}
 			}
 

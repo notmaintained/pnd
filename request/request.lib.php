@@ -7,6 +7,7 @@
 	{
 		return array('method'    => request_method_(server_var('REQUEST_METHOD')),
 		             'path'      => request_path_(webserver_specific('request_path')),
+		             //TODO: sanitize these!
 		             'query'     => $_GET,
 		             'form_data' => $_POST,
 		             'headers'   => webserver_specific('request_headers'),
