@@ -60,11 +60,4 @@
 		should_return(false, when_passed(__FUNCTION__.rand()));
 	}
 
-
-	function test_array_keys_exist()
-	{
-		should_return(true, when_passed(array('key1', 'key2'), array('key1'=>'value', 'key2'=>'value', 'key3'=>'value')));
-		should_return(false, when_passed(array('key1', 'key4'), array('key1'=>'value', 'key2'=>'value', 'key3'=>'value')));
-	}
-
 ?>

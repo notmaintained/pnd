@@ -18,9 +18,10 @@
 	}
 
 
-	function str_sanitize($str)
+	function str_sanitize($str, $translate_quotes=true)
 	{
-		return htmlspecialchars($str, ENT_QUOTES);
+		return $translate_quotes ? htmlspecialchars($str, ENT_QUOTES) :
+		                           htmlspecialchars($str, ENT_NOQUOTES);
 	}
 
 
@@ -30,22 +31,25 @@
 	}
 
 
-	function server_var($key)
+	function server_var($key, $sanitize=true)
 	{
+		$val = NULL;
+		
 		if (isset($_SERVER[$key]))
 		{
-			return $_SERVER[$key];
+			$val = $_SERVER[$key];
 		}
 		elseif (isset($_ENV[$key]))
 		{
-			return $_ENV[$key];
+			$val = $_ENV[$key];
 		}
-		elseif ($val = getenv($key))
+		elseif ($env_val = getenv($key))
 		{
-			return $val;
+			$val = $env_val;
 		}
 
-		return NULL;
+		if (is_null($val)) return $val;
+		return $sanitize ? str_sanitize($val) : $val;
 	}
 
 
@@ -68,20 +72,6 @@
 		$php_self = array_pop(debug_backtrace());
 		$php_self_dir = dirname($php_self['file']).DIRECTORY_SEPARATOR;
 		return $php_self_dir;
-	}
-
-
-	function array_keys_exist($keys, $search_array)
-	{
-		foreach ($keys as $key)
-		{
-			if (!array_key_exists($key, $search_array))
-			{
-				return false;
-			}
-		}
-
-		return true;
 	}
 
  ?>

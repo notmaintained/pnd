@@ -156,7 +156,7 @@
 			function response_is_valid($response)
 			{
 				return (is_array($response)
-				        and array_keys_exist(array('status_code', 'headers', 'body'), $response)
+				        and isset($response['status_code'], $response['headers'], $response['body'])
 				        and is_array($response['headers']));
 			}
 
