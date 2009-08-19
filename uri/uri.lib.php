@@ -49,7 +49,7 @@
 		{
 			if (str_contains(':', $http_host)) $host = array_shift(explode(':', $http_host));
 			else $host = $http_host;
-			return str_sanitize($host);
+			return $host;
 		}
 
 
@@ -57,7 +57,7 @@
 		{
 			if (!str_contains(':', $http_host)) return '';
 			else $port = array_pop(explode(':', $http_host));
-			return str_sanitize($port);
+			return $port;
 		}
 
 
@@ -66,7 +66,7 @@
 			$base_path = dirname($path_to_index_dot_php);
 			$base_path_equals_directory_separator = (is_equal(strlen($base_path), 1) and is_equal(DIRECTORY_SEPARATOR, $base_path));
 
-			return $base_path_equals_directory_separator ? '' : str_sanitize($base_path);
+			return $base_path_equals_directory_separator ? '' : $base_path;
 		}
 
 
@@ -74,7 +74,7 @@
 		{
 			$port = empty($port) ? '' : ":$port";
 			$base_uri = "$scheme://$host$port$path/";
-			return str_sanitize($base_uri);
+			return $base_uri;
 		}
 
 		
