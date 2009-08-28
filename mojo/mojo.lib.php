@@ -1,6 +1,7 @@
 <?php
 
-	requires ('request', 'route', 'template', 'helpers', 'response' /*, 'form', 'db'*/);
+	//TODO: db, error_handler
+	requires ('helpers', 'request', 'response', 'route', 'template', 'form');
 
 
 	map_request_to_handler(request_(), default_routes(), php_self_dir());
