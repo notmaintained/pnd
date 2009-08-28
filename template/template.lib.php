@@ -8,11 +8,6 @@
 		$template_dir = template_dir_absolute($template, template_dir(), debug_backtrace(), php_self_dir());
 		$template_file = template_file($template, $template_dir);
 
-		if (!is_array($template_vars))
-		{
-			list($template_vars, $layout, $layout_vars) = array(array(), $template_vars, $layout);
-		}
-
 		if (file_exists($template_file))
 		{
 			if (!empty($template_vars) and is_array($template_vars))
@@ -48,8 +43,8 @@
 			if (empty($template_dir))
 			{
 				$is_absolute_path = is_equal('/', $template[0]);
-				$is_rendering_layout = isset($debug_backtrace[0]['file']);
-				$caller_index =  $is_rendering_layout ? 0 : 2;
+				$is_rendering_layout = !isset($debug_backtrace[0]['file']);
+				$caller_index =  $is_rendering_layout ? 2 : 0;
 				$caller = $debug_backtrace[$caller_index];
 				$template_dir = $is_absolute_path ? $php_self_dir : dirname($caller['file']).DIRECTORY_SEPARATOR;
 			}
