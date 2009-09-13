@@ -1,6 +1,6 @@
 # What is Bombay?
 
-Bombay is a minimal yet complete set of libraries for developing [RESTful][1] web applications in [PHP][2] with [ease and joy][3].
+Bombay is a minimal yet complete set of non-OO libraries for developing [RESTful][1] web applications in [PHP][2] with [ease and joy][3].
 
 Bombay is [free software][4] and distributed under the terms of the [GNU General Public License][5].
 
