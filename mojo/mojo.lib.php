@@ -8,7 +8,7 @@
 
 
 		function map_request_to_handler($request, $routes, $app_dir)
-		{//TODO: _method hack
+		{
 			if ($matches = route_match($routes, $request)
 				and ($handler_func = handler_func_exists($matches['handler'], $matches['func'], $app_dir)))
 			{
@@ -16,9 +16,12 @@
 				forward($handler_func, $params, $request);
 			}
 			//TODO: instead trigger http error and send to custom error handler?
-			else flush_response(response_(STATUS_NOT_FOUND,
-			                              array(),
-			                              'Not Found')); 
+			else flush_response(response_
+			(
+			    STATUS_NOT_FOUND,
+			    array(),
+			    'Not Found')
+			); 
 		}
 
 			function handler_func_exists($handler, $func, $app_dir)

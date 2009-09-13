@@ -2,7 +2,7 @@
 
 	requires ('helpers', 'webserver');
 
-
+	//TODO: _method hack
 	function request_()
 	{
 		return array('method'    => request_method_(server_var('REQUEST_METHOD')),
