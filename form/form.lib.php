@@ -54,7 +54,7 @@
 				$value = form_field_after_filters($value, $field_info);
 				if ($is_invalid_field)
 				{
-					$form['invalid_fields'][$field] = array
+					$form['invalids'][$field] = array
 					(
 						'name'=>$field_info['name'],
 						'value'=>$value,
@@ -63,7 +63,7 @@
 				}
 				else
 				{
-					$form['valid_fields'][$field] = array
+					$form['filtered'][$field] = array
 					(
 						'name'=>$field_info['name'],
 						'value'=>$value
