@@ -1,6 +1,6 @@
 <?php
 
-	//TODO: db, error_handler
+	//TODO: error_handler, restbase, 'emailmodule'
 	requires ('helpers', 'request', 'response', 'route', 'template', 'form');
 
 
@@ -27,15 +27,10 @@
 			function handler_func_exists($handler, $func, $app_dir)
 			{
 				$handler_func = "{$handler}_{$func}";
-				$handler_catchall = "{$handler}_catchall";
-				$global_catchall = '_catchall';
 				$handler_file = handler_file($handler, $app_dir);
-
-				if (!empty($handler)) require $handler_file;
-
+				$non_handler_func = empty($handler);
+				if (!$non_handler_func) require $handler_file;
 				if (function_exists($handler_func)) return $handler_func;
-				if (function_exists($handler_catchall)) return $handler_catchall;
-				if (function_exists($global_catchall)) return $global_catchall;
 
 				return false;
 			}
