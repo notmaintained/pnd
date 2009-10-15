@@ -140,6 +140,7 @@
 		flush_http_status($response['status_code']);
 		flush_headers($response['headers']);
 		echo $response['body'];
+		exit;
 	}
 
 
