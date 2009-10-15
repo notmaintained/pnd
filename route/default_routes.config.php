@@ -3,7 +3,7 @@
 	$routes = array (
 
 		array('method'=>'GET',
-		      'path'=>'/[{handler}/][{id:any}]',
+		      'path'=>'/[{handler}/]',
 		      'query'=>true,
 		      'defaults'=>array('handler'=>'',
 		                        'func'=>'query')),
