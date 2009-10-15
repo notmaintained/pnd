@@ -3,12 +3,9 @@
 	requires ('helpers');
 
 
-	function template_render($template, $template_vars=array(), $layout=NULL, $layout_vars=array())
+	function template_render($template, $template_vars=array(), $template_dir=NULL)
 	{
-		$template_dir = template_dir_absolute($template, template_dir(), debug_backtrace(), php_self_dir());
-		$template_file = template_file($template, $template_dir);
-
-		if (file_exists($template_file))
+		if ($template_file = template_file_exists($template, $template_dir))
 		{
 			if (!empty($template_vars) and is_array($template_vars))
 			{
@@ -19,13 +16,6 @@
 			require $template_file;
 			$buffer = ob_get_contents();
 			ob_end_clean();
-
-			if (isset($layout))
-			{
-				if (empty($layout_vars)) $layout_vars = array();
-				$layout_vars = array_merge($layout_vars, array('content' => $buffer));
-				return call_user_func('template_render', $layout, $layout_vars);
-			}
 
 			return $buffer;
 
@@ -38,32 +28,50 @@
 		return false;
 	}
 
-		function template_dir_absolute($template, $template_dir, $debug_backtrace, $php_self_dir)
+		function template_file_exists($template, $template_dir=NULL)
 		{
-			if (empty($template_dir))
+			$template_dir = template_dir($template_dir, templates_dir(), php_self_dir());
+			$template_file = template_file($template, $template_dir);
+			return file_exists_($template_file);
+		}
+
+			function template_dir($template_dir, $templates_dir, $php_self_dir)
 			{
-				$is_absolute_path = is_equal('/', $template[0]);
-				$is_rendering_layout = !isset($debug_backtrace[0]['file']);
-				$caller_index =  $is_rendering_layout ? 2 : 0;
-				$caller = $debug_backtrace[$caller_index];
-				$template_dir = $is_absolute_path ? $php_self_dir : dirname($caller['file']).DIRECTORY_SEPARATOR;
+				if (!is_null($template_dir)) return $template_dir;
+				if (!is_null($templates_dir)) return $templates_dir;
+				return $php_self_dir.'templates'.DIRECTORY_SEPARATOR;
 			}
 
-			return $template_dir;
+			function templates_dir($dir=NULL)
+			{
+				static $template_dir;
+				if (is_null($dir) and isset($template_dir)) return $template_dir;
+				return $template_dir = $dir;
+			}
+
+			function template_file($template, $template_dir)
+			{
+				$template_dir = rtrim($template_dir, '/\\').DIRECTORY_SEPARATOR;
+				$template = ltrim($template, '/\\');
+				return slashes_to_directory_separator("$template_dir$template.php");
+			}
+
+
+	function template_compose($template, $template_vars)
+	{
+		$args = array_slice(func_get_args(), 2);
+		$content = template_render($template, $template_vars);
+
+		while(!empty($args))
+		{
+			$template = array_shift($args);
+			$template_vars = empty($args) ? array() : array_shift($args);
+			$content = array('content'=>$content);
+			$template_vars = array_merge($template_vars, $content);
+			$content = template_render($template, $template_vars);
 		}
 
-		function template_file($template, $template_dir)
-		{
-			$template_dir = rtrim($template_dir, '/\\').DIRECTORY_SEPARATOR;
-			$template = ltrim($template, '/\\');
-			return slashes_to_directory_separator("$template_dir$template.php");
-		}
-
-		function template_dir($dir=NULL)
-		{
-			static $template_dir;
-			if (is_null($dir) and isset($template_dir)) return $template_dir;
-			return $template_dir = $dir;
-		}
+		return $content;
+	}
 
 ?>
