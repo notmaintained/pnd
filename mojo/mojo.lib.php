@@ -13,13 +13,14 @@
 			{
 				$handler = $matches['handler'];
 				$func = $matches['func'];
-				$id = isset($matches['id']) ? $matches['id'] : '';
 
 				$response = array();
 
 				if ($handler_func = handler_func_exists($handler, $func, $app_dir))
 				{
-					$response = call_user_func_array($handler_func, handler_args($func, $id, $request));
+					$pipeline = handler_filters($handler, $func);
+					array_push($pipeline, $handler_func);
+					$response = next_filter($pipeline, $route_matches, $request);
 					if (headers_sent()) exit;
 				}
 
@@ -46,6 +47,35 @@
 					return isset($routes) ? $routes : array();
 				}
 
+			function handler_filters($handler, $func)
+			{
+				if ($handler_filters_func = function_exists_("{$handler}_filters")) $handler_filters = $handler_filters_func();
+				if ((!empty($handler_filters)) and isset($handler_filters[$func])) $handler_func_filters = $handler_filters[$func];
+				else $handler_func_filters = array();
+				$handler_func_filters = array_map('filter_func', $handler_func_filters);
+				array_push($handler_func_filters, 'invoke_handler_filter');
+				return $handler_func_filters;
+
+			}
+				function filter_func($filter)
+				{
+					return "{$filter}_filter";
+				}
+
+				function invoke_handler_filter($pipeline, $route_matches, $request)
+				{
+					$handler_func = array_shift($pipeline);
+					$func = $route_matches['func'];
+					$id = isset($route_matches['id']) ? $route_matches['id'] : '';
+					return call_user_func_array($handler_func, handler_args($func, $id, $request));
+				}
+
+			function next_filter($pipeline, $route_matches, $request)
+			{
+				$next_filter = array_shift($pipeline);
+				if (function_exists($next_filter)) return $next_filter($pipeline, $route_matches, $request);
+				else trigger_error("Required filter ($next_filter) not found.", E_USER_ERROR);
+			}
 
 			function handler_func_exists($handler, $func, $app_dir)
 			{
@@ -85,8 +115,16 @@
 					$request_vars = array('request'=>$request);
 					$response = empty($response) ? array() : $response;
 					$template_vars = array_merge($response, $request_vars);
-					exit_with_ok_html(template_compose(handler_template($handler, $func), $template_vars,
-													   handler_layout($handler), $template_vars));
+					exit_with_ok_html
+					(
+						template_compose
+						(
+							handler_template($handler, $func),
+							$template_vars,
+							handler_layout($handler),
+							$template_vars
+						)
+					);
 
 				}
 				elseif (!empty($response))
