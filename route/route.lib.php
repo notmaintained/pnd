@@ -20,18 +20,28 @@
 				return $path_matches;
 			}
 		}
-		
+
 		return false;
 	}
 
 	function default_routes()
 	{
-		if ($file = file_exists_(dirname(__FILE__).DIRECTORY_SEPARATOR.'default_routes.config.php'))
+		if ($file = file_exists_(dirname(__FILE__).DIRECTORY_SEPARATOR.'default_routes.conf.php'))
 		{
 			include $file;
 		}
 
 		return isset($routes) ? $routes : array();
+	}
+
+	function post_action()
+	{
+		if (isset($_POST['action']) and preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $_POST['action']))
+		{
+			return $_POST['action'];
+		}
+
+		return 'post';
 	}
 
 ?>

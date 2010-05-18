@@ -4,7 +4,7 @@ Bombay is a minimal yet complete set of non-OO libraries for developing [RESTful
 
 Bombay is [free software][4] and distributed under the terms of the [GNU General Public License][5].
 
-
+	/index.php
 	<?php
 
 		require '/path/to/bombay.php';
@@ -16,6 +16,23 @@ Bombay is [free software][4] and distributed under the terms of the [GNU General
 		}
 
 	?>
+
+OR
+
+	/index.php
+	<?php
+
+		require '/path/to/bombay.php';
+		requires ('mojo');
+
+	?>
+
+	/hello/home.html.php
+	Hello World
+
+	/hello/layout.html.php
+	<html><head>Hello World</head><body><?php echo $content ?></body></html>
+
 
 [1]: http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
 [2]: http://php.net/

@@ -3,14 +3,17 @@
 	require 'validators.php';
 
 
-	function form_field($field_name, 
-	                    $field_type,
+	function form_field($field_type,
+	                    $field_name,
 	                    $overridden_validators=array(),
 	                    $additional_filters=array(), 
 	                    $overridden_error_msgs=array())
 	{
 		$field = field_types($field_type);
 
+		$required = array('required'=>true);
+		$field['validators'] = isset($field['validators']) ? array_merge($required, $field['validators']) : array();
+		
 		$field['validators'] = isset($field['validators']) ?
 		                             array_merge($field['validators'], $overridden_validators) :
 		                             $overridden_validators;
@@ -49,25 +52,21 @@
 		{
 			if ($value = form_array_value($field, $form_data))
 			{
-				$value = form_field_before_filters($value, $field_info);
+				$value = trim($value);
+				$value = form_field_apply_before_filters($value, $field_info);
 				$is_invalid_field = form_validate_field($value, $field_info);
-				$value = form_field_after_filters($value, $field_info);
+				$value = form_field_apply_after_filters($value, $field_info);
+
+				$form['name'][$field] = $field_info['name'];
+				$form['xss-safe'][$field] = htmlentities($value, ENT_QUOTES);
+
 				if ($is_invalid_field)
 				{
-					$form['invalids'][$field] = array
-					(
-						'name'=>$field_info['name'],
-						'value'=>$value,
-						'errors'=>$is_invalid_field
-					);
+					$form['errors'][$field] = $is_invalid_field;
 				}
 				else
 				{
-					$form['filtered'][$field] = array
-					(
-						'name'=>$field_info['name'],
-						'value'=>$value
-					);
+					$form['valid'][$field] = $value;
 				}
 			}
 		}
@@ -101,6 +100,35 @@
 			}
 		}
 
+		function form_field_apply_before_filters($field_value, $field_info)
+		{
+			return form_field_filter('before', $field_value, $field_info);
+		}
+
+		function form_field_apply_after_filters($field_value, $field_info)
+		{
+			return form_field_filter('after', $field_value, $field_info);
+		}
+
+			function form_field_filter($filter_type, $field_value, $field_info)
+			{
+				if (isset($field_info['filters'][$filter_type]))
+				{
+					foreach ($field_info['filters'][$filter_type] as $filter)
+					{
+						if (is_array($filter))
+						{
+							$filter_func = array_shift($filter);
+							$filter_params = array_merge(array($field_value), $filter);
+							$field_value = call_user_func_array($filter_func, $filter_params);
+						}
+						else $field_value = $filter($field_value);
+					}
+				}
+
+				return $field_value;
+			}
+
 		function form_validate_field($field_value, $field_info)
 		{
 			$field_errors = array();
@@ -128,44 +156,32 @@
 			
 		}
 
-			function form_validation_error_msgs($validator)
-			{
-				$error_msgs = array
-				(
-					'except'=>'cannot be "%validator_param"',
-					'matches'=>'is invalid'
-				);
-				
-				return isset($error_msgs[$validator]) ? $error_msgs[$validator] : $validator;
-			}
 
-		function form_field_before_filters($field_value, $field_info)
-		{
-			return form_field_filter('before', $field_value, $field_info);
-		}
+	function form_has_errors($from)
+	{
+		return isset($form['invalid']);
+	}
 
-		function form_field_after_filters($field_value, $field_info)
-		{
-			return form_field_filter('after', $field_value, $field_info);
-		}
+	function form_errors($form)
+	{
+		return isset($form['invalid']) ? $form['invalid'] : NULL;
+	}
 
-			function form_field_filter($filter_type, $field_value, $field_info)
-			{
-				if (isset($field_info['filters'][$filter_type]))
-				{
-					foreach ($field_info['filters'][$filter_type] as $filter)
-					{
-						if (is_array($filter))
-						{
-							$filter_func = array_shift($filter);
-							$filter_params = array_merge(array($field_value), $filter);
-							$field_value = call_user_func_array($filter_func, $filter_params);
-						}
-						else $field_value = $filter($field_value);
-					}
-				}
+	function form_field_values($form)
+	{
+		return isset($form['valid']) ? $form['valid'] : NULL;
+	}
 
-				return $field_value;
-			}
+	function form_field_value($field, $form)
+	{
+		return isset($form['valid'][$field]) ? $form['valid'][$field] : NULL;
+	}
+
+	function form_xss_safe_field_value($field, $form)
+	{
+		return isset($form['xss-safe'][$field]) ? $form['xss-safe'][$field] : NULL;
+	}
+
+	//TODO: form_error_message_for($field, $form)
 
 ?>

@@ -19,7 +19,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * To read the license please visit http://www.gnu.org/copyleft/gpl.html
  *
  *
@@ -133,7 +133,17 @@
 	}
 
 
-	function flush_response($response)
+	function exit_with_ok_html($body)
+	{
+		exit_with(response_
+		(
+			STATUS_OK,
+			array('content-type'=>'text/html'),
+			$body
+		));
+	}
+
+	function exit_with($response)
 	{
 		$response = valid_response($response);
 		$response = prepare_external_response($response);
@@ -145,7 +155,7 @@
 
 
 		function valid_response($response)
-		{			
+		{
 			if (!response_is_valid($response))
 			{
 				$response = response_(STATUS_OK, array(), $response);

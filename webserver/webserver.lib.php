@@ -19,7 +19,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * To read the license please visit http://www.gnu.org/copyleft/gpl.html
  *
  *
@@ -69,15 +69,15 @@
 	{
 		$params = func_get_args();
 		$func = array_shift($params);
-		$webserver_specific_function = webserver_specific_function(WEBSERVER, $func);
-		return call_user_func_array($webserver_specific_function, $params);
+		$webserver_specific_func = webserver_specific_func(WEBSERVER, $func);
+		return call_user_func_array($webserver_specific_func, $params);
 	}
 
-		function webserver_specific_function($webserver, $func)
+		function webserver_specific_func($webserver, $func)
 		{
-			if ($webserver_specific_function = function_exists_("{$webserver}_specific_{$func}"))
+			if ($webserver_specific_func = function_exists_("{$webserver}_specific_{$func}"))
 			{
-				return $webserver_specific_function;
+				return $webserver_specific_func;
 			}
 			else
 			{

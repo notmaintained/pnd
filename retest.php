@@ -76,7 +76,7 @@
 				}
 				else
 				{
-					$source_file = preg_replace('/'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.DIRECTORY_SEPARATOR.'/',
+					$source_file = preg_replace('{'.addslashes(DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR).'}',
 												DIRECTORY_SEPARATOR,
 												$source_file);
 					if (file_exists($source_file)) return $source_file;

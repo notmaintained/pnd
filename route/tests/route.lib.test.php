@@ -72,26 +72,16 @@
 		              when_passed(default_routes(), array('method'=>'DELETE',
 		                                                  'path'=>'/users/foo',
 		                                                  'query'=>array())));
+		if (!isset($_POST['action']))
+		{
+			$_POST['action'] = 'search';
+			should_return(array('handler'=>'', 'func'=>'search'),
+		                  when_passed(default_routes(), array('method'=>'POST',
+		                                                      'path'=>'/',
+		                                                      'query'=>array())));
+			unset($_POST['action']);
+		}
 
-		should_return(array('handler'=>'', 'func'=>'post'),
-		              when_passed(default_routes(), array('method'=>'POST',
-		                                                  'path'=>'/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'post'),
-		              when_passed(default_routes(), array('method'=>'POST',
-		                                                  'path'=>'/users/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'login'),
-		              when_passed(default_routes(), array('method'=>'POST',
-		                                                  'path'=>'/login',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'poke'),
-		              when_passed(default_routes(), array('method'=>'POST',
-		                                                  'path'=>'/users/poke',
-		                                                  'query'=>array())));
 
 	}
 

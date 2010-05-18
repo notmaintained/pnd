@@ -21,20 +21,21 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * To read the license please visit http://www.gnu.org/copyleft/gpl.html
  *
  *
  *-------10--------20--------30--------40--------50--------60---------72
  */
- 
+
 
 	define('BOMBAY_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+
 
 	function requires()
 	{
 		$libraries = func_get_args();
-		foreach ($libraries as $library) 
+		foreach ($libraries as $library)
 		{
 			$library_file = BOMBAY_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
 			if (file_exists($library_file))
@@ -47,6 +48,7 @@
 			}
 		}
 	}
+
 
  	php_min_version_guard('4.3.0');
 	fix_magic_quotes_gpc();

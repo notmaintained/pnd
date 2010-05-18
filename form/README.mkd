@@ -1,0 +1,23 @@
+# form.lib
+
+Validating fields
+
+		$form_fields = array
+		(
+			'borrower'=> form_field("Friend's Email Address", 'email', array('except'=>'john.smith@example.com')),
+			'lender'  => form_field('Your Email Address', 'email', array('except'=>'your@email.address')),
+			'amount'  => form_field('Amount', 'amount', array('except'=>'222')),
+			'context' => form_field('Context', 'text', array('except'=>'Beer at Foobar on Friday')),
+			'action'  => form_field('Action', 'text', array('matches'=>'Remind'))
+		);
+
+		$form = form_validate($params['form'], $form_fields);
+
+		if (isset($form['invalid_fields']))
+		{
+			// Form has errors
+		}
+		else
+		{
+			// Process form data
+		}

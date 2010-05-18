@@ -17,7 +17,7 @@
 		return preg_replace('/[^a-zA-Z0-9]/', '_', $str);
 	}
 
-
+//TODO: this is more of a XSS sanitizer so shud this be renamed?
 	function str_sanitize($str, $translate_quotes=true)
 	{
 		return $translate_quotes ? htmlspecialchars($str, ENT_QUOTES) :
