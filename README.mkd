@@ -27,10 +27,10 @@ OR
 
 	?>
 
-	/hello/home.html.php
+	/handlers/hello/home.html.php
 	Hello World
 
-	/hello/layout.html.php
+	/handlers/hello/layout.html.php
 	<html><head>Hello World</head><body><?php echo $content ?></body></html>
 
 
