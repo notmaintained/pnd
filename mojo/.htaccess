@@ -2,7 +2,7 @@
  # .htaccess
  #
  # Curiouser and curiouser!
- # 
+ #
  # function email($str){return preg_replace('/^(.*)\/(.*)/', '$2@$1', $str);}
  # Authors: Sandeep Shetty email('gmail.com/sandeep.shetty')
  #
@@ -20,7 +20,7 @@
  # WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  # General Public License for more details.
- # 
+ #
  # To read the license please visit http://www.gnu.org/copyleft/gpl.html
  #
  #
@@ -43,8 +43,6 @@
 		</IfModule>
 
 		RewriteEngine On
-		RewriteBase /
-
 		RewriteCond %{REQUEST_FILENAME} !-f
 		RewriteCond %{REQUEST_FILENAME} !-d
 		RewriteCond %{REQUEST_FILENAME} !-s
@@ -57,7 +55,7 @@
 #
 #######################################################################
 
-		RewriteRule  ^(.*)$  /path/to/index.php
+		RewriteRule  ^(.*)$  index.php
 	</IfModule>
 
 
