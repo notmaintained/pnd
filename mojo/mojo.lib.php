@@ -21,7 +21,8 @@
 					$pipeline = handler_filters($handler, $func);
 					array_push($pipeline, $handler_func);
 					$response = next_filter($pipeline, $route_matches, $request);
-					if (headers_sent()) exit;
+					flush(); if (headers_sent()) exit;
+
 				}
 
 				mojo_flush_response($handler, $func, $request, $response);
