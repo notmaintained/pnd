@@ -143,6 +143,18 @@
 		));
 	}
 
+
+	function exit_with_ok_plain($body)
+	{
+		exit_with(response_
+		(
+			STATUS_OK,
+			array('content-type'=>'text/plain'),
+			$body
+		));
+	}
+
+
 	function exit_with($response)
 	{
 		$response = valid_response($response);
