@@ -20,7 +20,7 @@
 				{
 					$pipeline = handler_filters($handler, $func);
 					array_push($pipeline, $handler_func);
-					$response = next_filter($pipeline, $route_matches, $request);
+					$response = next_filter($pipeline, $matches, $request);
 				}
 
 				mojo_flush_response($handler, $func, $request, $response);
@@ -113,7 +113,7 @@
 				{
 					$request_vars = array('request'=>$request);
 					$response = empty($response) ? array() : $response;
-					$template_vars = array_merge($response, $request_vars);
+					$template_vars =  is_array($response) ? array_merge($response, $request_vars) : array_merge(array('content'=>$response), $request_vars);
 					exit_with_ok_html
 					(
 						template_compose
@@ -128,7 +128,7 @@
 				}
 				elseif (!empty($response))
 				{
-					exit_with_ok_html(print_r($response, true));
+					exit_with_ok_plain(print_r($response, true));
 				}
 			}
 
