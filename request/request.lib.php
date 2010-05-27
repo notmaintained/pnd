@@ -5,13 +5,17 @@
 	//TODO: _method hack
 	function request_()
 	{
-		return array('method'    => request_method_(server_var('REQUEST_METHOD')),
-		             'path'      => request_path_(webserver_specific('request_path')),
-		             //TODO: sanitize these!
-		             'query'     => $_GET,
-		             'form_data' => $_POST,
-		             'headers'   => webserver_specific('request_headers'),
-		             'body'      => request_body_(file_get_contents('php://input')));
+		return array
+		(
+			'method'=>request_method_(server_var('REQUEST_METHOD')),
+			'path'=>request_path_(webserver_specific('request_path')),
+			//TODO: sanitize these!
+			'query'=>$_GET,
+			'form_data'=>$_POST,
+			'server_vars'=>$_SERVER,
+			'headers'=> webserver_specific('request_headers'),
+			'body'=>request_body_(file_get_contents('php://input'))
+		);
 	}
 
 		function request_method_($method)
