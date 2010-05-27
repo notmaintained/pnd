@@ -38,7 +38,7 @@
 			{
 				if (template_has_absolute_path($template))
 				{
-					$template_dir = ''
+					$template_dir = '';
 				}
 				else
 				{
