@@ -34,7 +34,7 @@
 	function server_var($key, $sanitize=true)
 	{
 		$val = NULL;
-		
+
 		if (isset($_SERVER[$key]))
 		{
 			$val = $_SERVER[$key];
@@ -69,7 +69,8 @@
 	{
 		static $php_self_dir;
 		if (isset($php_self_dir)) return $php_self_dir;
-		$php_self = array_pop(debug_backtrace());
+		$backtrace = debug_backtrace();
+		$php_self = array_pop($backtrace);
 		$php_self_dir = dirname($php_self['file']).DIRECTORY_SEPARATOR;
 		return $php_self_dir;
 	}
