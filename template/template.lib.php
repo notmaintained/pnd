@@ -36,10 +36,20 @@
 
 			function template_file($template, $template_dir=NULL)
 			{
-				$template_dir = template_has_absolute_path($template) ? '' : template_dir($template_dir,
-																						  templates_dir(),
-																						  php_self_dir());
-																					  
+				if (template_has_absolute_path($template))
+				{
+					$template_dir = ''
+				}
+				else
+				{
+					$template_dir = template_dir
+					(
+						$template_dir,
+						templates_dir(),
+						php_self_dir()
+					);
+				}
+
 				$template_dir = !empty($template_dir) ? rtrim($template_dir, '/\\').DIRECTORY_SEPARATOR : $template_dir;
 				$template = ltrim($template, '/\\');
 				return slashes_to_directory_separator("$template_dir$template.php");
@@ -50,9 +60,12 @@
 					$begins_with_directory_separator = is_equal($template{0}, DIRECTORY_SEPARATOR);
 					$begins_with_windows_drive_letter = is_equal(substr($template, 1, 2), ':\\');
 					$begins_with_network_drive = is_equal(substr($template, 0, 2), '\\\\');
-					return ($begins_with_directory_separator or
-							$begins_with_windows_drive_letter or
-							$begins_with_network_drive);
+					return
+					(
+						$begins_with_directory_separator or
+						$begins_with_windows_drive_letter or
+						$begins_with_network_drive
+					);
 				}
 
 				function template_dir($template_dir, $templates_dir, $php_self_dir)

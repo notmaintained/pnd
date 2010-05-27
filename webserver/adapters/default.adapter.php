@@ -57,7 +57,8 @@
 				if (preg_match('/^HTTP_(.*)/', $key, $matches))
 				{
 					$header = strtolower(strtr($matches[1], '_', '-'));
-					$headers[$header] = $value; //TODO: Need to sanitize but can't use str_sanitize cause it encodes ' and " which might be common in headers
+					//TODO: Need to sanitize but can't use str_sanitize cause it encodes ' and " which might be common in headers
+					$headers[$header] = $value;
 				}
 			}
 
