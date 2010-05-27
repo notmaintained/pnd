@@ -52,7 +52,7 @@
 
 
 	function apache_specific_request_headers()
-	{
+	{	//TODO: Do I need to strtolower() the apache_request_headers() keys cause default_request_headers() keys are lowercased?
 		if (!function_exists('apache_request_headers')) return default_request_headers();
 		return apache_request_headers();
 	}
