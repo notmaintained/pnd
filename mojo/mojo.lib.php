@@ -15,7 +15,7 @@
 				$func = $matches['func'];
 
 				$response = array();
-
+				// TODO: Also check if handler_template exists so that all reponses are filtered. Currently, direct template responses are not filtered!
 				if ($handler_func = handler_func_exists($handler, $func, $app_dir))
 				{
 					$pipeline = handler_filters($handler, $func);
