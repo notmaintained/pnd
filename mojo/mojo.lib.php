@@ -135,14 +135,14 @@
 
 			function handler_template($handler, $func)
 			{
-				return empty($handler) ? "$func.html" : "$handler/$func.html";
+				return empty($handler) ? "$func.html" : "$handler/$handler.$func.html";
 			}
 
 			function handler_layout($handler)
 			{
-				if (!empty($handler) and template_file_exists("$handler/layout.html"))
+				if (!empty($handler) and template_file_exists("$handler/$handler.layout.html"))
 				{
-					return "$handler/layout.html";
+					return "$handler/$handler.layout.html";
 				}
 
 				return "layout.html";
