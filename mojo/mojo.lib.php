@@ -99,9 +99,9 @@
 
 			function handler_args($func, $id, $request)
 			{
-				if (in_array($func, array('home', 'catchall'))) return array($request);
-				elseif (in_array($func, array('show', 'save', 'delete'))) return array($id, $request);
-				elseif (is_equal('query', $func)) return array($request['query'], $request);
+				if (in_array($func, array('home'))) return array($request);
+				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request);
+				elseif (in_array($func, array('query'))) return array($request['query'], $request);
 				else return array($request['form_data'], $request);
 			}
 
