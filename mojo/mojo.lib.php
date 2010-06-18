@@ -102,7 +102,8 @@
 				if (in_array($func, array('home'))) return array($request);
 				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request);
 				elseif (in_array($func, array('query'))) return array($request['query'], $request);
-				else return array($request['form_data'], $request);
+				elseif (isset($request['form_data']['id'])) return array($request['form_data']['id'], $request);
+				return array($request['form_data'], $request);
 			}
 
 
