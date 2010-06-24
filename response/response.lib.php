@@ -154,6 +154,16 @@
 		));
 	}
 
+	function exit_with_redirect($url)
+	{
+		exit_with(response_
+		(
+			STATUS_FOUND,
+			array('location'=>$url),
+			''
+		));
+	}
+
 
 	function exit_with($response)
 	{
