@@ -1,6 +1,6 @@
 <?php
 
-	
+
 	function test_route_match()
 	{
 		should_return(array('handler'=>'', 'func'=>'query'),
