@@ -47,7 +47,8 @@
 
 		function uri_host($http_host)
 		{
-			if (str_contains(':', $http_host)) $host = array_shift(explode(':', $http_host));
+			$pieces = explode(':', $http_host);
+			if (str_contains(':', $http_host)) $host = array_shift($pieces);
 			else $host = $http_host;
 			return $host;
 		}
@@ -55,7 +56,8 @@
 
 		function uri_port($http_host)
 		{
-			if (str_contains(':', $http_host)) $port = array_pop(explode(':', $http_host));
+			$pieces = explode(':', $http_host);
+			if (str_contains(':', $http_host)) $port = array_pop($pieces);
 			else $port = '';
 			return $port;
 		}
