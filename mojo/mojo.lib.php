@@ -78,7 +78,7 @@
 
 			function handler_func_exists($handler, $func, $app_dir)
 			{
-				$handler_func = strtolower("{$handler}_{$func}");
+				$handler_func = "{$handler}_{$func}";
 				if (function_exists($handler_func)) return $handler_func;
 
 				if (!empty($handler))
@@ -99,11 +99,13 @@
 
 			function handler_args($func, $id, $request)
 			{
+				$id = (empty($id) and isset($request['form_data']['id'])) ? $request['form_data']['id'] : $id;
 				if (in_array($func, array('home'))) return array($request);
 				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request);
 				elseif (in_array($func, array('query'))) return array($request['query'], $request);
-				elseif (isset($request['form_data']['id'])) return array($request['form_data']['id'], $request);
-				return array($request['form_data'], $request);
+				elseif (!empty($id)) return array($id, $request);
+				elseif (!empty($request['form_data'])) return array($request['form_data'], $request);
+				return array($request);
 			}
 
 

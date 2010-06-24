@@ -9,7 +9,7 @@
 		{
 			//TODO: handle missing keys in route
 			$request_query = !empty($request['query']);
-			$route_query = (isset($route['query']) and $route['query']);
+			$route_query = isset($route['query']) ? $route['query'] : false;
 			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('', $route['method']));
 			$defaults = isset($route['defaults']) ? $route['defaults'] : array();
 			$path_matches = path_match($route['path'], $request['path'], $defaults);
@@ -38,7 +38,7 @@
 	{
 		if (isset($_POST['action']) and preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $_POST['action']))
 		{
-			return $_POST['action'];
+			return strtolower($_POST['action']);
 		}
 
 		return 'post';
