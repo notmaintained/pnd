@@ -15,13 +15,9 @@
 				$func = $matches['func'];
 
 				$response = array();
-				// TODO: Also check if handler_template exists so that all reponses are filtered. Currently, direct template responses are not filtered!
-				if ($handler_func = handler_func_exists($handler, $func, $app_dir))
-				{
-					$pipeline = handler_filters($handler, $func);
-					array_push($pipeline, $handler_func);
-					$response = next_filter($pipeline, $matches, $request);
-				}
+
+				$pipeline = handler_filters($handler, $func, $app_dir);
+				$response = next_filter($pipeline, $matches, $request);
 
 				mojo_flush_response($handler, $func, $request, $response);
 			}
@@ -46,13 +42,19 @@
 					return isset($routes) ? $routes : array();
 				}
 
-			function handler_filters($handler, $func)
+			function handler_filters($handler, $func, $app_dir)
 			{
+				if ($handler_file = file_exists_(handler_file($handler, $app_dir))) require_once $handler_file;
+
 				if ($handler_filters_func = function_exists_("{$handler}_filters")) $handler_filters = $handler_filters_func();
 				if ((!empty($handler_filters)) and isset($handler_filters[$func])) $handler_func_filters = $handler_filters[$func];
 				else $handler_func_filters = array();
 				$handler_func_filters = array_map('filter_func', $handler_func_filters);
-				array_push($handler_func_filters, 'invoke_handler_filter');
+				if ($handler_func = handler_func_exists($handler, $func, $app_dir))
+				{
+					array_push($handler_func_filters, 'invoke_handler_filter');
+					array_push($handler_func_filters, $handler_func);
+				}
 				return $handler_func_filters;
 
 			}
@@ -71,9 +73,12 @@
 
 			function next_filter($pipeline, $route_matches, $request)
 			{
-				$next_filter = array_shift($pipeline);
-				if (function_exists($next_filter)) return $next_filter($pipeline, $route_matches, $request);
-				else trigger_error("Required filter ($next_filter) not found.", E_USER_ERROR);
+				if (!empty($pipeline))
+				{
+					$next_filter = array_shift($pipeline);
+					if (function_exists($next_filter)) return $next_filter($pipeline, $route_matches, $request);
+					else trigger_error("Required filter ($next_filter) not found.", E_USER_ERROR);
+				}
 			}
 
 			function handler_func_exists($handler, $func, $app_dir)
@@ -84,7 +89,7 @@
 				if (!empty($handler))
 				{
 					$handler_file = handler_file($handler, $app_dir);
-					if (file_exists($handler_file)) require $handler_file;
+					if (file_exists($handler_file)) require_once $handler_file;
 					if (function_exists($handler_func)) return $handler_func;
 				}
 
