@@ -83,7 +83,14 @@
 
 			function array_stripslashes(&$value)
 			{
-				$value = is_array($value) ? array_walk($value, __FUNCTION__) : stripslashes($value);
+				if (is_array($value))
+				{
+					array_walk($value, __FUNCTION__);
+				}
+				else
+				{
+					$value = stripslashes($value);
+				}
 			}
 
 ?>
