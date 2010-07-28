@@ -38,7 +38,7 @@
 			}
 				function app_routes($app_dir)
 				{
-					if ($app_routes = file_exists_($app_dir.'conf'.DIRECTORY_SEPARATOR.'routes.conf.php')) include $app_routes;
+					if ($app_routes = file_exists_($app_dir.'routes.conf.php')) include $app_routes;
 					return isset($routes) ? $routes : array();
 				}
 
