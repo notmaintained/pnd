@@ -50,6 +50,10 @@
 			$pieces = explode(':', $http_host);
 			if (str_contains(':', $http_host)) $host = array_shift($pieces);
 			else $host = $http_host;
+//TODO: This feels half baked. Need to put some more thought into this...
+			if(!preg_match('@^([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9]+$@', $host))
+				die(trigger_error("Invalid or malicious host detected in HTTP_HOST: ".str_sanitize($http_host), E_USER_ERROR));
+
 			return $host;
 		}
 
@@ -57,8 +61,14 @@
 		function uri_port($http_host)
 		{
 			$pieces = explode(':', $http_host);
-			if (str_contains(':', $http_host)) $port = array_pop($pieces);
+			if (str_contains(':', $http_host))
+			{
+				$port = array_pop($pieces);
+				if(!preg_match('/^[0-9]+$/', $port))
+					die(trigger_error("Invalid or malicious port detected in HTTP_HOST: ".str_sanitize($http_host), E_USER_ERROR));
+			}
 			else $port = '';
+
 			return $port;
 		}
 
