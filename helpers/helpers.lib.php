@@ -17,6 +17,13 @@
 		return preg_replace('/[^a-zA-Z0-9]/', '_', $str);
 	}
 
+
+	function str_hyphenate($str)
+	{
+		return preg_replace('/[^a-zA-Z0-9]/', '-', $str);
+	}
+
+
 //TODO: this is more of a XSS sanitizer so shud this be renamed?
 	function str_sanitize($str, $translate_quotes=true)
 	{
@@ -27,7 +34,7 @@
 
 	function is_equal($var1, $var2)
 	{
-		return ($var1 == $var2);
+		return ($var1 === $var2);
 	}
 
 
