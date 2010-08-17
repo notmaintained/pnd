@@ -17,8 +17,14 @@
 	function test_str_underscorize()
 	{
 		should_return('A_e_I_o_U_9_', when_passed('A!e@I#o%U&9-'));
+		should_return('A_e_I_o_U_9_', when_passed('#!@A!e@I#o%U&9-'));
 	}
 
+	function test_str_hyphenate()
+	{
+		should_return('A-e-I-o-U-9-', when_passed('A!e@I#o%U&9-'));
+		should_return('A-e-I-o-U-9-', when_passed('#!@A!e@I#o%U&9-'));
+	}
 
 	function test_str_sanitize()
 	{
@@ -28,8 +34,9 @@
 
 	function test_is_equal()
 	{
-		should_return(true, when_passed(true, 1));
-		should_return(false, when_passed(true, 0));
+		should_return(true, when_passed(true,true));
+		should_return(false, when_passed(true, 1));
+		should_return(false, when_passed(false, 0));
 	}
 
 

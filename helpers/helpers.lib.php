@@ -14,13 +14,15 @@
 
 	function str_underscorize($str)
 	{
-		return preg_replace('/[^a-zA-Z0-9]/', '_', $str);
+		$str = preg_replace('/^[^a-zA-Z0-9]+/', '', trim($str));
+		return preg_replace('/[^a-zA-Z0-9]/', '_', trim($str));
 	}
 
 
 	function str_hyphenate($str)
 	{
-		return preg_replace('/[^a-zA-Z0-9]/', '-', $str);
+		$str = preg_replace('/^[^a-zA-Z0-9]+/', '', trim($str));
+		return preg_replace('/[^a-zA-Z0-9]/', '-', trim($str));
 	}
 
 
