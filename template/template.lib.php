@@ -51,7 +51,7 @@
 				}
 
 				$template_dir = !empty($template_dir) ? rtrim($template_dir, '/\\').DIRECTORY_SEPARATOR : $template_dir;
-				$template = ltrim($template, '/\\');
+				$template = rtrim($template, '/\\');
 				return slashes_to_directory_separator("$template_dir$template.php");
 			}
 
