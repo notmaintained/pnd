@@ -36,9 +36,15 @@
 
 	function post_action()
 	{
-		if (isset($_POST['action']) and preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $_POST['action']))
+		if (isset($_POST['action']))
 		{
-			return strtolower($_POST['action']);
+			$action = str_underscorize($_POST['action']);
+			$valid_php_function_name = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
+
+			if (preg_match($valid_php_function_name, $action))
+			{
+				return strtolower($action);
+			}
 		}
 
 		return 'post';
