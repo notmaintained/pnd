@@ -19,7 +19,7 @@
 				$pipeline = handler_filters($handler, $func, $app_dir);
 				$response = next_filter($pipeline, $matches, $request);
 
-				mojo_flush_response($handler, $func, $request, $response);
+				mojo_flush_response($handler, $func, $request, $matches, $response);
 			}
 
 			exit_with(response_
@@ -114,14 +114,14 @@
 			}
 
 
-			function mojo_flush_response($handler, $func, $request, $response)
+			function mojo_flush_response($handler, $func, $request, $matches, $response)
 			{
 				if (template_file_exists(handler_template($handler, $func)) and
 					template_file_exists(handler_layout($handler)))
 				{
 					$request_vars = array('request'=>$request);
 					$response = empty($response) ? array() : $response;
-					$template_vars =  is_array($response) ? array_merge($response, $request_vars) : array_merge(array('content'=>$response), $request_vars);
+					$template_vars =  is_array($response) ? array_merge($response, $request_vars, $matches) : array_merge(array('content'=>$response), $request_vars, $matches);
 					exit_with_ok_html
 					(
 						template_compose
