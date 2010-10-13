@@ -116,6 +116,8 @@
 
 			function mojo_flush_response($handler, $func, $request, $matches, $response)
 			{
+				if (is_redirect_response($response)) exit_with($response);
+
 				if (template_file_exists(handler_template($handler, $func)) and
 					template_file_exists(handler_layout($handler)))
 				{

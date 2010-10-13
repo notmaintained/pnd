@@ -154,14 +154,19 @@
 		));
 	}
 
-	function exit_with_redirect($url)
+	function redirect_response($url)
 	{
-		exit_with(response_
+		return response_
 		(
 			STATUS_FOUND,
 			array('location'=>$url),
 			''
-		));
+		);
+	}
+
+	function is_redirect_response($response)
+	{
+		return isset($response['headers']['location']);
 	}
 
 
