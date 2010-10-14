@@ -116,16 +116,29 @@
 
 			function mojo_flush_response($handler, $func, $request, $matches, $response)
 			{
-				if (is_redirect_response($response)) exit_with($response);
+				if (is_valid_response($response)) exit_with($response);
 
-				if (template_file_exists(handler_template($handler, $func)) and
-					template_file_exists(handler_layout($handler)))
+				$body = response_body($response);
+
+				if (!is_equal('', $body))
+				{
+					exit_with(response_
+					(
+						response_status_code($response),
+						array_merge(array('content-type'=>'text/html'), response_headers($response)),
+						$body
+					));
+				}
+				elseif (template_file_exists(handler_template($handler, $func)) and	template_file_exists(handler_layout($handler)))
 				{
 					$request_vars = array('request'=>$request);
 					$response = empty($response) ? array() : $response;
 					$template_vars =  is_array($response) ? array_merge($response, $request_vars, $matches) : array_merge(array('content'=>$response), $request_vars, $matches);
-					exit_with_ok_html
+
+					exit_with(response_
 					(
+						response_status_code($response),
+						array_merge(array('content-type'=>'text/html'), response_headers($response)),
 						template_compose
 						(
 							handler_template($handler, $func),
@@ -133,8 +146,7 @@
 							handler_layout($handler),
 							$template_vars
 						)
-					);
-
+					));
 				}
 				elseif (!empty($response))
 				{

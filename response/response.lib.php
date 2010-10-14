@@ -154,21 +154,6 @@
 		));
 	}
 
-	function redirect_response($url)
-	{
-		return response_
-		(
-			STATUS_FOUND,
-			array('location'=>$url),
-			''
-		);
-	}
-
-	function is_redirect_response($response)
-	{
-		return isset($response['headers']['location']);
-	}
-
 
 	function exit_with($response)
 	{
@@ -180,10 +165,9 @@
 		exit;
 	}
 
-
 		function valid_response($response)
 		{
-			if (!response_is_valid($response))
+			if (!is_valid_response($response))
 			{
 				$response = response_(STATUS_OK, array(), $response);
 			}
@@ -191,7 +175,7 @@
 			return $response;
 		}
 
-			function response_is_valid($response)
+			function is_valid_response($response)
 			{
 				return (is_array($response)
 				        and isset($response['status_code'], $response['headers'], $response['body'])
@@ -219,7 +203,7 @@
 		function flush_http_status($status_code)
 		{
 			$reason_phrase = response_reason_phrase($status_code);
-			header("HTTP/1.0 $status_code $reason_phrase");
+			header("HTTP/1.1 $status_code $reason_phrase");
 		}
 
 		function flush_headers($headers)
@@ -229,5 +213,32 @@
 				header("$field_name: $field_value");
 			}
 		}
+
+
+	function redirect_response($url)
+	{
+		return response_
+		(
+			STATUS_FOUND,
+			array('location'=>$url),
+			''
+		);
+	}
+
+
+	function response_status_code($response)
+	{
+		return isset($response['status_code']) ? $response['status_code'] : STATUS_OK;
+	}
+
+	function response_headers($response)
+	{
+		return (isset($response['headers']) and is_array($response['headers'])) ? $response['headers'] : array();
+	}
+
+	function response_body($response)
+	{
+		return isset($response['body']) ? isset($response['body']) : '';
+	}
 
 ?>
