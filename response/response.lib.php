@@ -169,7 +169,25 @@
 		{
 			if (!is_valid_response($response))
 			{
-				$response = response_(STATUS_OK, array(), $response);
+				$status_code = STATUS_OK;
+				$headers = array();
+
+				if (is_array($response))
+				{
+					if (isset($response['status_code']))
+					{
+						$status_code = $response['status_code'];
+						unset($response['status_code']);
+					}
+
+					if (isset($response['headers']) and is_array($response['headers']))
+					{
+						$headers = $response['headers'];
+						unset($response['headers']);
+					}
+				}
+
+				$response = response_($status_code, $headers, $response);
 			}
 
 			return $response;
@@ -238,7 +256,15 @@
 
 	function response_body($response)
 	{
-		return isset($response['body']) ? isset($response['body']) : '';
+		if (is_array($response) and isset($response['body']))
+		{
+			return $response['body'];
+		}
+		elseif (is_string($response))
+		{
+			$response;
+		}
+		else return '';
 	}
 
 ?>

@@ -118,18 +118,7 @@
 			{
 				if (is_valid_response($response)) exit_with($response);
 
-				$body = response_body($response);
-
-				if (!is_equal('', $body))
-				{
-					exit_with(response_
-					(
-						response_status_code($response),
-						array_merge(array('content-type'=>'text/html'), response_headers($response)),
-						$body
-					));
-				}
-				elseif (template_file_exists(handler_template($handler, $func)) and	template_file_exists(handler_layout($handler)))
+				if (template_file_exists(handler_template($handler, $func)) and	template_file_exists(handler_layout($handler)))
 				{
 					$request_vars = array('request'=>$request);
 					$response = empty($response) ? array() : $response;
