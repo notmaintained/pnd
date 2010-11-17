@@ -21,7 +21,7 @@
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- * 
+ *
  * To read the license please visit http://www.gnu.org/copyleft/gpl.html
  *
  *
@@ -61,6 +61,7 @@
 	function path_match($path_pattern, $path, $defaults=array())
 	{
 		$pattern = path_pattern_to_pattern($path_pattern);
+
 		if (is_equal(preg_match($pattern, $path, $matches), 1))
 		{
 			foreach ($matches as $key=>$val) { if (is_int($key)) { unset($matches[$key]); }}
@@ -86,13 +87,13 @@
 				while (true)
 				{
 					$regex_pattern = preg_replace($optional_parts_pattern, $replacement, $pattern);
-					if (!is_equal($regex_pattern, $pattern)) 
+					if (!is_equal($regex_pattern, $pattern))
 					{
 						$pattern = $regex_pattern;
 					}
 					else break;
 				}
-				
+
 				return $pattern;
 			}
 
@@ -121,7 +122,7 @@
 							return "(?P<{$matches[1]}>{$filters['segment']})";
 						}
 					}
-	
+
 					function named_part_filters()
 					{
 						require dirname(__FILE__).DIRECTORY_SEPARATOR.'filters.config.php';
