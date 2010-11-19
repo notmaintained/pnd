@@ -9,17 +9,17 @@
 
 		function map_request_to_handler($request, $routes, $app_dir)
 		{
-			if ($matches = route_match($routes, $request))
+			if ($route_matches = route_match($routes, $request))
 			{
-				$handler = $matches['handler'];
-				$func = $matches['func'];
+				$handler = $route_matches['handler'];
+				$func = $route_matches['func'];
 
 				$response = array();
 
 				$pipeline = handler_filters($handler, $func, $app_dir);
-				$response = next_filter($pipeline, $matches, $request);
+				$response = next_filter($pipeline, $route_matches, $request);
 
-				mojo_flush_response($handler, $func, $request, $matches, $response);
+				mojo_flush_response($handler, $func, $request, $route_matches, $response);
 			}
 
 			exit_with(response_
@@ -66,9 +66,7 @@
 				function invoke_handler_filter($pipeline, $route_matches, $request)
 				{
 					$handler_func = array_shift($pipeline);
-					$func = $route_matches['func'];
-					$id = isset($route_matches['id']) ? $route_matches['id'] : '';
-					return call_user_func_array($handler_func, handler_args($func, $id, $request));
+					return call_user_func_array($handler_func, handler_args($route_matches, $request));
 				}
 
 			function next_filter($pipeline, $route_matches, $request)
@@ -102,9 +100,12 @@
 				}
 
 
-			function handler_args($func, $id, $request)
+			function handler_args($route_matches, $request)
 			{
+				$func = $route_matches['func'];
+				$id = isset($route_matches['id']) ? $route_matches['id'] : '';
 				$id = (empty($id) and isset($request['form_data']['id'])) ? $request['form_data']['id'] : $id;
+
 				if (in_array($func, array('home'))) return array($request);
 				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request);
 				elseif (in_array($func, array('query'))) return array($request['query'], $request);
