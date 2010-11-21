@@ -106,12 +106,12 @@
 				$id = isset($route_matches['id']) ? $route_matches['id'] : '';
 				$id = (empty($id) and isset($request['form_data']['id'])) ? $request['form_data']['id'] : $id;
 
-				if (in_array($func, array('home'))) return array($request);
-				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request);
-				elseif (in_array($func, array('query'))) return array($request['query'], $request);
-				elseif (!empty($id)) return array($id, $request);
-				elseif (!empty($request['form_data'])) return array($request['form_data'], $request);
-				return array($request);
+				if (in_array($func, array('home'))) return array($request, $route_matches);
+				elseif (in_array($func, array('show', 'save', 'delete', 'catchall'))) return array($id, $request, $route_matches);
+				elseif (in_array($func, array('query'))) return array($request['query'], $request, $route_matches);
+				elseif (!empty($id)) return array($id, $request, $route_matches);
+				elseif (!empty($request['form_data'])) return array($request['form_data'], $request, $route_matches);
+				return array($request, $route_matches);
 			}
 
 
