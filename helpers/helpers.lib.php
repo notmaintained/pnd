@@ -46,6 +46,13 @@
 	}
 
 
+	function filerialize_var($var_name, $var)
+	{
+		$var_str = var_export($var, true);
+		return "<?php\n\n\$$var_name = $var_str;\n\n?>";
+	}
+
+
 	function is_equal($var1, $var2)
 	{
 		return ($var1 === $var2);
