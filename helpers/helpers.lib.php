@@ -26,6 +26,13 @@
 	}
 
 
+	function str_humanize($str)
+	{
+		return strtr(trim($str), array('-'=>' ', '_'=>' '));
+	}
+
+
+
 //TODO: this is more of a XSS sanitizer so shud this be renamed?
 	function str_sanitize($str, $translate_quotes=true)
 	{
