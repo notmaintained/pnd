@@ -31,6 +31,11 @@
 		return strtr(trim($str), array('-'=>' ', '_'=>' '));
 	}
 
+	//TODO: This is a hack. Make it more comprehensive.
+	function str_singularize($str)
+	{
+		if (is_equal('s', substr($str, -1))) return substr($str, 0, -1);
+	}
 
 
 //TODO: this is more of a XSS sanitizer so shud this be renamed?
