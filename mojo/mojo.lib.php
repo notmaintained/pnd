@@ -1,7 +1,7 @@
 <?php
 
 	//TODO: 'error'
-	requires ('helpers', 'request', 'response', 'route', 'template', 'form', 'emailmodule', 'mojo_sendmail', 'db', 'handler');
+	requires ('helpers', 'request', 'response', 'route', 'template', 'form', 'emailmodule', 'db', 'handler');
 
 	map_request_to_handler(request_(), app_or_default_routes(), php_self_dir());
 
