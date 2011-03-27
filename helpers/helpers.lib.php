@@ -103,4 +103,20 @@
 		return $php_self_dir;
 	}
 
+
+	function str_random_alphanum($length=10)
+	{
+		$aZ09_without_similar_chars = 'abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+		$len = strlen($aZ09_without_similar_chars) - 1;
+		$random_alphanum = '';
+
+		for($i=0; $i < $length; $i++)
+		{
+				$random_alphanum .= $aZ09_without_similar_chars[mt_rand(0, $len)];
+		}
+
+		return $random_alphanum;
+	}
+
+
  ?>

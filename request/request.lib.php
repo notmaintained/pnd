@@ -11,7 +11,7 @@
 			'path'=>request_path_(webserver_specific('request_path')),
 			//TODO: sanitize these!
 			'query'=>$_GET,
-			'form_data'=>$_POST,
+			'form'=>$_POST,
 			'server_vars'=>$_SERVER,
 			'headers'=> webserver_specific('request_headers'),
 			'body'=>request_body_(file_get_contents('php://input'))

@@ -1,6 +1,6 @@
 <?php
 
-	requires ('path', 'helpers');
+	requires ('path', 'helpers', 'request');
 
 
 	function route_match($routes, $request)
@@ -17,7 +17,7 @@
 			$route_matches = path_match($route['path'], $request['path']);
 			$path_matches = !is_equal($route_matches, false);
 
-			$action = isset($request['form_data']['action']) ? valid_action($request['form_data']['action']) : '';
+			$action = isset($request['form']['action']) ? valid_action($request['form']['action']) : '';
 			$route_action = isset($route['action']) ? $route['action'] : '';
 			$action_matches = is_equal($action, $route_action);
 
@@ -55,19 +55,32 @@
 		return 'post';
 	}
 
+	function head_route($path, $handler, $func, $filters=array())
+	{
+		return array
+		(
+			'method'=>'HEAD',
+			'path'=>$path,
+			'handler'=>$handler,
+			'func'=>$func,
+			'filters'=>$filters
+		);
+	}
 
-	function get_route($path, $handler, $func)
+	function get_route($path, $handler, $func, $filters=array(), $query=false)
 	{
 		return array
 		(
 			'method'=>'GET',
 			'path'=>$path,
 			'handler'=>$handler,
-			'func'=>$func
+			'func'=>$func,
+			'filters'=>$filters,
+			'query'=>$query
 		);
 	}
 
-	function post_route($path, $action, $handler, $func)
+	function post_route($path, $action, $handler, $func, $filters=array(), $query=false)
 	{
 		return array
 		(
@@ -75,8 +88,20 @@
 			'path'=>$path,
 			'action'=>$action,
 			'handler'=>$handler,
-			'func'=>$func
+			'func'=>$func,
+			'filters'=>$filters,
+			'query'=>$query
 		);
+	}
+
+	function route_filters($handler, $func, $routes)
+	{
+		foreach ($routes as $route)
+		{
+			if (is_equal($handler, $route['handler']) and is_equal($func, $route['func'])) return $route['filters'];
+		}
+
+		return array();
 	}
 
 ?>

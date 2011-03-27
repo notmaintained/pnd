@@ -7,9 +7,10 @@
 		$error_msgs = array
 		(
 			'except'=>'cannot be "%validator_param"',
-			'matches'=>'is invalid'
+			'matches'=>'is invalid',
+			'required'=>'is required'
 		);
-		
+
 		return isset($error_msgs[$validator]) ? $error_msgs[$validator] : $validator;
 	}
 
@@ -26,7 +27,7 @@
 
 	function validate_required($field_value, $is_required)
 	{
-		return $is_required ? !empty($field_value) : true;
+		return $is_required ? !is_equal('', trim($field_value)) : true;
 	}
 
 	function validate_email($address, $level)

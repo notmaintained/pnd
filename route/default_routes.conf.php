@@ -58,7 +58,7 @@
 				'func'=>'delete'
 			)
 		),
-
+/*
 		array
 		(
 			'method'=>'POST',
@@ -68,7 +68,7 @@
 				'handler'=>'',
 				'func'=>post_action()
 			)
-		)
+		)*/
 	);
 
 ?>

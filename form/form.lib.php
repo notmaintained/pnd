@@ -6,14 +6,14 @@
 	function form_field($field_type,
 	                    $field_name,
 	                    $overridden_validators=array(),
-	                    $additional_filters=array(), 
+	                    $additional_filters=array(),
 	                    $overridden_error_msgs=array())
 	{
 		$field = field_types($field_type);
 
 		$required = array('required'=>true);
 		$field['validators'] = isset($field['validators']) ? array_merge($required, $field['validators']) : array();
-		
+
 		$field['validators'] = isset($field['validators']) ?
 		                             array_merge($field['validators'], $overridden_validators) :
 		                             $overridden_validators;
@@ -25,7 +25,7 @@
 		$field['error_msgs'] = isset($field['error_msgs']) ?
 		                             array_merge($field['error_msgs'], $overridden_error_msgs) :
 		                             $overridden_error_msgs;
-								  
+
 		$field['name'] = $field_name;
 
 		return $field;
@@ -50,14 +50,16 @@
 
 		foreach ($form_fields as $field=>$field_info)
 		{
-			if ($value = form_array_value($field, $form_data))
+			$value = form_array_value($field, $form_data);
+			if (!is_equal(false, $value))
 			{
 				$value = trim($value);
+
 				$value = form_field_apply_before_filters($value, $field_info);
 				$is_invalid_field = form_validate_field($value, $field_info);
 				$value = form_field_apply_after_filters($value, $field_info);
 
-				$form['name'][$field] = $field_info['name'];
+				$form['names'][$field] = $field_info['name'];
 				$form['xss-safe'][$field] = htmlentities($value, ENT_QUOTES);
 
 				if ($is_invalid_field)
@@ -91,7 +93,7 @@
 					$keys = $matches[1];
 					foreach($keys as $key)
 					{
-						if (array_key_exists($key, $arr)) $arr = $arr[$key];	
+						if (array_key_exists($key, $arr)) $arr = $arr[$key];
 						else $arr = false;
 					}
 
@@ -153,18 +155,23 @@
 			}
 
 			return $field_errors;
-			
+
 		}
 
 
-	function form_has_errors($from)
+	function form_has_errors($form)
 	{
-		return isset($form['invalid']);
+		return isset($form['errors']);
 	}
 
 	function form_errors($form)
 	{
-		return isset($form['invalid']) ? $form['invalid'] : NULL;
+		return isset($form['errors']) ? $form['errors'] : NULL;
+	}
+
+	function form_field_name($field, $form)
+	{
+		return isset($form['names'][$field]) ? $form['names'][$field] : NULL;
 	}
 
 	function form_field_values($form)

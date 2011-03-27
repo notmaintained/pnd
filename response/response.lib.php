@@ -133,30 +133,82 @@
 	}
 
 
-	function exit_with_ok_html($body)
+	function exit_with_200_html($body)
 	{
-		exit_with(response_
-		(
-			STATUS_OK,
-			array('content-type'=>'text/html'),
-			$body
-		));
+		exit_with(STATUS_OK, array('content-type'=>'text/html'), $body);
+	}
+
+	function exit_with_200_plain($body)
+	{
+		exit_with(STATUS_OK, array('content-type'=>'text/plain'), $body);
+	}
+
+	function exit_with_404_html($body)
+	{
+		exit_with(STATUS_NOT_FOUND, array('content-type'=>'text/html'), $body);
+	}
+
+	function exit_with_404_plain($body)
+	{
+		exit_with(STATUS_NOT_FOUND, array('content-type'=>'text/plain'), $body);
+	}
+
+	function exit_with_500_html($body)
+	{
+		exit_with(STATUS_INTERNAL_SERVER_ERROR, array('content-type'=>'text/html'), $body);
+	}
+
+	function exit_with_500_plain($body)
+	{
+		exit_with(STATUS_INTERNAL_SERVER_ERROR, array('content-type'=>'text/plain'), $body);
 	}
 
 
-	function exit_with_ok_plain($body)
+	function _200_html($body)
 	{
-		exit_with(response_
-		(
-			STATUS_OK,
-			array('content-type'=>'text/plain'),
-			$body
-		));
+		return response_(STATUS_OK, array('content-type'=>'text/html'), $body);
 	}
 
-
-	function exit_with($response)
+	function _200_plain($body)
 	{
+		return response_(STATUS_OK, array('content-type'=>'text/plain'), $body);
+	}
+
+	function _404_html($body)
+	{
+		return response_(STATUS_NOT_FOUND, array('content-type'=>'text/html'), $body);
+	}
+
+	function _404_plain($body)
+	{
+		return response_(STATUS_NOT_FOUND, array('content-type'=>'text/plain'), $body);
+	}
+
+	function _500_html($body)
+	{
+		return response_(STATUS_INTERNAL_SERVER_ERROR, array('content-type'=>'text/html'), $body);
+	}
+
+	function _500_plain($body)
+	{
+		return response_(STATUS_INTERNAL_SERVER_ERROR, array('content-type'=>'text/plain'), $body);
+	}
+
+	function _302_plain($url)
+	{
+		return response_(STATUS_FOUND, array('location'=>$url, 'content-type'=>'text/plain'), '$url');
+	}
+
+	function exit_with()
+	{
+		$params = func_get_args();
+
+		if (is_equal(3, count($params)))
+			$response = response_($params[0], $params[1], $params[2]);
+		elseif (is_equal(1, count($params)))
+			$response = $params[0];
+		else $response = '';
+
 		$response = valid_response($response);
 		$response = prepare_external_response($response);
 		flush_http_status($response['status_code']);
@@ -231,17 +283,6 @@
 				header("$field_name: $field_value");
 			}
 		}
-
-
-	function redirect_response($url)
-	{
-		return response_
-		(
-			STATUS_FOUND,
-			array('location'=>$url),
-			''
-		);
-	}
 
 
 	function response_status_code($response)
