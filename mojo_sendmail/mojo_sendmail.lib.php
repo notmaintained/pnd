@@ -24,17 +24,14 @@
 //TODO: The fact that for the app level ones you have to pass an empty string for the handler param in mojo_sendmail sucks
 		function handler_email_template($handler, $email)
 		{
-			return empty($handler) ? "email/$email.txt" : "$handler/email/$email.txt";
+			return handler_templates_dir($handler)."email/$email.txt";
 		}
 
 		function handler_email_layout($handler)
 		{
-			if (!empty($handler) and template_file_exists("$handler/email/layout.txt"))
-			{
-				return "$handler/email/layout.txt";
-			}
-//TODO: sucks that this cannot be email/layout cause then we cannot have a handler called email - maybe I could name it to _email
-			return "email_layout.txt";
+			$handler_email_layout = handler_templates_dir($handler)."email/layout.txt";
+			if (!empty($handler_email_layout) and template_file_exists($handler_email_layout)) return $handler_email_layout;
+			else return handler_templates_dir('')."email/layout.html";
 		}
 
 ?>

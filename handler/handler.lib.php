@@ -42,8 +42,8 @@
 
 	function handler_layout($handler)
 	{
-		$layout = handler_templates_dir($handler)."$handler.layout.html";
-		if (!empty($handler) and template_file_exists($layout)) return $layout;
+		$handler_layout = handler_templates_dir($handler)."$handler.layout.html";
+		if (!empty($handler_layout) and template_file_exists($handler_layout)) return $handler_layout;
 		else return handler_templates_dir('')."layout.html";
 	}
 
