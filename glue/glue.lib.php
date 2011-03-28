@@ -3,7 +3,11 @@
 	//TODO: 'error'
 	requires ('helpers', 'request', 'response', 'route', 'template', 'form', 'emailmodule', 'db', 'handler');
 
-	map_request_to_handler(request_(), app_or_default_routes(), php_self_dir());
+
+	function yield_to_glue()
+	{
+		map_request_to_handler(request_(), app_or_default_routes(), php_self_dir());
+	}
 
 
 	function map_request_to_handler($request, $routes, $app_dir)
