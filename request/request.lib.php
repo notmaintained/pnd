@@ -2,14 +2,14 @@
 
 	requires ('helpers', 'webserver');
 
-	//TODO: _method hack
+	//TODO: _method hack for PUT over POST?
 	function request_()
 	{
 		return array
 		(
 			'method'=>request_method_(server_var('REQUEST_METHOD')),
 			'path'=>request_path_(webserver_specific('request_path')),
-			//TODO: sanitize these!
+			//TODO: sanitize these?
 			'query'=>$_GET,
 			'form'=>$_POST,
 			'server_vars'=>$_SERVER,
