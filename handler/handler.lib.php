@@ -37,12 +37,12 @@
 
 	function handler_template($handler, $template)
 	{
-		return handler_templates_dir($handler)."$handler.$template.html";
+		return handler_templates_dir($handler)."{$template}.html";
 	}
 
 	function handler_layout($handler)
 	{
-		$handler_layout = handler_templates_dir($handler)."$handler.layout.html";
+		$handler_layout = handler_templates_dir($handler)."{$handler}_layout.html";
 		if (!empty($handler_layout) and template_file_exists($handler_layout)) return $handler_layout;
 		else return handler_templates_dir('')."layout.html";
 	}

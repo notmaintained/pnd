@@ -67,7 +67,7 @@
 	function test_path_match()
 	{
 		//TODO: Needs more tests!
-		should_return(array('handler'=>'users'), when_passed('/{handler}/', '/users/'));
+		should_return(true, when_passed('/{handler}/', '/users/'));
 	}
 
 	function test_path_pattern_to_pattern()
@@ -82,7 +82,7 @@
 		should_return('foo((bar)?)?', when_passed('foo[[bar]]'));
 		should_return('foo(bar)?]', when_passed('foo[bar]]'));
 	}
-	
+
 	function test_convert_named_parts_to_regex()
 	{
 		should_return('foo(?P<bar>[^/]+)', when_passed('foo{bar}'));

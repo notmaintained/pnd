@@ -3,105 +3,117 @@
 	requires ('path', 'helpers', 'request');
 
 
+	function routes($route=NULL, $reset=false)
+	{
+		static $routes = array();
+
+		if ($reset) return $routes = array();
+		if (is_null($route)) return $routes;
+
+		$routes[] = $route;
+		return $routes;
+	}
+
+
+	function handle_head()
+	{
+		handle_('HEAD', func_get_args());
+	}
+
+	function handle_get()
+	{
+		handle_('GET', func_get_args());
+	}
+
+	function handle_post()
+	{
+		handle_('POST', func_get_args());
+	}
+
+
+		function handle_($method, $args)
+		{
+			array_unshift($args, $method);
+			$route = parse_route_params($args);
+			route_($route['method'], $route['paths'], $route['funcs'], $route['conds']);
+		}
+
+			function parse_route_params($args)
+			{
+				if (count($args) < 3) return false;
+
+				$route = array();
+				$route['method'] = array_shift($args);
+
+				$path = array_shift($args);
+				$route['paths'] = (is_array($path)) ? $path : array($path);
+
+				$conds = array();
+				if (is_array(end($args))) $conds = array_pop($args);
+
+				$route['funcs'] = array();
+				foreach ($args as $arg)
+				{
+					if (is_array($arg))
+					{
+						foreach ($arg as $val)
+						{
+							$route['funcs'][] = $val;
+						}
+					}
+					else $route['funcs'][] = $arg;
+				}
+
+				$route['conds'] = $conds;
+
+				return $route;
+			}
+
+			function route_($method, $paths, $funcs, $conditions)
+			{
+				routes
+				(
+					array
+					(
+						'method'=>$method,
+						'paths'=>$paths,
+						'funcs'=>$funcs,
+						'conds'=>$conditions
+					)
+				);
+			}
+
+
 	function route_match($routes, $request)
 	{
 		foreach ($routes as $route)
 		{
-			//TODO: handle missing keys in route
-			$request_query = !empty($request['query']);
-			$route_query = isset($route['query']) ? $route['query'] : false;
-			$query_matches = is_equal($request_query, $route_query);
-
 			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('', $route['method']));
 
-			$route_matches = path_match($route['path'], $request['path']);
-			$path_matches = !is_equal($route_matches, false);
-
-			$action = isset($request['form']['action']) ? valid_action($request['form']['action']) : '';
-			$route_action = isset($route['action']) ? $route['action'] : '';
-			$action_matches = is_equal($action, $route_action);
-
-			if ($method_matches and $path_matches and $query_matches and $action_matches)
+			foreach ($route['paths'] as $path)
 			{
-				$route_matches = empty($route_matches) ? array() : $route_matches;
-				return array_merge($route_matches, array('handler'=>$route['handler'], 'func'=>$route['func']));
+				if ($path_matches = path_match($path, $request['path'], $matches)) break;
+			}
+
+			if (isset($matches['conds']['action']) and isset($request['form']['action']))
+			{
+				$action_matches = is_equal($matches['conds']['action'], $request['form']['action']);
+			}
+			elseif (isset($matches['conds']['action']) and !isset($request['form']['action']))
+			{
+				$action_matches = false;
+			}
+			else $action_matches = true;
+
+			if ($method_matches and $path_matches and $action_matches)
+			{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
+				$route['path_matches'] = $matches;
+				return	$route;
 			}
 		}
 
 		return false;
 	}
 
-	function default_routes()
-	{
-		if ($file = file_exists_(dirname(__FILE__).DIRECTORY_SEPARATOR.'default_routes.conf.php'))
-		{
-			include $file;
-		}
-
-		return isset($routes) ? $routes : array();
-	}
-
-	function valid_action($action)
-	{
-
-		$action = str_underscorize($action);
-		$valid_php_function_name = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
-
-		if (preg_match($valid_php_function_name, $action))
-		{
-			return strtolower($action);
-		}
-
-		return 'post';
-	}
-
-	function head_route($path, $handler, $func, $filters=array())
-	{
-		return array
-		(
-			'method'=>'HEAD',
-			'path'=>$path,
-			'handler'=>$handler,
-			'func'=>$func,
-			'filters'=>$filters
-		);
-	}
-
-	function get_route($path, $handler, $func, $filters=array(), $query=false)
-	{
-		return array
-		(
-			'method'=>'GET',
-			'path'=>$path,
-			'handler'=>$handler,
-			'func'=>$func,
-			'filters'=>$filters,
-			'query'=>$query
-		);
-	}
-
-	function post_route($path, $action, $handler, $func, $filters=array(), $query=false)
-	{
-		return array
-		(
-			'method'=>'POST',
-			'path'=>$path,
-			'action'=>$action,
-			'handler'=>$handler,
-			'func'=>$func,
-			'filters'=>$filters,
-			'query'=>$query
-		);
-	}
-
-	function route_filters($handler, $func, $routes)
-	{
-		foreach ($routes as $route)
-		{
-			if (is_equal($handler, $route['handler']) and is_equal($func, $route['func'])) return $route['filters'];
-		}
-
-		return array();
-	}
 
 ?>

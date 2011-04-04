@@ -58,14 +58,14 @@
 		}
 
 
-	function path_match($path_pattern, $path, $defaults=array())
+	function path_match($path_pattern, $path, &$matches=array(), $defaults=array())
 	{
 		$pattern = path_pattern_to_pattern($path_pattern);
 
 		if (is_equal(preg_match($pattern, $path, $matches), 1))
 		{
 			foreach ($matches as $key=>$val) { if (is_int($key)) { unset($matches[$key]); }}
-			return array_merge($defaults, $matches);
+			return true;
 		}
 		else return false;
 	}

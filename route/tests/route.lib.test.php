@@ -1,88 +1,106 @@
 <?php
 
+	function test_parse_route_params()
+	{
+
+		should_return(false, when_passed(array('GET', '/')));
+
+		should_return
+		(
+			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
+			when_passed(array('GET', '/', 'func'))
+		);
+
+		should_return
+		(
+			array('method'=>'GET', 'paths'=>array('/', '/home'), 'funcs'=>array('func'), 'conds'=>array()),
+			when_passed(array('GET', array('/', '/home'), 'func'))
+		);
+
+		should_return
+		(
+			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func'), 'conds'=>array()),
+			when_passed(array('GET', '/', array('db', 'auth'), 'func'))
+		);
+
+		should_return
+		(
+			array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func'), 'conds'=>array('action'=>'save')),
+			when_passed(array('POST', '/', array('db', 'auth'), 'func', array('action'=>'save')))
+		);
+
+		should_return
+		(
+			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
+			when_passed(array('GET', '/', 'func'))
+		);
+
+		should_return
+		(
+			array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array(), 'conds'=>array('action'=>'save')),
+			when_passed(array('POST', '/', array('action'=>'save')))
+		);
+	}
+
+
+	function test_routes()
+	{
+		should_return(array(), when_passed('', true));
+
+		should_return
+		(
+			array
+			(
+				array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array())
+			),
+			when_passed(array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array()))
+		);
+
+		should_return
+		(
+			array
+			(
+				array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array())
+			),
+			when_passed()
+		);
+	}
+
 
 	function test_route_match()
-	{/*
-		should_return(array('handler'=>'', 'func'=>'query'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/',
-		                                                  'query'=>array('baz'=>'quz'))));
+	{
+		should_return
+		(
+			array
+			(
+				'method'=>'GET',
+				'paths'=>array('/', '/{home}'),
+				'funcs'=>array('func'),
+				'conds'=>array(),
+				'path_matches'=>array('home'=>'hand')
+			),
+			when_passed
+			(
+				array(array('method'=>'GET', 'paths'=>array('/', '/{home}'), 'funcs'=>array('func'), 'conds'=>array())),
+				array('method'=>'GET', 'path'=>'/hand'))
+		);
 
-		should_return(array('handler'=>'users', 'func'=>'query'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/users/',
-		                                                  'query'=>array('baz'=>'quz'))));
 
-		should_return(array('handler'=>'', 'func'=>'home'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'home'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/users/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'show', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/foo',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'show', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'GET',
-		                                                  'path'=>'/users/foo',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'save'),
-		              when_passed(default_routes(), array('method'=>'PUT',
-		                                                  'path'=>'/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'save'),
-		              when_passed(default_routes(), array('method'=>'PUT',
-		                                                  'path'=>'/users/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'save', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'PUT',
-		                                                  'path'=>'/foo',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'save', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'PUT',
-		                                                  'path'=>'/users/foo',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'delete'),
-		              when_passed(default_routes(), array('method'=>'DELETE',
-		                                                  'path'=>'/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'delete'),
-		              when_passed(default_routes(), array('method'=>'DELETE',
-		                                                  'path'=>'/users/',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'', 'func'=>'delete', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'DELETE',
-		                                                  'path'=>'/foo',
-		                                                  'query'=>array())));
-
-		should_return(array('handler'=>'users', 'func'=>'delete', 'id'=>'foo'),
-		              when_passed(default_routes(), array('method'=>'DELETE',
-		                                                  'path'=>'/users/foo',
-		                                                  'query'=>array())));
-		if (!isset($_POST['action']))
-		{
-			$_POST['action'] = 'search';
-			should_return(array('handler'=>'', 'func'=>'search'),
-		                  when_passed(default_routes(), array('method'=>'POST',
-		                                                      'path'=>'/',
-		                                                      'query'=>array())));
-			unset($_POST['action']);
-		}
-
-*/
+		should_return
+		(
+			array
+			(
+				'method'=>'POST',
+				'paths'=>array('/'),
+				'funcs'=>array('func'),
+				'conds'=>array('action'=>'save'),
+				'path_matches'=>array()
+			),
+			when_passed
+			(
+				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
+				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'save')))
+		);
 	}
 
 ?>
