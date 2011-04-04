@@ -7,31 +7,16 @@ Bombay is [free software][4] and distributed under the terms of the [GNU General
 	/index.php
 	<?php
 
+		// 1. Use bombay by including bombay.php
 		require '/path/to/bombay.php';
-		requires ('mojo');
 
-		function _home()
-		{
-			echo "Hello World!";
-		}
+		// 2. Include only the libs you need from it
+		requires ('helpers', 'template', 'form');
+
+		// 3. Do your thang
+		...
 
 	?>
-
-OR
-
-	/index.php
-	<?php
-
-		require '/path/to/bombay.php';
-		requires ('mojo');
-
-	?>
-
-	/handlers/hello/home.html.php
-	Hello World
-
-	/handlers/hello/layout.html.php
-	<html><head>Hello World</head><body><?php echo $content ?></body></html>
 
 
 [1]: http://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm
