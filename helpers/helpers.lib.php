@@ -119,7 +119,7 @@
 	}
 
 
-	function anon_func_returning()
+	function afunc_returning()
 	{
 		$arg = func_get_arg(0);
 		return function () use ($arg) { return $arg; };
