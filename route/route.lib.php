@@ -46,10 +46,26 @@
 				$route['method'] = array_shift($args);
 
 				$path = array_shift($args);
-				$route['paths'] = (is_array($path)) ? $path : array($path);
+				$route['conds'] = array();
 
-				$conds = array();
-				if (is_array(end($args))) $conds = array_pop($args);
+				if (is_array($path))
+				{
+					foreach ($path as $key=>$val)
+					{
+						if (is_string($key))
+						{
+							$route['conds'][$key] = $val;
+						}
+						else
+						{
+							$route['paths'][$key] = $val;
+						}
+					}
+				}
+				else
+				{
+					$route['paths'] = array($path);
+				}
 
 				$route['funcs'] = array();
 				foreach ($args as $arg)
@@ -63,8 +79,6 @@
 					}
 					else $route['funcs'][] = $arg;
 				}
-
-				$route['conds'] = $conds;
 
 				return $route;
 			}
@@ -95,15 +109,17 @@
 				if ($path_matches = path_match($path, $request['path'], $matches)) break;
 			}
 
-			if (isset($matches['conds']['action']) and isset($request['form']['action']))
+
+			if (isset($route['conds']['action']) and isset($request['form']['action']))
 			{
-				$action_matches = is_equal($matches['conds']['action'], $request['form']['action']);
+				$action_matches = is_equal($route['conds']['action'], valid_action($request['form']['action']));
 			}
-			elseif (isset($matches['conds']['action']) and !isset($request['form']['action']))
+			elseif (isset($route['conds']['action']) and !isset($request['form']['action']))
 			{
 				$action_matches = false;
 			}
 			else $action_matches = true;
+
 
 			if ($method_matches and $path_matches and $action_matches)
 			{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
@@ -115,5 +131,16 @@
 		return false;
 	}
 
+		function valid_action($action)
+		{
+
+			$action = strtolower(str_underscorize($action));
+			$valid_php_function_name = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
+
+			if (preg_match($valid_php_function_name, $action))
+			{
+				return $action;
+			}
+		}
 
 ?>
