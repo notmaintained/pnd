@@ -89,7 +89,7 @@
 		function glue_response($req, $response)
 		{
 			$template_vars = is_array($response) ? array_merge($req, $response) : array_merge($req, array('content'=>$response));
-			$headers = array_merge(array('content-type'=>'text/html'), response_headers($template_vars));
+			$headers = array_merge(array('content-type'=>'text/html'), response_headers($response));
 
 			if (isset($template_vars['template']))
 			{
