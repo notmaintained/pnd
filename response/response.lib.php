@@ -163,6 +163,11 @@
 		exit_with(STATUS_INTERNAL_SERVER_ERROR, array('content-type'=>'text/plain'), $body);
 	}
 
+	function exit_with_302_plain($url)
+	{
+		exit_with(STATUS_FOUND, array('location'=>$url, 'content-type'=>'text/plain'), '$url');
+	}
+
 
 	function _200_html($body)
 	{

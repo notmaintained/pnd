@@ -35,6 +35,7 @@
 	define('URI_PATH', uri_path(server_var('PHP_SELF')));
 	define('URI_ABSOLUTE_BASE', uri_absolute_base(URI_SCHEME, URI_HOST, URI_PORT, URI_PATH));
 	define('URI_RELATIVE_BASE', uri_relative_base(URI_PATH));
+	define('URI_SECURE_ABSOLUTE_BASE', uri_absolute_base('https', URI_HOST, URI_PORT, URI_PATH));
 
 
 		function uri_scheme($https)
@@ -101,6 +102,11 @@
 	function absolute_uri($path=NULL)
 	{
 		return webserver_specific('uri', URI_ABSOLUTE_BASE, $path);
+	}
+
+	function secure_absolute_uri($path=NULL)
+	{
+		return webserver_specific('uri', URI_SECURE_ABSOLUTE_BASE, $path);
 	}
 
 	function relative_uri($path=NULL)
