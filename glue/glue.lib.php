@@ -15,7 +15,7 @@
 	{
 		if ($route = route_match($routes, $req))
 		{
-			$req['path'] = $route['path_matches'];
+			$req['path_matches'] = $route['path_matches'];
 			exit_with_mojo_flush_response($req, next_func($req, $route['funcs']));
 		}
 
