@@ -7,38 +7,38 @@
 
 		should_return
 		(
-			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
+			array('method'=>'GET', 'conds'=>array(), 'paths'=>array('/'), 'funcs'=>array('func')),
 			when_passed(array('GET', '/', 'func'))
 		);
 
 		should_return
 		(
-			array('method'=>'GET', 'paths'=>array('/', '/home'), 'funcs'=>array('func'), 'conds'=>array()),
+			array('method'=>'GET', 'conds'=>array(), 'paths'=>array('/', '/home'), 'funcs'=>array('func')),
 			when_passed(array('GET', array('/', '/home'), 'func'))
 		);
 
 		should_return
 		(
-			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func'), 'conds'=>array()),
+			array('method'=>'GET', 'conds'=>array(), 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func')),
 			when_passed(array('GET', '/', array('db', 'auth'), 'func'))
 		);
 
 		should_return
 		(
-			array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func'), 'conds'=>array('action'=>'save')),
-			when_passed(array('POST', '/', array('db', 'auth'), 'func', array('action'=>'save')))
+			array('method'=>'POST', 'conds'=>array('action'=>'save'), 'paths'=>array('/'), 'funcs'=>array('db', 'auth', 'func')),
+			when_passed(array('POST', array('/', 'action'=>'save'), array('db', 'auth'), 'func'))
 		);
 
 		should_return
 		(
-			array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
+			array('method'=>'GET', 'conds'=>array(), 'paths'=>array('/'), 'funcs'=>array('func')),
 			when_passed(array('GET', '/', 'func'))
 		);
 
 		should_return
 		(
-			array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array(), 'conds'=>array('action'=>'save')),
-			when_passed(array('POST', '/', array('action'=>'save')))
+			false,
+			when_passed(array('POST', array('/', 'action'=>'save')))
 		);
 	}
 

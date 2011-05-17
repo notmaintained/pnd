@@ -16,7 +16,7 @@
 		if ($route = route_match($routes, $req))
 		{
 			$req['path_matches'] = $route['path_matches'];
-			exit_with_mojo_flush_response($req, next_func($req, $route['funcs']));
+			exit_with_glue_flush_response($req, next_func($req, $route['funcs']));
 		}
 
 		exit_with_404_plain('Not Found');
@@ -79,7 +79,7 @@
 		}
 
 
-		function exit_with_mojo_flush_response($req, $response)
+		function exit_with_glue_flush_response($req, $response)
 		{
 			if (is_valid_response($response)) exit_with($response);
 			exit_with(glue_response($req, $response));
