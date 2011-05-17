@@ -43,6 +43,7 @@
 
 		function handle_($method, $paths, $conds, $funcs)
 		{
+			if (!is_array($paths)) $paths = array($paths);
 			routes(compact('method', 'paths', 'conds', 'funcs'));
 		}
 
