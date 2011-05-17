@@ -43,13 +43,7 @@
 
 		function handle_($method, $paths, $conds, $funcs)
 		{
-			routes(array
-			(
-				'method'=>$method,
-				'paths'=>$paths,
-				'conds'=>$conditions,
-				'funcs'=>$funcs
-			));
+			routes(compact('method', 'paths', 'conds', 'funcs'));
 		}
 
 

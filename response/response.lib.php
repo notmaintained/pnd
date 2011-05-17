@@ -129,7 +129,7 @@
 	{
 		$headers = (!is_array($headers)) ? array() : $headers;
 		$headers = array_change_key_case($headers, CASE_LOWER);
-		return array('status_code' => $status_code, 'headers' => $headers, 'body' => $body);
+		return compact('status_code', 'headers', 'body');
 	}
 
 
