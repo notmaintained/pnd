@@ -15,87 +15,42 @@
 	}
 
 
-	function handle_head()
+	function handle_head($path)
 	{
-		handle_('HEAD', func_get_args());
+		handle_('HEAD', $path, array(), array_slice(func_get_args(), 1));
 	}
 
-	function handle_get()
+	function handle_get($path)
 	{
-		handle_('GET', func_get_args());
+		handle_('GET', $path, array(), array_slice(func_get_args(), 1));
 	}
 
-	function handle_post()
+	function handle_query($path)
 	{
-		handle_('POST', func_get_args());
+		handle_('GET', $path, array('query'=>true), array_slice(func_get_args(), 1));
+	}
+
+	function handle_post($path)
+	{
+		handle_('POST', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function handle_post_action($path, $action)
+	{
+		handle_('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
 	}
 
 
-		function handle_($method, $args)
+		function handle_($method, $paths, $conds, $funcs)
 		{
-			array_unshift($args, $method);
-			$route = parse_route_params($args);
-			route_($route['method'], $route['paths'], $route['funcs'], $route['conds']);
+			routes(array
+			(
+				'method'=>$method,
+				'paths'=>$paths,
+				'conds'=>$conditions,
+				'funcs'=>$funcs
+			));
 		}
-
-			function parse_route_params($args)
-			{
-				if (count($args) < 3) return false;
-
-				$route = array();
-				$route['method'] = array_shift($args);
-
-				$path = array_shift($args);
-				$route['conds'] = array();
-
-				if (is_array($path))
-				{
-					foreach ($path as $key=>$val)
-					{
-						if (is_string($key))
-						{
-							$route['conds'][$key] = $val;
-						}
-						else
-						{
-							$route['paths'][$key] = $val;
-						}
-					}
-				}
-				else
-				{
-					$route['paths'] = array($path);
-				}
-
-				$route['funcs'] = array();
-				foreach ($args as $arg)
-				{
-					if (is_array($arg))
-					{
-						foreach ($arg as $val)
-						{
-							$route['funcs'][] = $val;
-						}
-					}
-					else $route['funcs'][] = $arg;
-				}
-
-				return $route;
-			}
-
-			function route_($method, $paths, $funcs, $conditions)
-			{
-				routes
-				(
-					array
-					(
-						'method'=>$method,
-						'paths'=>$paths,
-						'funcs'=>$funcs,
-						'conds'=>$conditions
-					)
-				);
-			}
 
 
 	function route_match($routes, $request)
@@ -109,19 +64,21 @@
 				if ($path_matches = path_match($path, $request['path'], $matches)) break;
 			}
 
-
-			if (isset($route['conds']['action']) and isset($request['form']['action']))
-			{
-				$action_matches = is_equal($route['conds']['action'], valid_action($request['form']['action']));
-			}
-			elseif (isset($route['conds']['action']) and !isset($request['form']['action']))
+			if (isset($route['conds']['action']) and !isset($request['form']['action']))
 			{
 				$action_matches = false;
 			}
 			else $action_matches = true;
 
 
-			if ($method_matches and $path_matches and $action_matches)
+			if (isset($route['conds']['query']) and is_equal($route['conds']['query'], true) and isset($request['query']))
+			{
+				$query_matches = true;
+			}
+			else $query_matches = true;
+
+
+			if ($method_matches and $path_matches and $action_matches and $query_matches)
 			{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
 				$route['path_matches'] = $matches;
 				return	$route;
