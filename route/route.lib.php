@@ -59,16 +59,6 @@
 				if ($path_matches = path_match($path, $request['path'], $matches)) break;
 			}
 
-			if (isset($route['conds']['action']) and isset($request['form']['action']))
-			{
-				$action_matches = is_equal($route['conds']['action'], valid_action($request['form']['action']));
-			}
-			elseif (isset($route['conds']['action']) and !isset($request['form']['action']))
-			{
-				$action_matches = false;
-			}
-			else $action_matches = true;
-
 
 			if (isset($route['conds']['action']) and
 				(!isset($request['form']['action']) or
