@@ -59,7 +59,20 @@
 				if ($path_matches = path_match($path, $request['path'], $matches)) break;
 			}
 
-			if (isset($route['conds']['action']) and !isset($request['form']['action']))
+			if (isset($route['conds']['action']) and isset($request['form']['action']))
+			{
+				$action_matches = is_equal($route['conds']['action'], valid_action($request['form']['action']));
+			}
+			elseif (isset($route['conds']['action']) and !isset($request['form']['action']))
+			{
+				$action_matches = false;
+			}
+			else $action_matches = true;
+
+
+			if (isset($route['conds']['action']) and
+				(!isset($request['form']['action']) or
+					!is_equal ($route['conds']['action'], strtolower(str_underscorize($request['form']['action'])))))
 			{
 				$action_matches = false;
 			}
@@ -82,17 +95,5 @@
 
 		return false;
 	}
-
-		function valid_action($action)
-		{
-
-			$action = strtolower(str_underscorize($action));
-			$valid_php_function_name = '/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/';
-
-			if (preg_match($valid_php_function_name, $action))
-			{
-				return $action;
-			}
-		}
 
 ?>

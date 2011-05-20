@@ -50,15 +50,14 @@
 				'method'=>'POST',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
-				'conds'=>array('action'=>'save'),
+				'conds'=>array('action'=>'save_me'),
 				'path_matches'=>array()
 			),
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
-				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'save')))
+				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save_me'))),
+				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 		);
-
 
 		should_return
 		(
@@ -67,13 +66,47 @@
 				'method'=>'POST',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
+				'conds'=>array(),
+				'path_matches'=>array()
+			),
+			when_passed
+			(
+				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array())),
+				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+		);
+
+		should_return
+		(
+			false,
+			when_passed
+			(
+				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
+				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+		);
+
+		should_return
+		(
+			false,
+			when_passed
+			(
+				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
+				array('method'=>'POST', 'path'=>'/', 'form'=>array()))
+		);
+
+		should_return
+		(
+			array
+			(
+				'method'=>'GET',
+				'paths'=>array('/'),
+				'funcs'=>array('func'),
 				'conds'=>array('query'=>true),
 				'path_matches'=>array()
 			),
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true))),
-				array('method'=>'POST', 'path'=>'/', 'query'=>array('foo'=>'bar')))
+				array(array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true))),
+				array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
 		);
 	}
 
