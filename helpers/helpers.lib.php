@@ -38,7 +38,7 @@
 	}
 
 
-//TODO: this is more of a XSS sanitizer so shud this be renamed?
+	//TODO: this is more of a XSS sanitizer so shud this be renamed?
 	function str_sanitize($str, $translate_quotes=true)
 	{
 		return $translate_quotes ? htmlspecialchars($str, ENT_QUOTES) :
@@ -46,10 +46,16 @@
 	}
 
 
-	function filerialize_var($var_name, $var)
+	function varialize($var_name, $var)
 	{
 		$var_str = var_export($var, true);
 		return "<?php\n\n\$$var_name = $var_str;\n\n?>";
+	}
+
+	function unvarialize_file($file, $var_name, $default=NULL)
+	{
+		include $file;
+		return isset($$var_name) ? $$var_name : $default;
 	}
 
 

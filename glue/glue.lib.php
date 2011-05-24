@@ -70,14 +70,6 @@
 				return explode('/', $str, 2);
 			}
 
-		function handler_autoloader($handler)
-		{
-			if (function_exists('autoload_handler')) return autoload_handler($handler);
-
-			$handler_file = handler_file($handler);
-			if (file_exists($handler_file)) require_once $handler_file;;
-		}
-
 
 		function exit_with_glue_flush_response($req, $response)
 		{
@@ -153,13 +145,5 @@
 
 			return _200_plain(print_r($response, true));
 		}
-
-
-	function default_handler($handler=NULL)
-	{
-		static $default_handler;
-		if (is_null($handler) and isset($default_handler)) return $default_handler;
-		return $default_handler = $handler;
-	}
 
 ?>

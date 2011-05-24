@@ -3,6 +3,15 @@
 	requires ('helpers', 'template');
 
 
+	function handler_autoloader($handler)
+	{
+		if (function_exists('autoload_handler')) return autoload_handler($handler);
+
+		$handler_file = handler_file($handler);
+		if (file_exists($handler_file)) require_once $handler_file;
+	}
+
+
 	function handler_file($handler)
 	{
 		return handler_dir($handler)."$handler.handler.php";
@@ -26,8 +35,7 @@
 
 		if (!empty($handler))
 		{
-			$handler_file = handler_file($handler);
-			if (file_exists($handler_file)) require_once $handler_file;
+			handler_autoloader($handler);
 			if (function_exists($handler_func)) return $handler_func;
 		}
 
