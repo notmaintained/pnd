@@ -29,22 +29,19 @@
 		{
 			$next_func = array_shift($pipeline);
 
-			if (is_object($func) and is_equal('Closure', get_class($func)))
-			{
-				list($handler, $func) = array('', $func);
-			}
-			elseif ($func = handler_func_exists($next_func))
+			$func = $next_func;
+			if ( (is_object($func) and is_equal('Closure', get_class($func))) or ($func = handler_func_exists($next_func)))
 			{
 				$response = call_user_func($func, $req, $pipeline);
-
-				if (!isset($response['template']) and is_string($next_func))
-				{
-					$response['template'] = $next_func;
-				}
-
-				return $response;
 			}
 			else trigger_error("Required func ($next_func) not found.", E_USER_ERROR);
+
+			if (!isset($response['template']) and is_string($next_func))
+			{
+				$response['template'] = $next_func;
+			}
+
+			return $response;
 		}
 		else trigger_error("No func!", E_USER_ERROR);
 
