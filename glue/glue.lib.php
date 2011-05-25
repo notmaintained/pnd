@@ -29,11 +29,11 @@
 		{
 			$next_func = array_shift($pipeline);
 
-			list($handler, $func) = func_resolver($next_func);
-
-			if (!is_callable($func)) handler_autoloader($handler);
-
-			if (is_callable($func))
+			if (is_object($func) and is_equal('Closure', get_class($func)))
+			{
+				list($handler, $func) = array('', $func);
+			}
+			elseif ($func = handler_func_exists($next_func))
 			{
 				$response = call_user_func($func, $req, $pipeline);
 
@@ -50,26 +50,6 @@
 
 	}
 
-		function func_resolver($func)
-		{
-			if (function_exists('resolve_func')) return resolve_func($func);
-			if (is_object($func) and is_equal('Closure', get_class($func))) return array('', $func);
-			return default_resolver($func);
-		}
-
-		function template_resolver($template)
-		{
-			if (function_exists('resolve_template')) return resolve_template($template);
-			return default_resolver($template);
-
-		}
-
-			function default_resolver($str)
-			{
-				if (is_equal(false, strpos($str, '/'))) return array('', $str);
-				return explode('/', $str, 2);
-			}
-
 
 		function exit_with_glue_flush_response($req, $response)
 		{
@@ -80,12 +60,12 @@
 
 		function glue_response($req, $response)
 		{
-			$template_vars = is_array($response) ? array_merge(array('req'=>$req), $response) : array_merge(array('req'=>$req), array('content'=>$response));
+			$template_vars = is_array($response) ? array_merge(compact('req'), $response) : array_merge(compact('req'), array('content'=>$response));
 			$headers = array_merge(array('content-type'=>'text/html'), response_headers($response));
 
 			if (isset($template_vars['template']))
 			{
-				list($handler, $template) = template_resolver($template_vars['template']);
+				list($handler, $template) = handler_func_resolver($template_vars['template']);
 				unset($template_vars['template']);
 				//TODO: feels liks a ugly hack to assume func from template but works well for handler-less (template-only) routes
 				if (!isset($template_vars['handler'])) $template_vars['handler'] = $handler;
@@ -109,7 +89,7 @@
 						}
 						else
 						{
-							list($layout_handler, $layout_template) = template_resolver($layout);
+							list($layout_handler, $layout_template) = handler_func_resolver($layout);
 							return response_
 							(
 								response_status_code($template_vars),

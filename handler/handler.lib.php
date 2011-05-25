@@ -3,48 +3,44 @@
 	requires ('helpers', 'template');
 
 
-	function handler_autoloader($handler)
+	function handler_func_resolver($handler_func)
 	{
-		if (function_exists('autoload_handler')) return autoload_handler($handler);
+		if (!str_contains('/', $handler_func)) return array('', $handler_func);
+		$pieces = explode('/', $handler_func);
+		$func = array_pop($pieces);
+		$handler = implode('/', $pieces);
+		return array($handler, $func);
+	}
 
-		$handler_file = handler_file($handler);
-		if (file_exists($handler_file)) require_once $handler_file;
+
+	function handler_dir($handler)
+	{
+		$handler_basedir = php_self_dir().'handlers'.DIRECTORY_SEPARATOR;
+		return $handler_basedir.slashes_to_directory_separator($handler).DIRECTORY_SEPARATOR;
+	}
+
+	function handler_templates_dir($handler)
+	{
+		$basedir = empty($handler) ? php_self_dir() : handler_dir($handler);
+		return $basedir.'templates'.DIRECTORY_SEPARATOR;
 	}
 
 
 	function handler_file($handler)
 	{
-		return handler_dir($handler)."$handler.handler.php";
-	}
-
-	function handler_dir($handler)
-	{
-		$app_dir = php_self_dir();
-		return empty($handler) ? $app_dir : $app_dir.'handlers'.DIRECTORY_SEPARATOR.$handler.DIRECTORY_SEPARATOR;
-	}
-
-	function handler_templates_dir($handler)
-	{
-		return handler_dir($handler).'templates'.DIRECTORY_SEPARATOR;
-	}
-
-	function handler_func_exists($handler, $func)
-	{
-		$handler_func = "{$handler}_{$func}";
-		if (function_exists($handler_func)) return $handler_func;
-
-		if (!empty($handler))
+		if (str_contains('/', $handler))
 		{
-			handler_autoloader($handler);
-			if (function_exists($handler_func)) return $handler_func;
+			$pieces = explode('/', $handler);
+			$handler_basename = array_pop($pieces);
 		}
-
-		return false;
+		else $handler_basename = $handler;
+		return handler_dir($handler)."$handler_basename.handler.php";
 	}
 
 
-	function handler_template($handler, $template)
+	function handler_template($handler_template)
 	{
+		list($handler, $template) = handler_func_resolver($handler_template);
 		return handler_templates_dir($handler)."{$template}.html";
 	}
 
@@ -55,14 +51,41 @@
 		else return handler_templates_dir('')."layout.html";
 	}
 
-	function call_handler_func($handler, $func)
+
+	function handler_autoloader($handler)
 	{
-		$params = array_slice(func_get_args(), 2);
-		if ($handler_func = handler_func_exists($handler, $func, php_self_dir()))
-			return call_user_func_array($handler_func, $params);
+		$handler_file = handler_file($handler);
+		if (file_exists($handler_file)) require_once $handler_file;
+		else trigger_error("Handler ($handler) not found.", E_USER_ERROR);
 	}
 
 
+	function handler_func_exists($handler_func)
+	{
+		list($handler, $func) = handler_func_resolver($handler_func);
+		if (function_exists($func)) return $func;
+
+		if (!empty($handler))
+		{
+			handler_autoloader($handler);
+			if (function_exists($func)) return $func;
+		}
+
+		return false;
+	}
+
+
+	function call_handler_func($handler_func)
+	{
+		$params = array_slice(func_get_args(), 1);
+		if ($func = handler_func_exists($handler_func))	return call_user_func_array($func, $params);
+		else trigger_error("Handler func ($handler_func) not found.", E_USER_ERROR);
+	}
+
+
+
+
+//TODO: Revisit this email stuff later
 	function handler_sendmail($handler, $email, $resource)
 	{
 		require_once handler_email_file($handler, php_self_dir());
