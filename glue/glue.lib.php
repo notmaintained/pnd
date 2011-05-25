@@ -62,13 +62,14 @@
 
 			if (isset($template_vars['template']))
 			{
-				list($handler, $template) = handler_func_resolver($template_vars['template']);
+				$handler_template = $template_vars['template'];
+				list($handler, $template) = handler_func_resolver($handler_template);
 				unset($template_vars['template']);
 				//TODO: feels liks a ugly hack to assume func from template but works well for handler-less (template-only) routes
 				if (!isset($template_vars['handler'])) $template_vars['handler'] = $handler;
 				if (!isset($template_vars['func'])) $template_vars['func'] = $template;
 
-				if (template_file_exists(handler_template($handler, $template)))
+				if (template_file_exists(handler_template($handler_template)))
 				{
 					if (isset($template_vars['layout']))
 					{
@@ -81,21 +82,20 @@
 							(
 								response_status_code($template_vars),
 								$headers,
-								template_render(handler_template($handler, $template), $template_vars)
+								template_render(handler_template($handler_template), $template_vars)
 							);
 						}
 						else
 						{
-							list($layout_handler, $layout_template) = handler_func_resolver($layout);
 							return response_
 							(
 								response_status_code($template_vars),
 								$headers,
 								template_compose
 								(
-									handler_template($handler, $template),
+									handler_template($handler_template),
 									$template_vars,
-									handler_template($layout_handler, $layout_template),
+									handler_template($layout),
 									$template_vars
 								)
 							);
@@ -109,7 +109,7 @@
 							$headers,
 							template_compose
 							(
-								handler_template($handler, $template),
+								handler_template($handler_template),
 								$template_vars,
 								handler_layout($handler),
 								$template_vars
