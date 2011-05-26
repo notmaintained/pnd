@@ -15,6 +15,17 @@
 	}
 
 
+	function named_routes($name=NULL, $path=NULL)
+	{
+		static $named_routes = array();
+
+		if (is_null($name) and is_null($path)) return $named_routes;
+
+		$named_routes[$name] = $path;
+		return $named_routes;
+	}
+
+
 	function handle_head($path)
 	{
 		handle_('HEAD', $path, array(), array_slice(func_get_args(), 1));
@@ -44,6 +55,7 @@
 		function handle_($method, $paths, $conds, $funcs)
 		{
 			if (!is_array($paths)) $paths = array($paths);
+			foreach ($paths as $key=>$val) if (!is_int($key)) named_routes($key, $val);
 			routes(compact('method', 'paths', 'conds', 'funcs'));
 		}
 
