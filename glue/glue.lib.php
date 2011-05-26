@@ -18,7 +18,7 @@
 			$req['path_matches'] = $route['path_matches'];
 			exit_with_glue_flush_response($req, next_func($req, $route['funcs']));
 		}
-
+		//TODO: this should be overridable by the app to match its 404 page
 		exit_with_404_plain('Not Found');
 	}
 
@@ -36,7 +36,7 @@
 			}
 			else trigger_error("Required func ($next_func) not found.", E_USER_ERROR);
 
-			if (!isset($response['template']) and is_string($next_func))
+			if (!empty($response) and !isset($response['template']) and is_string($next_func))
 			{
 				$response['template'] = $next_func;
 			}
@@ -50,7 +50,8 @@
 
 		function exit_with_glue_flush_response($req, $response)
 		{
-			if (is_valid_response($response)) exit_with($response);
+			if (empty($response)) return;
+			elseif (is_valid_response($response)) exit_with($response);
 			exit_with(glue_response($req, $response));
 		}
 
@@ -116,7 +117,6 @@
 							)
 						);
 					}
-
 				}
 			}
 
