@@ -20,6 +20,7 @@
 		static $named_routes = array();
 
 		if (is_null($name) and is_null($path)) return $named_routes;
+		if (is_null($path)) return isset($named_routes[$name]) ? $named_routes[$name] : false;
 
 		$named_routes[$name] = $path;
 		return $named_routes;
