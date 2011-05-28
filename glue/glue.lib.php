@@ -7,13 +7,13 @@
 
 	function yield_to_glue() //should be called after all handle_* routes
 	{
-		map_request_to_handler(request_(), routes());
+		map_request_to_handler(request_(), routes(), filter_routes());
 	}
 
 
-	function map_request_to_handler($req, $routes)
+	function map_request_to_handler($req, $routes, $filter_routes)
 	{
-		if ($route = route_match($routes, $req))
+		if ($route = route_match($routes, $req, $filter_routes))
 		{
 			$req['path_matches'] = $route['path_matches'];
 			exit_with_glue_flush_response($req, next_func($req, $route['funcs']));

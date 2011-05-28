@@ -15,6 +15,18 @@
 	}
 
 
+	function filter_routes($filter_route=NULL, $reset=false)
+	{
+		static $filter_routes = array();
+
+		if ($reset) return $filter_routes = array();
+		if (is_null($filter_route)) return $filter_routes;
+
+		$filter_routes[] = $filter_route;
+		return $filter_routes;
+	}
+
+
 	function named_routes($name=NULL, $path=NULL)
 	{
 		static $named_routes = array();
@@ -27,33 +39,38 @@
 	}
 
 
+	function handle_all($path)
+	{
+		handle_route('*', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+
 	function handle_head($path)
 	{
-		handle_('HEAD', $path, array(), array_slice(func_get_args(), 1));
+		handle_route('HEAD', $path, array(), array_slice(func_get_args(), 1));
 	}
 
 	function handle_get($path)
 	{
-		handle_('GET', $path, array(), array_slice(func_get_args(), 1));
+		handle_route('GET', $path, array(), array_slice(func_get_args(), 1));
 	}
 
 	function handle_query($path)
 	{
-		handle_('GET', $path, array('query'=>true), array_slice(func_get_args(), 1));
+		handle_route('GET', $path, array('query'=>true), array_slice(func_get_args(), 1));
 	}
 
 	function handle_post($path)
 	{
-		handle_('POST', $path, array(), array_slice(func_get_args(), 1));
+		handle_route('POST', $path, array(), array_slice(func_get_args(), 1));
 	}
 
 	function handle_post_action($path, $action)
 	{
-		handle_('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
+		handle_route('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
 	}
 
-
-		function handle_($method, $paths, $conds, $funcs)
+		function handle_route($method, $paths, $conds, $funcs)
 		{
 			if (!is_array($paths)) $paths = array($paths);
 			foreach ($paths as $key=>$val) if (!is_int($key)) named_routes($key, $val);
@@ -61,11 +78,41 @@
 		}
 
 
-	function route_match($routes, $request)
+	function filter_all($path)
+	{
+		handle_filter_route('*', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function filter_head($path)
+	{
+		handle_filter_route('HEAD', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function filter_get($path)
+	{
+		handle_filter_route('GET', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function filter_post($path)
+	{
+		handle_filter_route('POST', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+		function handle_filter_route($method, $paths, $conds, $funcs)
+		{
+			if (!is_array($paths)) $paths = array($paths);
+			foreach ($paths as $key=>$val) if (!is_int($key)) named_routes($key, $val);
+			filter_routes(compact('method', 'paths', 'conds', 'funcs'));
+		}
+
+
+
+
+	function route_match($routes, $request, $filter_routes=array())
 	{
 		foreach ($routes as $route)
 		{
-			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('', $route['method']));
+			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('*', $route['method']));
 
 			foreach ($route['paths'] as $path)
 			{
@@ -92,6 +139,12 @@
 			if ($method_matches and $path_matches and $action_matches and $query_matches)
 			{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
 				$route['path_matches'] = $matches;
+
+				if ($filter_route = route_match($filter_routes, $request))
+				{
+					$route['funcs'] = array_merge($filter_route['funcs'], $route['funcs']);
+				}
+
 				return	$route;
 			}
 		}
