@@ -101,7 +101,6 @@
 		function handle_filter_route($method, $paths, $conds, $funcs)
 		{
 			if (!is_array($paths)) $paths = array($paths);
-			foreach ($paths as $key=>$val) if (!is_int($key)) named_routes($key, $val);
 			filter_routes(compact('method', 'paths', 'conds', 'funcs'));
 		}
 
