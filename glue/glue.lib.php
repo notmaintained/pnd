@@ -14,7 +14,7 @@
 	function next_func()
 	{
 		static $req; if (!isset($req)) $req = request_();
-		$next = route_pipeline()
+		$next = route_pipeline();
 		$args = func_get_args();
 
 		if (!empty($next))
