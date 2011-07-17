@@ -25,7 +25,7 @@
 			$func = $next_func;
 			if ( (is_object($func) and is_equal('Closure', get_class($func))) or ($func = handler_func_exists($next_func)))
 			{
-				$response = call_user_func($func, array_merge(array($req), $args));
+				$response = call_user_func_array($func, array_merge(array($req), $args));
 			}
 			else trigger_error("Required func ($next_func) not found.", E_USER_ERROR);
 
