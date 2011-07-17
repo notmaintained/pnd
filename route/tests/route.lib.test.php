@@ -38,7 +38,7 @@
 			),
 			when_passed
 			(
-				array(array('method'=>'GET', 'paths'=>array('/', '/{home}'), 'funcs'=>array('func'), 'conds'=>array())),
+				array('method'=>'GET', 'paths'=>array('/', '/{home}'), 'funcs'=>array('func'), 'conds'=>array()),
 				array('method'=>'GET', 'path'=>'/hand'))
 		);
 
@@ -55,7 +55,7 @@
 			),
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save_me'))),
+				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save_me')),
 				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 		);
 
@@ -71,7 +71,7 @@
 			),
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array())),
+				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
 				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 		);
 
@@ -80,7 +80,7 @@
 			false,
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
+				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save')),
 				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 		);
 
@@ -89,7 +89,7 @@
 			false,
 			when_passed
 			(
-				array(array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save'))),
+				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save')),
 				array('method'=>'POST', 'path'=>'/', 'form'=>array()))
 		);
 
@@ -105,7 +105,7 @@
 			),
 			when_passed
 			(
-				array(array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true))),
+				array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true)),
 				array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
 		);
 	}

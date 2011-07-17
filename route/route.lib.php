@@ -68,40 +68,37 @@
 
 
 
-	function route_match($routes, $request)
+	function route_match($route, $request)
 	{
-		foreach ($routes as $route)
+		$method_matches = (is_equal($request['method'], $route['method']) or is_equal('*', $route['method']));
+
+		foreach ($route['paths'] as $path)
 		{
-			$method_matches = (is_equal($request['method'], $route['method']) or is_equal('*', $route['method']));
-
-			foreach ($route['paths'] as $path)
-			{
-				if ($path_matches = path_match($path, $request['path'], $matches)) break;
-			}
+			if ($path_matches = path_match($path, $request['path'], $matches)) break;
+		}
 
 
-			if (isset($route['conds']['action']) and
-				(!isset($request['form']['action']) or
-					!is_equal ($route['conds']['action'], strtolower(str_underscorize($request['form']['action'])))))
-			{
-				$action_matches = false;
-			}
-			else $action_matches = true;
+		if (isset($route['conds']['action']) and
+			(!isset($request['form']['action']) or
+				!is_equal ($route['conds']['action'], strtolower(str_underscorize($request['form']['action'])))))
+		{
+			$action_matches = false;
+		}
+		else $action_matches = true;
 
 
-			if (isset($route['conds']['query']) and is_equal($route['conds']['query'], true) and isset($request['query']))
-			{
-				$query_matches = true;
-			}
-			else $query_matches = true;
+		if (isset($route['conds']['query']) and is_equal($route['conds']['query'], true) and isset($request['query']))
+		{
+			$query_matches = true;
+		}
+		else $query_matches = true;
 
 
-			if ($method_matches and $path_matches and $action_matches and $query_matches)
-			{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
-				$route['path_matches'] = $matches;
+		if ($method_matches and $path_matches and $action_matches and $query_matches)
+		{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
+			$route['path_matches'] = $matches;
 
-				return	$route;
-			}
+			return	$route;
 		}
 
 		return false;
