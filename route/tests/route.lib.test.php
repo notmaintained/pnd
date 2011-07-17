@@ -108,24 +108,6 @@
 				array(array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true))),
 				array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
 		);
-
-
-		should_return
-		(
-			array
-			(
-				'method'=>'GET',
-				'paths'=>array('/'),
-				'funcs'=>array('filter1', 'filter2', 'func1', 'func2'),
-				'conds'=>array(),
-				'path_matches'=>array()
-			),
-			when_passed
-			(
-				array(array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func1', 'func2'), 'conds'=>array())),
-				array('method'=>'GET', 'path'=>'/'),
-				array(array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('filter1', 'filter2'), 'conds'=>array())))
-		);
 	}
 
 ?>
