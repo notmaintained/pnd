@@ -56,7 +56,7 @@
 	{
 		$handler_file = handler_file($handler);
 		if (file_exists($handler_file)) require_once $handler_file;
-		else trigger_error("Handler ($handler) not found.", E_USER_ERROR);
+		else return false;
 	}
 
 
