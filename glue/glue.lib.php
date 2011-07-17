@@ -7,32 +7,25 @@
 
 	function yield_to_glue() //should be called after all handle_* routes
 	{
-		map_request_to_handler(request_(), routes());
+		exit_with_glue_flush_response(request_(), next_func());
 	}
 
 
-	function map_request_to_handler($req, $routes)
+	function next_func()
 	{
-		if ($route = route_match($routes, $req))
-		{
-			$req['path_matches'] = $route['path_matches'];
-			exit_with_glue_flush_response($req, next_func($req, $route['funcs']));
-		}
-		//TODO: this should be overridable by the app to match its 404 page
-		exit_with_404_plain('Not Found');
-	}
+		static $req = request_();
+		$next = route_pipeline()
+		$args = func_get_args();
 
-
-	function next_func($req, $pipeline)
-	{
-		if (!empty($pipeline))
+		if (!empty($next))
 		{
-			$next_func = array_shift($pipeline);
+			list($next_func, $path_matches) = $next;
+			$req['path_matches'] = $path_matches;
 
 			$func = $next_func;
 			if ( (is_object($func) and is_equal('Closure', get_class($func))) or ($func = handler_func_exists($next_func)))
 			{
-				$response = call_user_func($func, $req, $pipeline);
+				$response = call_user_func($func, array_merge(array($req), $args));
 			}
 			else trigger_error("Required func ($next_func) not found.", E_USER_ERROR);
 
@@ -43,7 +36,9 @@
 
 			return $response;
 		}
-		else trigger_error("No func!", E_USER_ERROR);
+
+		//TODO: this should be overridable by the app to match its 404 page
+		exit_with_404_plain('Not Found');
 
 	}
 

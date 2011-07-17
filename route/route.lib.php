@@ -27,6 +27,15 @@
 	}
 
 
+	function route_pipeline($route=NULL)
+	{
+		static $routes = array();
+		if (is_null($route)) return array_shift($routes);
+		$routes[] = $route;
+		return $routes;
+	}
+
+
 	function handle_all($path)
 	{
 		handle_route('*', $path, array(), array_slice(func_get_args(), 1));
@@ -62,7 +71,12 @@
 		{
 			if (!is_array($paths)) $paths = array($paths);
 			foreach ($paths as $key=>$val) if (!is_int($key)) named_routes($key, $val);
-			routes(compact('method', 'paths', 'conds', 'funcs'));
+			$route = compact('method', 'paths', 'conds', 'funcs');
+			routes($route);
+			if ($matched_route = route_match($route, request_()))
+			{
+				foreach($funcs as $func) route_pipeline(array($func, $matched_route['path_matches']));
+			}
 		}
 
 
