@@ -52,7 +52,7 @@
 	}
 
 
-	function handler_autoloader($handler)
+	function handler_require_once($handler)
 	{
 		$handler_file = handler_file($handler);
 		if (file_exists($handler_file)) require_once $handler_file;
@@ -67,7 +67,7 @@
 
 		if (!empty($handler))
 		{
-			handler_autoloader($handler);
+			handler_require_once($handler);
 			if (function_exists($func)) return $func;
 		}
 
