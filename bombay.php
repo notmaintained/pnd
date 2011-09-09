@@ -45,11 +45,11 @@
 		foreach ($libraries as $library)
 		{
 			$library_file = BOMBAY_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
-			if (!file_exists($library_file)) trigger_error_on_caller_("Requires non-existent library $library", E_USER_ERROR);
+			if (!file_exists($library_file)) trigger_error_with_caller_details_("Requires non-existent library $library", E_USER_ERROR);
 			require_once $library_file;
 		}
 	}
-		function trigger_error_on_caller_($message, $level)
+		function trigger_error_with_caller_details_($message, $level)
 		{
 			$stacktrace = debug_backtrace();
 			$caller = $stacktrace[1];
