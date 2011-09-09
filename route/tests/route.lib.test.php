@@ -38,8 +38,97 @@
 			),
 			when_passed
 			(
-				array('method'=>'GET', 'paths'=>array('/', '/{home}'), 'funcs'=>array('func'), 'conds'=>array()),
-				array('method'=>'GET', 'path'=>'/hand'))
+				array
+				(
+					'method'=>'GET',
+					'paths'=>array('/', '/{home}'),
+					'funcs'=>array('func'),
+					'conds'=>array()
+				),
+				array
+				(
+					'method'=>'GET',
+					'path'=>'/hand'
+				)
+			)
+		);
+
+
+		should_return
+		(
+			array
+			(
+				'method'=>'GET',
+				'paths'=>array('/'),
+				'funcs'=>array('func'),
+				'conds'=>array(),
+				'path_matches'=>array()
+			),
+			when_passed
+			(
+				array
+				(
+					'method'=>'GET',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array()
+				),
+				array
+				(
+					'method'=>'GET',
+					'path'=>'/',
+					'query'=>array('foo'=>'bar')
+				)
+			)
+		);
+
+		should_return
+		(
+			array
+			(
+				'method'=>'GET',
+				'paths'=>array('/'),
+				'funcs'=>array('func'),
+				'conds'=>array('query'=>true),
+				'path_matches'=>array()
+			),
+			when_passed
+			(
+				array
+				(
+					'method'=>'GET',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array('query'=>true)
+				),
+				array
+				(
+					'method'=>'GET',
+					'path'=>'/',
+					'query'=>array('foo'=>'bar')
+				)
+			)
+		);
+
+		should_return
+		(
+			NULL,
+			when_passed
+			(
+				array
+				(
+					'method'=>'GET',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array('query'=>true)
+				),
+				array
+				(
+					'method'=>'GET',
+					'path'=>'/',
+					'query'=>array()
+				)
+			)
 		);
 
 
@@ -55,8 +144,20 @@
 			),
 			when_passed
 			(
-				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save_me')),
-				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+				array
+				(
+					'method'=>'POST',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array('action'=>'save_me')
+				),
+				array
+				(
+					'method'=>'POST',
+					'path'=>'/',
+					'form'=>array('action'=>'Save Me')
+				)
+			)
 		);
 
 		should_return
@@ -71,42 +172,62 @@
 			),
 			when_passed
 			(
-				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array()),
-				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+				array
+				(
+					'method'=>'POST',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array()
+				),
+				array
+				(
+					'method'=>'POST',
+					'path'=>'/',
+					'form'=>array('action'=>'Save Me')
+				)
+			)
 		);
 
 		should_return
 		(
-			false,
+			NULL,
 			when_passed
 			(
-				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save')),
-				array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+				array
+				(
+					'method'=>'POST',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array('action'=>'save')
+				),
+				array
+				(
+					'method'=>'POST',
+					'path'=>'/',
+					'form'=>array('action'=>'Save Me')
+				)
+			)
 		);
 
 		should_return
 		(
-			false,
+			NULL,
 			when_passed
 			(
-				array('method'=>'POST', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('action'=>'save')),
-				array('method'=>'POST', 'path'=>'/', 'form'=>array()))
-		);
-
-		should_return
-		(
-			array
-			(
-				'method'=>'GET',
-				'paths'=>array('/'),
-				'funcs'=>array('func'),
-				'conds'=>array('query'=>true),
-				'path_matches'=>array()
-			),
-			when_passed
-			(
-				array('method'=>'GET', 'paths'=>array('/'), 'funcs'=>array('func'), 'conds'=>array('query'=>true)),
-				array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
+				array
+				(
+					'method'=>'POST',
+					'paths'=>array('/'),
+					'funcs'=>array('func'),
+					'conds'=>array('action'=>'save')
+				),
+				array
+				(
+					'method'=>'POST',
+					'path'=>'/',
+					'form'=>array()
+				)
+			)
 		);
 	}
 

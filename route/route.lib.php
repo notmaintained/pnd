@@ -2,6 +2,8 @@
 
 	requires ('path', 'helpers', 'request');
 
+	//TODO: route_run($route_name, $request=array(), ...)
+	// intercept_[all|get|post|head|...]
 
 	function routes($route=NULL, $reset=false)
 	{
@@ -93,29 +95,27 @@
 
 
 		if (isset($route['conds']['action']) and
-			(!isset($request['form']['action']) or
-				!is_equal ($route['conds']['action'], strtolower(str_underscorize($request['form']['action'])))))
+		   (!isset($request['form']['action']) or
+		   !is_equal ($route['conds']['action'], strtolower(str_underscorize($request['form']['action'])))))
 		{
 			$action_matches = false;
 		}
 		else $action_matches = true;
 
 
-		if (isset($route['conds']['query']) and is_equal($route['conds']['query'], true) and isset($request['query']))
+		if (isset($route['conds']['query']) and is_equal(true, $route['conds']['query']) and empty($request['query']))
 		{
-			$query_matches = true;
+			$query_matches = false;
 		}
 		else $query_matches = true;
 
 
 		if ($method_matches and $path_matches and $action_matches and $query_matches)
-		{//$rpath_matches['0'] should be equal to 'foo' for '/foo/bar' and $rpath_matches['1'] should be 'bar'
+		{
 			$route['path_matches'] = $matches;
 
 			return	$route;
 		}
-
-		return false;
 	}
 
 ?>
