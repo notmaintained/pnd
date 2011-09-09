@@ -1,31 +1,5 @@
 <?php
 
-/* uri.core.php
- *
- * function email($str){return preg_replace('/^(.*)\/(.*)/', '$2@$1', $str);}
- * Authors: Sandeep Shetty email('gmail.com/sandeep.shetty')
- *
- * Copyright (C) 2005 - date('Y') Collaboration Science,
- * http://collaborationscience.com/
- *
- * This file is part of Bombay.
- *
- * Bombay is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or (at
- * your option) any later version.
- *
- * Bombay is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * To read the license please visit http://www.gnu.org/copyleft/gpl.html
- *
- *
- *-------10--------20--------30--------40--------50--------60---------72
- */
-
 	requires ('helpers', 'webserver');
 
 
@@ -48,9 +22,7 @@
 
 		function uri_host($http_host)
 		{
-			$pieces = explode(':', $http_host);
-			if (str_contains(':', $http_host)) $host = array_shift($pieces);
-			else $host = $http_host;
+			list($host, ) = explode(':', $http_host, 2);
 //TODO: This feels half baked. Need to put some more thought into this...
 			if(!preg_match('@^([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9]+$@', $host))
 				die(trigger_error("Invalid or malicious host detected in HTTP_HOST: ".str_sanitize($http_host), E_USER_ERROR));
@@ -61,10 +33,9 @@
 
 		function uri_port($http_host)
 		{
-			$pieces = explode(':', $http_host);
 			if (str_contains(':', $http_host))
 			{
-				$port = array_pop($pieces);
+				list(, $port) = explode(':', $http_host, 2);
 				if(!preg_match('/^[0-9]+$/', $port))
 					die(trigger_error("Invalid or malicious port detected in HTTP_HOST: ".str_sanitize($http_host), E_USER_ERROR));
 			}
