@@ -1,36 +1,38 @@
 <?php
 
+	require_once dirname(__FILE__).'/../bombay.php';
 	requires ('helpers', 'webserver');
 
-	//TODO: _method hack for PUT over POST?
 	function request_()
 	{
-		return array
-		(
-			'method'=>request_method_(server_var('REQUEST_METHOD')),
-			'path'=>request_path_(webserver_specific('request_path')),
-			//TODO: sanitize these?
-			'query'=>$_GET,
-			'form'=>$_POST,
-			'server_vars'=>$_SERVER,
-			'headers'=> webserver_specific('request_headers'),
-			'body'=>request_body_(file_get_contents('php://input'))
-		);
+		static $request;
+
+		if (!isset($request))
+		{
+			$request = array
+			(
+				'method'=>method_hack_(strtoupper(server_var('REQUEST_METHOD')), $_POST),
+				'path'=>rawurldecode('/'.ltrim(webserver_specific('request_path'), '/')),
+				'query'=>$_GET,
+				'form'=>$_POST,
+				'server_vars'=>$_SERVER,
+				'headers'=>webserver_specific('request_headers'),
+				'body'=>valid_body_(file_get_contents('php://input'))
+			);
+		}
+
+		return $return;
 	}
 
-		function request_method_($method)
+		function method_hack_($method, $form)
 		{
-			return strtoupper($method);
+			if (isset($form['_METHOD']) and ctype_alpha($form['_METHOD'])) return $form['_METHOD'];
+			return $method;
 		}
 
-		function request_path_($path)
+		function valid_body_($body)
 		{
-			return str_sanitize(rawurldecode('/'.ltrim($path, '/')));
-		}
-
-		function request_body_($body)
-		{
-			return empty($body) ? NULL : $body;
+			return is_equal(false, $body) ? NULL : $body;
 		}
 
 ?>
