@@ -3,7 +3,7 @@
 A minimal set of non-OO libraries for punk programmers uisng PHP 5.3+.
 
 
-`/index.php`:
+File: `index.php`
 
 ``` php
 <?php
