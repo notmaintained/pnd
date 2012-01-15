@@ -17,6 +17,24 @@ index.php
 ?>
 ```
 
+## Need More?
+
+``` php
+index.php
+<?php
+
+	require '/path/to/bombay/glue/glue.lib.php';
+
+	handle_get('/', function ()
+	{
+		return 'Hello World';
+	});
+
+	yield_to_glue();
+
+?>
+```
+
 
 Now go build [web applications][1].
 
