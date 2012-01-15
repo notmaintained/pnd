@@ -3,11 +3,13 @@
 	require_once dirname(__FILE__).'/../bombay.php';
 	requires ('str');
 
+
 	function varialize($var_name, $var)
 	{
 		$var_str = var_export($var, true);
 		return "<?php\n\n\$$var_name = $var_str;\n\n?>";
 	}
+
 
 	function unvarialize_file($file, $var_name, $default=NULL)
 	{
@@ -15,7 +17,7 @@
 		return isset($$var_name) ? $$var_name : $default;
 	}
 
-//remove this?
+
 	function is_equal($var1, $var2)
 	{
 		return ($var1 === $var2);
@@ -52,6 +54,7 @@
 		$php_self_dir = dirname($php_self['file']).DIRECTORY_SEPARATOR;
 		return $php_self_dir;
 	}
+
 
 	function func_returning()
 	{
