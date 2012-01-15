@@ -32,11 +32,7 @@
 			when_passed
 			(
 				route_('GET', array('/', '/{home}'), array(), array('func')),
-				array
-				(
-					'method'=>'GET',
-					'path'=>'/hand'
-				)
+				request_(array('method'=>'GET', 'path'=>'/hand'))
 			)
 		);
 
@@ -47,12 +43,7 @@
 			when_passed
 			(
 				route_('GET', array('/'), array(), array('func')),
-				array
-				(
-					'method'=>'GET',
-					'path'=>'/',
-					'query'=>array('foo'=>'bar')
-				)
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
 			)
 		);
 
@@ -62,12 +53,7 @@
 			when_passed
 			(
 				route_('GET', array('/'), array('query'=>true), array('func')),
-				array
-				(
-					'method'=>'GET',
-					'path'=>'/',
-					'query'=>array('foo'=>'bar')
-				)
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
 			)
 		);
 
@@ -77,12 +63,7 @@
 			when_passed
 			(
 				route_('GET', array('/'), array('query'=>true), array('func')),
-				array
-				(
-					'method'=>'GET',
-					'path'=>'/',
-					'query'=>array()
-				)
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array()))
 			)
 		);
 
@@ -93,12 +74,7 @@
 			when_passed
 			(
 				route_('POST', array('/'), array('action'=>'save_me'), array('func')),
-				array
-				(
-					'method'=>'POST',
-					'path'=>'/',
-					'form'=>array('action'=>'Save Me')
-				)
+				request_(array('method'=>'POST','path'=>'/', 'form'=>array('action'=>'Save Me')))
 			)
 		);
 
@@ -108,12 +84,7 @@
 			when_passed
 			(
 				route_('POST', array('/'), array(), array('func')),
-				array
-				(
-					'method'=>'POST',
-					'path'=>'/',
-					'form'=>array('action'=>'Save Me')
-				)
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 			)
 		);
 
@@ -123,12 +94,7 @@
 			when_passed
 			(
 				route_('POST', array('/'), array('action'=>'save'), array('func')),
-				array
-				(
-					'method'=>'POST',
-					'path'=>'/',
-					'form'=>array('action'=>'Save Me')
-				)
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
 			)
 		);
 
@@ -138,12 +104,7 @@
 			when_passed
 			(
 				route_('POST', array('/'), array('action'=>'save'), array('func')),
-				array
-				(
-					'method'=>'POST',
-					'path'=>'/',
-					'form'=>array()
-				)
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array()))
 			)
 		);
 	}
