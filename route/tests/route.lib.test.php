@@ -1,6 +1,6 @@
 <?php
 
-	function test_routes()
+	function test_routes_()
 	{
 		should_return(array(), when_passed('', true));
 
@@ -24,7 +24,7 @@
 	}
 
 
-	function test_route_match()
+	function test_route_match_()
 	{
 		should_return
 		(
@@ -33,8 +33,7 @@
 				'method'=>'GET',
 				'paths'=>array('/', '/{home}'),
 				'funcs'=>array('func'),
-				'conds'=>array(),
-				'path_matches'=>array('home'=>'hand')
+				'conds'=>array()
 			),
 			when_passed
 			(
@@ -61,8 +60,7 @@
 				'method'=>'GET',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
-				'conds'=>array(),
-				'path_matches'=>array()
+				'conds'=>array()
 			),
 			when_passed
 			(
@@ -89,8 +87,7 @@
 				'method'=>'GET',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
-				'conds'=>array('query'=>true),
-				'path_matches'=>array()
+				'conds'=>array('query'=>true)
 			),
 			when_passed
 			(
@@ -139,8 +136,7 @@
 				'method'=>'POST',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
-				'conds'=>array('action'=>'save_me'),
-				'path_matches'=>array()
+				'conds'=>array('action'=>'save_me')
 			),
 			when_passed
 			(
@@ -167,8 +163,7 @@
 				'method'=>'POST',
 				'paths'=>array('/'),
 				'funcs'=>array('func'),
-				'conds'=>array(),
-				'path_matches'=>array()
+				'conds'=>array()
 			),
 			when_passed
 			(

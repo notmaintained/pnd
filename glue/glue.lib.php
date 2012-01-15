@@ -7,39 +7,8 @@
 
 	function yield_to_glue() //should be called after all handle_* routes
 	{
-		exit_with_glue_flush_response(request_(), next_func());
-	}
-
-
-	function next_func()
-	{
-		static $req; if (!isset($req)) $req = request_();
-		$next = route_pipeline();
-		$args = func_get_args();
-
-		if (!empty($next))
-		{
-			list($next_func, $path_matches) = $next;
-			$req['path_matches'] = $path_matches;
-
-			$func = $next_func;
-			if ( (is_object($func) and is_equal('Closure', get_class($func))) or ($func = handler_func_exists($next_func)))
-			{
-				$response = call_user_func_array($func, array_merge(array($req), $args));
-			}
-			else trigger_error("Required func ($next_func) not found.", E_USER_ERROR);
-
-			if (!empty($response) and !isset($response['template']) and is_string($next_func))
-			{
-				$response['template'] = $next_func;
-			}
-
-			return $response;
-		}
-
-		//TODO: this should be overridable by the app to match its 404 page
-		exit_with_404_plain('Not Found');
-
+		$req = request_();
+		exit_with_glue_flush_response($req, next_func($req));
 	}
 
 
