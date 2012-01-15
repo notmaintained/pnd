@@ -16,7 +16,7 @@
 	function handler_dir($handler)
 	{
 		$handler_basedir = php_self_dir().'handlers'.DIRECTORY_SEPARATOR;
-		return $handler_basedir.slashes_to_directory_separator($handler).DIRECTORY_SEPARATOR;
+		return $handler_basedir.str_slashes_to_directory_separator($handler).DIRECTORY_SEPARATOR;
 	}
 
 	function handler_templates_dir($handler)
