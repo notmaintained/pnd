@@ -45,17 +45,19 @@
 		foreach ($libraries as $library)
 		{
 			$library_file = BOMBAY_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
-			if (!file_exists($library_file)) trigger_error_with_caller_details_("Requires non-existent library $library", E_USER_ERROR);
+			if (!file_exists($library_file)) trigger_error_("Requires non-existent library $library", E_USER_ERROR);
 			require_once $library_file;
 		}
 	}
-		function trigger_error_with_caller_details_($message, $level)
-		{
-			$stacktrace = debug_backtrace();
-			$caller = $stacktrace[1];
-			$triggered_by = $stacktrace[0];
-			$me = __FUNCTION__;
-			trigger_error("$message in {$stacktrace[1]['file']} on line {$stacktrace[1]['line']}. Error triggered by {$stacktrace[1]['function']}() in {$stacktrace[0]['file']} on line {$stacktrace[0]['line']} from {$me}()", $level);
-		}
+
+
+	function trigger_error_($error, $level)
+	{
+		$stacktrace = debug_backtrace();
+		$caller = $stacktrace[1];
+		$triggered_by = $stacktrace[0];
+		$me = __FUNCTION__;
+		trigger_error("$error in {$caller['file']} on line {$caller['line']}. Error triggered by {$caller['function']}() in {$triggered_by['file']} on line {$triggered_by['line']} from {$me}()", $level);
+	}
 
 ?>
