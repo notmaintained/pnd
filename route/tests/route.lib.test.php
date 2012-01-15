@@ -8,16 +8,16 @@
 		(
 			array
 			(
-				array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array())
+				route_('GET', array('/'), array(), array('home'))
 			),
-			when_passed(array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array()))
+			when_passed(route_('GET', array('/'), array(), array('home')))
 		);
 
 		should_return
 		(
 			array
 			(
-				array('method'=>'GET','paths'=>array('/'),'funcs'=>array('home'),'conds'=>array())
+				route_('GET', array('/'), array(), array('home'))
 			),
 			when_passed()
 		);
@@ -28,22 +28,10 @@
 	{
 		should_return
 		(
-			array
-			(
-				'method'=>'GET',
-				'paths'=>array('/', '/{home}'),
-				'funcs'=>array('func'),
-				'conds'=>array()
-			),
+			route_('GET', array('/', '/{home}'), array(), array('func')),
 			when_passed
 			(
-				array
-				(
-					'method'=>'GET',
-					'paths'=>array('/', '/{home}'),
-					'funcs'=>array('func'),
-					'conds'=>array()
-				),
+				route_('GET', array('/', '/{home}'), array(), array('func')),
 				array
 				(
 					'method'=>'GET',
@@ -55,22 +43,10 @@
 
 		should_return
 		(
-			array
-			(
-				'method'=>'GET',
-				'paths'=>array('/'),
-				'funcs'=>array('func'),
-				'conds'=>array()
-			),
+			route_('GET', array('/'), array(), array('func')),
 			when_passed
 			(
-				array
-				(
-					'method'=>'GET',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array()
-				),
+				route_('GET', array('/'), array(), array('func')),
 				array
 				(
 					'method'=>'GET',
@@ -82,22 +58,10 @@
 
 		should_return
 		(
-			array
-			(
-				'method'=>'GET',
-				'paths'=>array('/'),
-				'funcs'=>array('func'),
-				'conds'=>array('query'=>true)
-			),
+			route_('GET', array('/'), array('query'=>true), array('func')),
 			when_passed
 			(
-				array
-				(
-					'method'=>'GET',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array('query'=>true)
-				),
+				route_('GET', array('/'), array('query'=>true), array('func')),
 				array
 				(
 					'method'=>'GET',
@@ -112,13 +76,7 @@
 			NULL,
 			when_passed
 			(
-				array
-				(
-					'method'=>'GET',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array('query'=>true)
-				),
+				route_('GET', array('/'), array('query'=>true), array('func')),
 				array
 				(
 					'method'=>'GET',
@@ -131,22 +89,10 @@
 
 		should_return
 		(
-			array
-			(
-				'method'=>'POST',
-				'paths'=>array('/'),
-				'funcs'=>array('func'),
-				'conds'=>array('action'=>'save_me')
-			),
+			route_('POST', array('/'), array('action'=>'save_me'), array('func')),
 			when_passed
 			(
-				array
-				(
-					'method'=>'POST',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array('action'=>'save_me')
-				),
+				route_('POST', array('/'), array('action'=>'save_me'), array('func')),
 				array
 				(
 					'method'=>'POST',
@@ -158,22 +104,10 @@
 
 		should_return
 		(
-			array
-			(
-				'method'=>'POST',
-				'paths'=>array('/'),
-				'funcs'=>array('func'),
-				'conds'=>array()
-			),
+			route_('POST', array('/'), array(), array('func')),
 			when_passed
 			(
-				array
-				(
-					'method'=>'POST',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array()
-				),
+				route_('POST', array('/'), array(), array('func')),
 				array
 				(
 					'method'=>'POST',
@@ -188,13 +122,7 @@
 			NULL,
 			when_passed
 			(
-				array
-				(
-					'method'=>'POST',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array('action'=>'save')
-				),
+				route_('POST', array('/'), array('action'=>'save'), array('func')),
 				array
 				(
 					'method'=>'POST',
@@ -209,13 +137,7 @@
 			NULL,
 			when_passed
 			(
-				array
-				(
-					'method'=>'POST',
-					'paths'=>array('/'),
-					'funcs'=>array('func'),
-					'conds'=>array('action'=>'save')
-				),
+				route_('POST', array('/'), array('action'=>'save'), array('func')),
 				array
 				(
 					'method'=>'POST',
