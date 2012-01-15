@@ -19,7 +19,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * To read the license please visit http://www.gnu.org/copyleft/gpl.html
  *
  *
@@ -37,7 +37,7 @@
 
 		function retest_include_files()
 		{
-			foreach (retest_test_files() as $test_file) 
+			foreach (retest_test_files() as $test_file)
 			{
 				if ($source_file = retest_source_file($test_file))
 				{
@@ -53,7 +53,7 @@
 
 			function retest_test_files()
 			{
-				return retest_globr(dirname(__FILE__), '*.test.php');		
+				return retest_globr(dirname(__FILE__), '*.test.php');
 			}
 				function retest_globr($dir, $pattern)
 				{
@@ -113,7 +113,7 @@
 		function retest_call_test_functions()
 		{
 			retest_source_coverage('start');
-			
+
 			foreach (retest_test_functions() as $test_function)
 			{
 				retest_increment('tests');
@@ -147,7 +147,7 @@
 					$source_coverage = xdebug_get_code_coverage();
 					$source_coverage = retest_filter_code_coverage($source_coverage);
 				}
-				
+
 				return $source_coverage;
 			}
 
@@ -220,7 +220,7 @@
 		function extract_function_name_from_($debug_backtrace)
 		{
 			$test_function = $debug_backtrace[1]['function'];
-			$function = preg_replace('/^test_/', '', $test_function);		
+			$function = preg_replace('/^test_/', '', $test_function);
 			return $function;
 		}
 
@@ -238,7 +238,7 @@
 				//TODO: reason for %1\$s instead of %s: the $f in $function_call kicks in argument swaping in sprintf :(
 				$msg = is_null($msg) ? sprintf("<strong>$function_call</strong> should have returned <strong>%1\$s</strong> but was <strong>%2\$s</strong>", htmlspecialchars(var_export($expected_return_value, true)), htmlspecialchars(var_export($returned_value, true))) : $msg;
 			}
-			
+
 			return $msg;
 		}
 
@@ -267,7 +267,7 @@
 			$assertions[$assertion['function']][] = array('location' => $assertion['location'],
 			                                              'message' => $assertion['message']);
 			return $assertions;
-						
+
 		}
 
 		function retest_failures($assertion=NULL)
@@ -297,24 +297,24 @@
 
 
 <?php //HTML helper
-	
+
 	function retest_meta_refresh($seconds=NULL)
 	{
 		if (!is_null($seconds))
 		{
-			return '<meta http-equiv="Refresh" content="'.$seconds.'; url=retest.php?refresh_in='.$seconds.'" />';			
+			return '<meta http-equiv="Refresh" content="'.$seconds.'; url=retest.php?refresh_in='.$seconds.'" />';
 		}
 	}
 
 	function retest_no_tests()
 	{
-		return (count(retest_test_functions()) == 0);		
+		return (count(retest_test_functions()) == 0);
 	}
 
 
 	function retest_status_red()
 	{
-		return (retest_counter('failures') > 0);		
+		return (retest_counter('failures') > 0);
 	}
 
 
@@ -344,7 +344,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<!-- meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /-->
-	<?php if (isset($_GET['refresh_in'])) echo retest_meta_refresh(htmlspecialchars($_GET['refresh_in'])); ?> 
+	<?php if (isset($_GET['refresh_in'])) echo retest_meta_refresh(htmlspecialchars($_GET['refresh_in'])); ?>
 	<title>Retest - Red/Green/Refactor</title>
 	<style type="text/css">
 
@@ -359,7 +359,7 @@
 		}
 
 		div#container {
-			padding: 0; 
+			padding: 0;
 			font-size: 1.1em;
 		}
 
@@ -452,7 +452,7 @@
 			font-size: 0.8em;
 		}
 	</style>
-	<script language="javascript"> 
+	<script language="javascript">
 
 		function toggle($element)
 		{
@@ -471,11 +471,11 @@
 
 	<div id="result-bar" class="<?php echo retest_red_or_green_bar(); ?>">
 		<?php if (retest_no_tests()) { ?>
-			Write a test.
+			Write a test!
 		<?php } elseif (retest_status_red()) { ?>
-			<strong>It failed!</strong> Failure is progress. Quickly make it work and get the bar green. Remember, quick green excuses all sins.
+			<strong>It failed!</strong>
 		<?php } else { ?>
-			<strong>It worked!</strong> But is it clean? Refactor to remove any duplication. Remember, the cycle isn't complete till your code is clean.
+			<strong>It worked!</strong>
 		<?php } ?>
 	</div>
 
@@ -500,7 +500,7 @@
 					?>
 					</div>
 			</li>
-			<?php } ?>			
+			<?php } ?>
 			<li><strong><?php echo retest_counter('tests') ?></strong> <a href="javascript:toggle('tests');"><?php echo retest_pluralize('Test', retest_counter('tests')) ?></a>
 				<div id="tests" style="display: none;">
 					<?php
@@ -519,7 +519,7 @@
 							echo "</div>";
 							echo "</li>";
 						}
-						
+
 					//~ $id = md5($file);
 					//~ echo "<li class=\"cc\"><a href=\"javascript:toggle('{$id}-code-coverage');\">{$file}</a>";
 					//~ echo "<div id=\"{$id}-code-coverage\" style=\"display: none\">";
@@ -529,7 +529,7 @@
 					//~ }
 					//~ echo "</div>";
 					//~ echo "</li>";
-						
+
 						echo "</ul>";
 					?>
 				</div>
@@ -584,43 +584,6 @@
 		</div>
 	</div>
 
-	<div id="tdd">
-		<a href="javascript:toggle('tdd-intro');">Test-Driven Development (TDD)</a>
-		<div id='tdd-intro' style="display: none;">
-			<p>The goal of TDD is <em>clean code that works</em>. The two simple rules of TDD are:
-			<ul>
-				<li>Write new code only if an automated test has failed</li>
-				<li>Eliminate duplication.</li>
-			</ul>
-			</p>
-			<p>The TDD cycle is 
-			<ul>
-				<li>Write a Test</li>
-				<li>Quickly make it run</li>
-				<li>Make it right</li>
-			</ul>
-			<p>
-			<p>More specifically, it is 
-			<ul>
-				<li>Write a test</li>
-				<li>Run all tests and fail</li>
-				<li>Make a little change to pass the test, committing whatever sins necessary</li>
-				<li>Run all tests and succeed</li>
-				<li>Refactor to remove duplication</li>
-			</ul>
-			</p>
-			<p>Red/Green/Refactor - the TDD mantra.</p>
-			<p>If you follow TDD, you will be able to:
-			<ul>
-				<li>Start simply</li>
-				<li>Write automated tests</li>
-				<li>Refactor to add design decisions one at a time</li>
-			</ul>
-			</p>
-			<p>For more to chew on get yourself a copy of <em>Test Driven Development: By Example</em> by <a href="http://wikipedia.org/wiki/Kent_Beck">Kent Beck</a>.
-			</p>
-		</div>
-	</div>
 </div>
 
 </body>
