@@ -6,14 +6,12 @@ A minimal set of non-OO libraries in [PHP][1] for punk programmers. Now go build
 	/index.php
 	<?php
 
-		// 1. Use bombay by including bombay.php
 		require '/path/to/bombay.php';
 
-		// 2. Include only the libs you need from it
+		// include only the libs you need
 		requires ('helpers', 'template', 'form');
 
-		// 3. Do your thang
-		...
+		// do your thang...
 
 	?>
 
