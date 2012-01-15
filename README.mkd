@@ -3,9 +3,8 @@
 A minimal set of non-OO libraries for punk programmers uisng PHP 5.3+.
 
 
-File: `index.php`
-
 ``` php
+index.php
 <?php
 
 	require '/path/to/bombay.php';
