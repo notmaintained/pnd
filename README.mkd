@@ -3,6 +3,7 @@
 A minimal set of non-OO libraries for punk programmers uisng PHP 5.3+.
 
 
+## Need Less?
 ``` php
 index.php
 <?php
@@ -34,6 +35,8 @@ index.php
 
 ?>
 ```
+
+Whichever way you choose, index.php are belong to you!
 
 
 Now go build [web applications][1].
