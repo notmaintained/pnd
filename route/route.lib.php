@@ -40,35 +40,35 @@
 		handle_route('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
 	}
 
-		function handle_route($method, $paths, $conds, $funcs)
+	function handle_route($method, $paths, $conds, $funcs)
+	{
+		if (!is_array($paths)) $paths = array($paths);
+		foreach ($paths as $key=>$val) if (!is_int($key)) named_paths_($key, $val);
+		foreach($funcs as $func) routes_(route_($method, $paths, $conds, $func));
+	}
+
+		function named_paths_($name=NULL, $path=NULL, $reset=false)
 		{
-			if (!is_array($paths)) $paths = array($paths);
-			foreach ($paths as $key=>$val) if (!is_int($key)) named_paths_($key, $val);
-			foreach($funcs as $func) routes_(route_($method, $paths, $conds, $func));
+			static $named_routes = array();
+
+			if ($reset) return $named_routes = array();
+			if (is_null($name) and is_null($path)) return $named_routes;
+			if (is_null($path)) return isset($named_routes[$name]) ? $named_routes[$name] : false;
+
+			$named_routes[$name] = $path;
+			return $named_routes;
 		}
 
-			function named_paths_($name=NULL, $path=NULL, $reset=false)
-			{
-				static $named_routes = array();
+		function routes_($route=NULL, $reset=false)
+		{
+			static $routes = array();
 
-				if ($reset) return $named_routes = array();
-				if (is_null($name) and is_null($path)) return $named_routes;
-				if (is_null($path)) return isset($named_routes[$name]) ? $named_routes[$name] : false;
+			if ($reset) return $routes = array();
+			if (is_null($route)) return $routes;
 
-				$named_routes[$name] = $path;
-				return $named_routes;
-			}
-
-			function routes_($route=NULL, $reset=false)
-			{
-				static $routes = array();
-
-				if ($reset) return $routes = array();
-				if (is_null($route)) return $routes;
-
-				$routes[] = $route;
-				return $routes;
-			}
+			$routes[] = $route;
+			return $routes;
+		}
 
 
 	function next_func()
@@ -124,6 +124,13 @@
 					return	$route;
 				}
 			}
+
+
+
+	function start_handling()
+	{
+		next_func(request_());
+	}
 
 
 	function path_match_include($path, $file)
