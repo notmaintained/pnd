@@ -2,6 +2,7 @@
 
 A minimal set of non-OO libraries for punk programmers using PHP 5.3+.
 
+Make your time poseur frameworks, `index.php` are belong to us!
 
 ## Need Less?
 ``` php
@@ -37,6 +38,4 @@ index.php
 ?>
 ```
 
-## Oi! Now go build something.
-
-Make your time poseur frameworks, `index.php` are belong to us!
+**Oi! Now go build something...**
