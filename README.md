@@ -38,4 +38,11 @@ index.php
 ?>
 ```
 
-**Oi! Now go build something...**
+## Oi! Now go build something.
+
+Download the [latest version of Pnd](https://github.com/sandeepshetty/pnd/archives/master):
+
+```shell
+$ curl -L http://github.com/sandeepshetty/pnd/tarball/master | tar xvz
+$ mv sandeepshetty-pnd-* pnd
+```
