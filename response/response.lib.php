@@ -45,7 +45,7 @@
 	define('STATUS_HTTP_VERSION_NOT_SUPPORTED', 505);
 
 
-	function response_reason_phrase($status_code)
+	function response_reason_phrase_($status_code)
 	{
 		static $reason_phrases;
 
@@ -101,7 +101,6 @@
 
 	function response_($status_code, $headers=array(), $body='')
 	{
-		$headers = (!is_array($headers)) ? array() : $headers;
 		$headers = array_change_key_case($headers, CASE_LOWER);
 		return compact('status_code', 'headers', 'body');
 	}
@@ -251,7 +250,7 @@
 
 		function flush_http_status($status_code)
 		{
-			$reason_phrase = response_reason_phrase($status_code);
+			$reason_phrase = response_reason_phrase_($status_code);
 			header("HTTP/1.1 $status_code $reason_phrase");
 		}
 
