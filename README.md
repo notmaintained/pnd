@@ -1,5 +1,4 @@
 
-# PND
 
 __pnd__ is a minimal set of non-OO libraries for PHP 5.3+.
 
@@ -56,7 +55,7 @@ index.php
 Read more about [pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue).
 
 
-## Download
+## Getting Started
 
 Download the [latest version of pnd](https://github.com/sandeepshetty/pnd/archives/master):
 
