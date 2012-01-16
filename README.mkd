@@ -1,4 +1,7 @@
-# What is Bombay?
+# PHPs Not Dead.
+
+
+## What is Bombay?
 
 A minimal set of non-OO libraries for punk programmers using PHP 5.3+.
 
@@ -13,10 +16,11 @@ index.php
 	// include only the libs you need
 	requires ('helpers', 'template', 'form');
 
-	// do your thang...
+	// do what you want to do...
 
 ?>
 ```
+
 
 ## Need More?
 
@@ -36,6 +40,6 @@ index.php
 ?>
 ```
 
-Now go build something.
+**Oi! Now go build something.**
 
 Make your time poseur frameworks, `index.php` are belong to us!
