@@ -1,9 +1,12 @@
-# PHPs Not Dead.
 
-A minimal set of non-OO libraries for punk programmers using PHP 5.3+.
+# PND
 
+## What is pnd?
+
+Pnd is a minimal set of non-OO libraries for punk programmers using PHP 5.3+.
 
 Make your time poseur frameworks, `index.php` are belong to us!
+
 
 ## Need Less?
 ``` php
@@ -21,6 +24,7 @@ index.php
 ```
 
 Libs can be included directly as well:
+
 ``` php
 index.php
 <?php
