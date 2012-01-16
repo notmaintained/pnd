@@ -1,6 +1,6 @@
 <?php
 
-	define('BOMBAY_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+	define('PND_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
 
 
  	php_min_version_guard_('5.3.0');
@@ -16,7 +16,7 @@
 				list($php_version, ) = explode('-', PHP_VERSION, 2);
 				trigger_error
 				(
-					"Currently running PHP $php_version. Bombay requires at least PHP $min_php_version. Error triggered by Bombay",
+					"Currently running PHP $php_version. Pnd requires at least PHP $min_php_version. Error triggered by Pnd",
 					E_USER_ERROR
 				);
 			}
@@ -44,7 +44,7 @@
 
 		foreach ($libraries as $library)
 		{
-			$library_file = BOMBAY_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
+			$library_file = PND_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
 			if (!file_exists($library_file)) trigger_error_("Requires non-existent library $library", E_USER_ERROR);
 			require_once $library_file;
 		}

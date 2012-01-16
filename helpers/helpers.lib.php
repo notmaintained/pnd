@@ -1,6 +1,6 @@
 <?php
 
-	require_once dirname(__FILE__).'/../bombay.php';
+	require_once dirname(__FILE__).'/../pnd.php';
 	requires ('str');
 
 

@@ -9,7 +9,7 @@ Make your time poseur frameworks, `index.php` are belong to us!
 index.php
 <?php
 
-	require '/path/to/bombay.php';
+	require '/path/to/pnd.php';
 
 	// include only the libs you need
 	requires ('helpers', 'template', 'form');
@@ -26,7 +26,7 @@ index.php
 index.php
 <?php
 
-	require '/path/to/bombay/glue/glue.lib.php';
+	require '/path/to/pnd/glue/glue.lib.php';
 
 	handle_get('/', function ()
 	{
@@ -38,4 +38,4 @@ index.php
 ?>
 ```
 
-## Oi! Now go build something...
+**Oi! Now go build something...**
