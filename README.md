@@ -1,12 +1,12 @@
 
-# pnd
+# PND
 
 PHPs Not Dead!
 
 
 ## What is pnd?
 
-Pnd is a minimal set of non-OO libraries for punk programmers using PHP 5.3+.
+pnd is a minimal set of non-OO libraries for punk programmers using PHP 5.3+.
 
 Make your time poseur frameworks, `index.php` are belong to us!
 
