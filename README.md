@@ -1,4 +1,6 @@
 
+# PND
+
 __pnd__ is a minimal set of non-OO libraries for PHP 5.3+.
 
 
@@ -62,5 +64,3 @@ Download the [latest version of pnd](https://github.com/sandeepshetty/pnd/archiv
 $ curl -L http://github.com/sandeepshetty/pnd/tarball/master | tar xvz
 $ mv sandeepshetty-pnd-* pnd
 ```
-
-**Oi! Now go build something.**
