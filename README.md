@@ -39,7 +39,7 @@ index.php
 ?>
 ```
 
-Browse to a libs folder to read its documentation.
+Browse to the libs folder to read its documentation.
 
 
 ## Need More?
@@ -59,7 +59,7 @@ index.php
 
 ?>
 ```
-Read [more about pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue)
+Read [more about pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue).
 
 
 ## Download
