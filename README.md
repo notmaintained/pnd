@@ -1,14 +1,5 @@
 
-# PND
-
-PHPs Not Dead.
-
-
-## What is pnd?
-
-pnd is a minimal set of non-OO libraries for punk programmers using PHP 5.3+.
-
-Make your time poseur frameworks, `index.php` are belong to us.
+__pnd__ is a minimal set of non-OO libraries for PHP 5.3+.
 
 
 ## Need Less?
@@ -26,20 +17,21 @@ index.php
 ?>
 ```
 
-Libs can be included directly as well:
+
+Libs can also be included directly without having to explicitly include `pnd.php` or use `requires`:
+
 
 ``` php
 index.php
 <?php
 
-	require '/path/to/pnd/template/template.lib.php';
+	require '/path/to/pnd/template/template.php';
 
 	// invoke template funcs...
 
 ?>
 ```
-
-Browse to the libs folder to read its documentation.
+Read more about the libs from the documentation available within their respective folders.
 
 
 ## Need More?
@@ -48,7 +40,7 @@ Browse to the libs folder to read its documentation.
 index.php
 <?php
 
-	require '/path/to/pnd/glue/glue.lib.php';
+	require '/path/to/pnd/glue/glue.php';
 
 	handle_get('/', function ()
 	{
@@ -59,7 +51,7 @@ index.php
 
 ?>
 ```
-Read [more about pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue).
+Read more about [pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue).
 
 
 ## Download

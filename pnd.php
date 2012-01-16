@@ -40,13 +40,13 @@
 
 	function requires()
 	{
-		$libraries = func_get_args();
+		$libs = func_get_args();
 
-		foreach ($libraries as $library)
+		foreach ($libs as $lib)
 		{
-			$library_file = PND_DIR.$library.DIRECTORY_SEPARATOR."$library.lib.php";
-			if (!file_exists($library_file)) trigger_error_("Requires non-existent library $library", E_USER_ERROR);
-			require_once $library_file;
+			$lib_file = PND_DIR.$lib.DIRECTORY_SEPARATOR."$lib.php";
+			if (!file_exists($lib_file)) trigger_error_("Requires non-existent lib $lib", E_USER_ERROR);
+			require_once $lib_file;
 		}
 	}
 
