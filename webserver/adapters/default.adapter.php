@@ -14,7 +14,7 @@
 		function _default_request_path($get)
 		{
 			$path = isset($get[PATH_IN_QUERY_HACK]) ? $get[PATH_IN_QUERY_HACK] : '/';
-			return str_sanitize($path); //TODO: if $_GET is sanitized we cud remove this!
+			return str_xss_sanitize($path); //TODO: if $_GET is sanitized we cud remove this!
 		}
 
 
