@@ -24,7 +24,7 @@
 	}
 
 
-	function array_key_val($arr, $key_str, $default=NULL)
+	function array_val($arr, $key_str, $default=NULL)
 	{
 		$keys = explode('.', $key_str);
 		$val = $arr;

@@ -9,7 +9,7 @@
 	}
 
 
-	function test_array_key_val()
+	function test_array_val()
 	{
 		should_return('key1_key1_value', when_passed(array('key1'=>array('key1_key1'=>'key1_key1_value')), 'key1.key1_key1'));
 		should_return(NULL, when_passed(array('key1'=>array('key1_key1'=>'key1_key1_value')), 'key1.key1_key2'));
