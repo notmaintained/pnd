@@ -13,12 +13,12 @@
 			$request = array
 			(
 				'method'=> isset($override['method']) ?  $override['method'] : method_hack_(strtoupper(server_var('REQUEST_METHOD')), $_POST),
-				'path'=> @$override['path'] ?: rawurldecode('/'.ltrim(webserver_specific('request_path'), '/')),
-				'query'=> @$override['query'] ?: $_GET,
-				'form'=> @$override['form'] ?: $_POST,
-				'server_vars'=> @$override['server_vars'] ?: $_SERVER,
-				'headers'=> @$override['headers'] ?:  webserver_specific('request_headers'),
-				'body'=> @$override['body'] ?:  valid_body_(file_get_contents('php://input'))
+				'path'=> array_key_val($override, 'path', rawurldecode('/'.ltrim(webserver_specific('request_path'), '/'))),
+				'query'=> array_key_val($override, 'query', $_GET),
+				'form'=> array_key_val($override, 'form', $_POST),
+				'server_vars'=> array_key_val($override, 'server_vars', $_SERVER),
+				'headers'=> array_key_val($override, 'headers', webserver_specific('request_headers')),
+				'body'=> array_key_val($override, 'body', valid_body_(file_get_contents('php://input')))
 			);
 		}
 
