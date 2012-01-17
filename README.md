@@ -1,10 +1,13 @@
 
 # pnd
 
-pnd is a minimal set of non-OO libraries for PHP 5.3+.
+pnd is a minimal set of non-OO micro-libraries for PHP 5.3+.
 
 
 ## Need Less?
+
+Get to know the libs from the documentation available within their respective folders and use only what you need:
+
 ``` php
 index.php
 <?php
@@ -33,10 +36,13 @@ index.php
 
 ?>
 ```
-Read more about the libs from the documentation available within their respective folders.
+
+
 
 
 ## Need More?
+
+Use [pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue), a micro-framework built by combining a few pnd libs.
 
 ``` php
 index.php
@@ -53,7 +59,6 @@ index.php
 
 ?>
 ```
-Read more about [pnd.glue](https://github.com/sandeepshetty/pnd/tree/master/glue).
 
 
 ## Getting Started
