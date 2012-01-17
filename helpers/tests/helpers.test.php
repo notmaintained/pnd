@@ -9,6 +9,14 @@
 	}
 
 
+	function test_array_key_val()
+	{
+		should_return('key1_key1_value', when_passed(array('key1'=>array('key1_key1'=>'key1_key1_value')), 'key1.key1_key1'));
+		should_return(NULL, when_passed(array('key1'=>array('key1_key1'=>'key1_key1_value')), 'key1.key1_key2'));
+		should_return('hello', when_passed(array('key1'=>array('key1_key1'=>'key1_key1_value')), 'key1.key1_key2', 'hello'));
+	}
+
+
 	function test_server_var()
 	{
 		should_return($_SERVER['PHP_SELF'], when_passed('PHP_SELF'));

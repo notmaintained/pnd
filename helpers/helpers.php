@@ -24,6 +24,20 @@
 	}
 
 
+	function array_key_val($arr, $key_str, $default=NULL)
+	{
+		$keys = explode('.', $key_str);
+		$val = $arr;
+		foreach ($keys as $key)
+		{
+			if (!isset($val[$key])) return $default;
+			$val = $val[$key];
+		}
+
+		return $val;
+	}
+
+
 	function server_var($key, $sanitize=true)
 	{
 		$val = NULL;
