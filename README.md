@@ -1,6 +1,7 @@
 
+# pnd
 
-__pnd__ is a minimal set of non-OO libraries for PHP 5.3+.
+pnd is a minimal set of non-OO libraries for PHP 5.3+.
 
 
 ## Need Less?
@@ -19,7 +20,7 @@ index.php
 ```
 
 
-Libs can also be included directly without having to explicitly include `pnd.php` or use `requires`:
+Libs can also be included directly without having to explicitly include `pnd.php` and use `requires`:
 
 
 ``` php
