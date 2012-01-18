@@ -1,7 +1,7 @@
 <?php
 
 	require_once dirname(__FILE__).'/../pnd.php';
-	requires ('helpers', 'webserver');
+	requires ('helper', 'webserver');
 
 
 	function request_($override=array())

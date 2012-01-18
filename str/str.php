@@ -1,7 +1,7 @@
 <?php
 
 	require_once dirname(__FILE__).'/../pnd.php';
-	requires ('helpers');
+	requires ('helper');
 
 
 	function str_slashes_to_directory_separator($path)

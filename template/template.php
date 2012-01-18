@@ -1,6 +1,6 @@
 <?php
 
-	requires ('helpers');
+	requires ('helper');
 
 
 	function template_render($template, $template_vars=array(), $template_dir=NULL)

@@ -1,6 +1,6 @@
 <?php
 
-	requires ('helpers');
+	requires ('helper');
 
 
 	define('STATUS_CONTINUE', 100);

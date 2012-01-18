@@ -1,123 +1,158 @@
 <?php
 
-	requires ('helpers', 'template');
+	require_once dirname(__FILE__).'/../pnd.php';
+	requires ('path', 'helper', 'request', 'response');
 
 
-	function handler_func_resolver($handler_func)
+	function handler_($method, $paths, $conds, $func)
 	{
-		if (!str_contains('/', $handler_func)) return array('', $handler_func);
-		$pieces = explode('/', $handler_func);
-		$func = array_pop($pieces);
-		$handler = implode('/', $pieces);
-		return array($handler, $func);
+		return compact('method', 'paths', 'conds', 'func', 'path_matches');
 	}
 
 
-	function handler_dir($handler)
+	function handle_all($path)
 	{
-		$handler_basedir = php_self_dir().'handlers'.DIRECTORY_SEPARATOR;
-		return $handler_basedir.str_slashes_to_directory_separator($handler).DIRECTORY_SEPARATOR;
+		handle_request('*', $path, array(), array_slice(func_get_args(), 1));
 	}
 
-	function handler_templates_dir($handler)
+	function handle_head($path)
 	{
-		$basedir = empty($handler) ? php_self_dir() : handler_dir($handler);
-		return $basedir.'templates'.DIRECTORY_SEPARATOR;
+		handle_request('HEAD', $path, array(), array_slice(func_get_args(), 1));
 	}
 
-
-	function handler_file($handler)
+	function handle_get($path)
 	{
-		if (str_contains('/', $handler))
+		handle_request('GET', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function handle_query($path)
+	{
+		handle_request('GET', $path, array('query'=>true), array_slice(func_get_args(), 1));
+	}
+
+	function handle_post($path)
+	{
+		handle_request('POST', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function handle_post_action($path, $action)
+	{
+		handle_request('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
+	}
+
+	function handle_request($method, $paths, $conds, $funcs)
+	{
+		if (!is_array($paths)) $paths = array($paths);
+		foreach ($paths as $key=>$val) if (!is_int($key)) named_paths_($key, $val);
+		foreach($funcs as $func) handlers_(handler_($method, $paths, $conds, $func));
+	}
+
+		function named_paths_($name=NULL, $path=NULL, $reset=false)
 		{
-			$pieces = explode('/', $handler);
-			$handler_basename = array_pop($pieces);
-		}
-		else $handler_basename = $handler;
-		return handler_dir($handler)."$handler_basename.handler.php";
-	}
-
-
-	function handler_template($handler_template)
-	{
-		list($handler, $template) = handler_func_resolver($handler_template);
-		return handler_templates_dir($handler)."{$template}.html";
-	}
-
-	function handler_layout($handler)
-	{
-		$handler_layout = handler_templates_dir($handler)."{$handler}_layout.html";
-		if (!empty($handler_layout) and template_file_exists($handler_layout)) return $handler_layout;
-		else return handler_templates_dir('')."layout.html";
-	}
-
-
-	function handler_require_once($handler)
-	{
-		$handler_file = handler_file($handler);
-		if (file_exists($handler_file)) require_once $handler_file;
-		else return false;
-	}
-
-
-	function handler_func_exists($handler_func)
-	{
-		list($handler, $func) = handler_func_resolver($handler_func);
-		if (function_exists($func)) return $func;
-
-		if (!empty($handler))
-		{
-			handler_require_once($handler);
-			if (function_exists($func)) return $func;
+			static $name_paths = array();
+			if ($reset) return $name_paths = array();
+			if (!is_null($name) and is_null($path)) return isset($name_paths[$name]) ? $name_paths[$name] : false;
+			$name_paths[$name] = $path;
+			return $name_paths;
 		}
 
-		return false;
-	}
+		function handlers_($handler=NULL, $reset=false)
+		{
+			static $handlers = array();
+
+			if ($reset) return $handlers = array();
+			if (is_null($handler)) return $handlers;
+
+			$handlers[] = $handler;
+			return $handlers;
+		}
 
 
-	function call_handler_func($handler_func)
+	function next_handler()
 	{
-		$params = array_slice(func_get_args(), 1);
-		if ($func = handler_func_exists($handler_func))	return call_user_func_array($func, $params);
-		else trigger_error("Handler func ($handler_func) not found.", E_USER_ERROR);
-	}
-
-
-
-
-//TODO: Revisit this email stuff later
-	function handler_sendmail($handler, $email, $resource)
-	{
-		require_once handler_email_file($handler, php_self_dir());
 		$args = func_get_args();
-		$handler_email_func_args = array_slice($args, 2);
-		$handler_email_func = "{$handler}_{$email}_email";
-		$params = call_user_func_array($handler_email_func, $handler_email_func_args);
-		 // TODO: is this all I need to send to the email template?
-		$template_vars = array('resource'=>$resource, 'params'=>$params);
-		if (isset($params['message'])) $message = $params['message'];
-		else $message = template_compose(handler_email_template($handler, $email), $template_vars,
-		                                 handler_email_layout($handler), $template_vars);
+		$handler = next_handler_match_($args[0], $matches);
 
-		return emailmodule_sendmail($params['from'], $params['to'], $params['subject'], $message);
+		if (!is_null($handler))
+		{
+			if (is_callable($handler['func']))
+			{
+				$response = call_user_func_array($handler['func'], array_merge(array($args, $matches)));
+			}
+			else trigger_error_("Invalid handler func", E_USER_ERROR);
+
+			return $response;
+		}
+
+		//TODO: this should be overridable by the user
+		exit_with_404_plain('Not Found');
+
 	}
 
-		function handler_email_file($handler, $app_dir)
+		function next_handler_match_($req, &$matches)
 		{
-			return $app_dir.'handlers'.DIRECTORY_SEPARATOR.$handler.DIRECTORY_SEPARATOR."$handler.email.php";
+			static $handlers; if (!isset($handlers)) $handlers = handlers_();
+
+			while ($handler = array_shift($handlers) and ($matched_handler = handler_match_($handler, $req, $matches)))
+			{
+				return $matched_handler;
+			}
 		}
 
-//TODO: The fact that for the app level ones you have to pass an empty string for the handler param in handler_sendmail sucks
-		function handler_email_template($handler, $email)
-		{
-			return handler_templates_dir($handler)."email/$email.txt";
-		}
+			function handler_match_($handler, $req, &$matches=NULL)
+			{
+				$method_matched = (is_equal($req['method'], $handler['method']) or is_equal('*', $handler['method']));
 
-		function handler_email_layout($handler)
+				foreach ($handler['paths'] as $path)
+				{
+					if ($path_matched = path_match($path, $req['path'], $matches)) break;
+				}
+
+				$action_cond_failed = (isset($handler['conds']['action']) and
+				                      (!isset($req['form']['action']) or
+									   !is_equal ($handler['conds']['action'], strtolower(str_underscorize($req['form']['action'])))));
+
+				$query_cond_failed = (isset($handler['conds']['query']) and
+				                      is_equal(true, $handler['conds']['query']) and
+									  empty($req['query']));
+
+				if ($method_matched and $path_matched and !$action_cond_failed and !$query_cond_failed)
+				{
+					return	$handler;
+				}
+			}
+
+
+
+	function respond()
+	{
+		next_handler(request_());
+	}
+
+
+	function path_match_include($path, $file)
+	{
+		$req = request_();
+		if (path_match($path, $req['path'])) include $file;
+	}
+
+	function handler_path_macro($paths, $func)
+	{
+		handler_macro('*', $paths, array(), $func);
+	}
+
+	function handler_macro($method, $paths, $conds, $func)
+	{
+		$req = request_();
+		$handler = handler_($method, $paths, $conds, $func);
+		if (handler_match_($handler, $req, $matches))
 		{
-			$handler_email_layout = handler_templates_dir($handler)."email/layout.txt";
-			if (!empty($handler_email_layout) and template_file_exists($handler_email_layout)) return $handler_email_layout;
-			else return handler_templates_dir('')."email/layout.html";
+			if (is_callable($handler['func']))
+			{
+				call_user_func_array($handler['func'], array_merge(array($req, $matches)));
+			}
+			else trigger_error_("Invalid handler macro func", E_USER_ERROR);
 		}
+	}
 
 ?>

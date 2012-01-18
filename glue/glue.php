@@ -2,15 +2,13 @@
 
 	require_once dirname(__FILE__).'/../pnd.php';
 	//TODO: 'error'
-	requires ('helpers', 'request', 'response', 'route', 'template', 'form', 'emailmodule', 'db', 'handler');
+	requires ('helper', 'request', 'response', 'handler', 'template');
 
 
-	function yield_to_glue() //should be called after all handle_* routes
+	handle_all('.*', function ($req)
 	{
-		$req = request_();
-		exit_with_glue_flush_response($req, next_func($req));
+		exit_with_glue_flush_response($req, next_handler($req));
 	}
-
 
 		function exit_with_glue_flush_response($req, $response)
 		{

@@ -1,23 +1,112 @@
 <?php
 
-	function test_handler_func_resolver()
+	function test_handlers_()
 	{
-		should_return(array('', 'foo'), when_passed('foo'));
-		should_return(array('foo', 'bar'), when_passed('foo/bar'));
-		should_return(array('foo/bar', 'baz'), when_passed('foo/bar/baz'));
+		should_return(array(), when_passed('', true));
+
+		should_return
+		(
+			array
+			(
+				handler_('GET', array('/'), array(), array('home'))
+			),
+			when_passed(handler_('GET', array('/'), array(), array('home')))
+		);
+
+		should_return
+		(
+			array
+			(
+				handler_('GET', array('/'), array(), array('home'))
+			),
+			when_passed()
+		);
 	}
 
 
-	function test_handler_file()
+	function test_handler_match_()
 	{
-		should_return(handler_dir('foo')."foo.handler.php", when_passed('foo'));
-		should_return(handler_dir('foo/bar')."bar.handler.php", when_passed('foo/bar'));
-		should_return(handler_dir('foo/bar/baz')."baz.handler.php", when_passed('foo/bar/baz'));
-	}
+		should_return
+		(
+			handler_('GET', array('/', '/{home}'), array(), array('func')),
+			when_passed
+			(
+				handler_('GET', array('/', '/{home}'), array(), array('func')),
+				request_(array('method'=>'GET', 'path'=>'/hand'))
+			)
+		);
 
-	function test_handler_dir()
-	{
-		should_return(php_self_dir().'handlers'.DIRECTORY_SEPARATOR.'foo'.DIRECTORY_SEPARATOR, when_passed('foo'));
+
+		should_return
+		(
+			handler_('GET', array('/'), array(), array('func')),
+			when_passed
+			(
+				handler_('GET', array('/'), array(), array('func')),
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
+			)
+		);
+
+		should_return
+		(
+			handler_('GET', array('/'), array('query'=>true), array('func')),
+			when_passed
+			(
+				handler_('GET', array('/'), array('query'=>true), array('func')),
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array('foo'=>'bar')))
+			)
+		);
+
+		should_return
+		(
+			NULL,
+			when_passed
+			(
+				handler_('GET', array('/'), array('query'=>true), array('func')),
+				request_(array('method'=>'GET', 'path'=>'/', 'query'=>array()))
+			)
+		);
+
+
+		should_return
+		(
+			handler_('POST', array('/'), array('action'=>'save_me'), array('func')),
+			when_passed
+			(
+				handler_('POST', array('/'), array('action'=>'save_me'), array('func')),
+				request_(array('method'=>'POST','path'=>'/', 'form'=>array('action'=>'Save Me')))
+			)
+		);
+
+		should_return
+		(
+			handler_('POST', array('/'), array(), array('func')),
+			when_passed
+			(
+				handler_('POST', array('/'), array(), array('func')),
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+			)
+		);
+
+		should_return
+		(
+			NULL,
+			when_passed
+			(
+				handler_('POST', array('/'), array('action'=>'save'), array('func')),
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array('action'=>'Save Me')))
+			)
+		);
+
+		should_return
+		(
+			NULL,
+			when_passed
+			(
+				handler_('POST', array('/'), array('action'=>'save'), array('func')),
+				request_(array('method'=>'POST', 'path'=>'/', 'form'=>array()))
+			)
+		);
 	}
 
 ?>

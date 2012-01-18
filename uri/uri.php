@@ -1,6 +1,6 @@
 <?php
 
-	requires ('helpers', 'webserver');
+	requires ('helper', 'webserver');
 
 
 	define('URI_SCHEME', uri_scheme(server_var('HTTPS')));
