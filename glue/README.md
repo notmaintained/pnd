@@ -71,7 +71,7 @@ index.php
 
 	handle_post_action('/', 'save_me' function ()
 	{
-		return "I'm the POST request handler that only responds if the posting form contained a variable called 'action' (usually the name of the submit input type field) with the value 'save_me' (with or without the underscore and case-insensitive, so 'Save Me', 'save me' and 'SaVe_Me` all work). I'm handy when you have to submit on the same form.";
+		return "I'm the POST request handler that only responds if the posting form contained a variable called 'action' (usually the name of the submit input type field) with the value 'save_me' (with or without the underscore and case-insensitive, so 'Save Me', 'save me' and 'SaVe_Me` all work). I'm handy when you have two submit buttons on the same form.";
 	});
 
 	handle_put('/', function ()
@@ -90,10 +90,10 @@ index.php
 
 ?>
 ```
-Request handlers are matched in the order they are declared. If non of the request handlers match the current HTTP request, Pnd.glue will return a 404 Not Found response.
-Notice how we `return` instead of `echo`. More on this later.
+Request handlers are matched in the order they are declared. If non of the request handlers match the current HTTP request, Pnd.glue will return a 404 Not Found response. Notice how we `return` instead of `echo`. More on this later.
 
 TODO: info about matching multiple paths
+
 TODO: info method override _METHOD for put and delete
 
 ## Request
