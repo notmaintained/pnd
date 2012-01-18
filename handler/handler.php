@@ -40,6 +40,16 @@
 		handle_request('POST', $path, array('action'=>$action), array_slice(func_get_args(), 2));
 	}
 
+	function handle_put($path)
+	{
+		handle_request('PUT', $path, array(), array_slice(func_get_args(), 1));
+	}
+
+	function handle_delete($path)
+	{
+		handle_request('DELETE', $path, array(), array_slice(func_get_args(), 1));
+	}
+
 	function handle_request($method, $paths, $conds, $funcs)
 	{
 		if (!is_array($paths)) $paths = array($paths);
