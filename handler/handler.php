@@ -140,12 +140,6 @@
 	}
 
 
-	function path_match_include($path, $file)
-	{
-		$req = request_();
-		if (path_match($path, $req['path'])) include $file;
-	}
-
 	function handler_path_macro($paths, $func)
 	{
 		handler_macro('*', $paths, array(), $func);
