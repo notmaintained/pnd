@@ -68,7 +68,7 @@ Download the latest version of Pnd:
 
 * [as zip](https://github.com/sandeepshetty/pnd/zipball/master)
 * [as tar.gz](https://github.com/sandeepshetty/pnd/tarball/master)
-* On *nix you can:
+* via CLI:
 
 ```shell
 $ curl -L http://github.com/sandeepshetty/pnd/tarball/master | tar xvz
