@@ -138,8 +138,9 @@ index.php
 
 ?>
 ```
+You can specify patterns for named parts to tell them how much to match. A `segment` is the default pattern used when you don't specify one so `{name}` is the same as `{name:segment}` which is the same as `{name:[^/]+}`. Since path patterns are complied into regular expressions, you can use regexs anywhere in a path pattern.
 
-TODO: info about named part expressions and mixing regular expressions in path patterns
+The file `/path/to/pnd/path/filters.config.php` of Pnd.path define other aliases for named part patterns: `{foo:word}`, `{foo:alpha}`, `{foo:digits}`, `{foo:number}`, `{foo:any}`
 
 
 ## Bidirectional Pipeline
