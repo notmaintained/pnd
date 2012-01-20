@@ -188,7 +188,53 @@ The file `/path/to/pnd/path/filters.config.php` of Pnd.path defines other aliase
 
 ## Bidirectional Pipeline
 
-You can `pipe` request handlers together. By `return`ing the response instead of `echo`ing it, you create bidirectional pipelines by giving back control to the upstream handler.
+You can `pipe` request handlers together:
+
+``` php
+index.php
+<?php
+
+	require '/path/to/pnd/glue/glue.php';
+
+	handle_get('/', function ()
+	{
+		return strtoupper(next_handler());
+	},
+	function ($req, $matches)
+	{
+		return 'Hello World';
+	});
+
+	respond();
+
+?>
+```
+
+This is the same as:
+
+``` php
+index.php
+<?php
+
+	require '/path/to/pnd/glue/glue.php';
+
+	handle_get('/', function ()
+	{
+		return strtoupper(next_handler());
+	});
+
+	handle_get('/', function ()
+	{
+		return 'Hello World';
+	});
+
+	respond();
+
+?>
+```
+
+
+By `return`ing the response instead of `echo`ing it, you bidirectional pipelines by giving back control to the upstream handler.
 
 TODO: info about next_handler() and passing variables downstream
 
