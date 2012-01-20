@@ -114,8 +114,34 @@ index.php
 
 
 ## Request
-TODO: info about $req, the first parameter passed to callback functions
 
+All request handler callback functions are passed as their first paramter an array containing request details:
+
+``` php
+index.php
+<?php
+
+	require '/path/to/pnd/glue/glue.php';
+
+	handle_get(array('/', '/home'), function ($req)
+	{
+		// $req contains request details
+	});
+
+	respond();
+
+?>
+```
+
+`$req` above contains the following keys:
+
+* method
+* path
+* query
+* form
+* server_vars
+* headers
+* body
 
 ## Path patterns and matches
 Request handlers can be mapped to path patterns instead of fixed paths. Path patterns provide a more readable abstraction over regular expressions and allow you to fallback to regular expressions when needed.
