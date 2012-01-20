@@ -31,6 +31,7 @@ index.php
 ?>
 ```
 
+TODO: Add example of using function names instead of anonymous functions and passing array's of functions
 
 
 ## Request Handlers
