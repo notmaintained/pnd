@@ -236,7 +236,28 @@ index.php
 
 By `return`ing the response instead of `echo`ing it, you create bidirectional pipelines by giving back control to the upstream handler.
 
-TODO: info about next_handler() and passing variables downstream
+You can also pass variable to the downstream handler:
+
+``` php
+index.php
+<?php
+
+	require '/path/to/pnd/glue/glue.php';
+
+	handle_get('/', function ()
+	{
+		$db = get_db_connection();
+		return next_handler($db);
+	},
+	function ($db)
+	{
+		//do something with $db
+	});
+
+	respond();
+
+?>
+```
 
 ## Reponse
 TODO
