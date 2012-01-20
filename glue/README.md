@@ -115,7 +115,7 @@ index.php
 
 ## Request
 
-All request handler callback functions are passed as their first paramter an array containing request details:
+All request handler callback functions are passed, as their first paramter, an array containing request details:
 
 ``` php
 index.php
@@ -190,7 +190,7 @@ The file `/path/to/pnd/path/filters.config.php` of Pnd.path defines other aliase
 
 You can `pipe` request handlers together. By `return`ing the response instead of `echo`ing it, you create bidirectional pipelines by giving back control to the upstream handler.
 
-TODO: info about next_handler()
+TODO: info about next_handler() and passing variables downstream
 
 ## Reponse
 
