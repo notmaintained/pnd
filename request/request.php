@@ -3,7 +3,7 @@
 	require_once dirname(__FILE__).'/../pnd.php';
 	requires ('helper', 'webserver');
 
-
+//TODO, maybe rename this to request cause it needs to be public to allow overriding the current request
 	function request_($override=array())
 	{
 		static $request;
