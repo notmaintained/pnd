@@ -12,7 +12,7 @@
 		{
 			$request = array
 			(
-				'method'=> isset($override['method']) ?  $override['method'] : strtoupper(server_var('REQUEST_METHOD')),
+				'method'=> array_val($override, 'method', strtoupper(server_var('REQUEST_METHOD'))),
 				'path'=> array_val($override, 'path', rawurldecode('/'.ltrim(webserver_specific('request_path'), '/'))),
 				'query'=> array_val($override, 'query', $_GET),
 				'form'=> array_val($override, 'form', $_POST),
