@@ -95,6 +95,7 @@ Request handlers are matched in the order they are declared. If non of the reque
 ### Matching multiple paths
 
 You can also map multiple paths by passing an array of paths:
+
 ``` php
 index.php
 <?php
