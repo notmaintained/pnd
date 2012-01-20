@@ -12,7 +12,7 @@
 		{
 			$request = array
 			(
-				'method'=> isset($override['method']) ?  $override['method'] : method_hack_(strtoupper(server_var('REQUEST_METHOD')), $_POST),
+				'method'=> isset($override['method']) ?  $override['method'] : strtoupper(server_var('REQUEST_METHOD')),
 				'path'=> array_val($override, 'path', rawurldecode('/'.ltrim(webserver_specific('request_path'), '/'))),
 				'query'=> array_val($override, 'query', $_GET),
 				'form'=> array_val($override, 'form', $_POST),
@@ -24,13 +24,6 @@
 
 		return $request;
 	}
-
-		function method_hack_($method, $form)
-		{
-			if (isset($form['_method']) and ctype_alpha($form['_method'])) return $form['_method'];
-			if (isset($form['_METHOD']) and ctype_alpha($form['_METHOD'])) return $form['_METHOD'];
-			return $method;
-		}
 
 		function valid_body_($body)
 		{
