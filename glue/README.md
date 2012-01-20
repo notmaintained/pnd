@@ -234,18 +234,23 @@ index.php
 ```
 
 
-By `return`ing the response instead of `echo`ing it, you bidirectional pipelines by giving back control to the upstream handler.
+By `return`ing the response instead of `echo`ing it, you create bidirectional pipelines by giving back control to the upstream handler.
 
 TODO: info about next_handler() and passing variables downstream
 
 ## Reponse
+TODO
 
 ## Named Paths
+TODO
 
 ## Templates
+TODO
 ### Layout
+TODO
 
 ## Error Handling
+TODO
 
 ## Organizing Request Handlers
 TODO: info about handler_macro()
