@@ -100,16 +100,13 @@ You can also map multiple paths by passing an array of paths:
 index.php
 <?php
 
-	// 1. Require Pnd.glue
 	require '/path/to/pnd/glue/glue.php';
 
-	// 2. Define one or more request handlers
 	handle_get(array('/', '/home'), function ()
 	{
 		return 'Hello World';
 	});
 
-	// 3. Let Pnd.glue respond by finding the request handlers that match the current request.
 	respond();
 
 ?>
@@ -160,7 +157,7 @@ index.php
 ```
 You can specify patterns for named parts to tell them how much to match. A `segment` is the default pattern used when you don't specify one so `{name}` is the same as `{name:segment}` which is the same as `{name:[^/]+}`. Since path patterns are complied into regular expressions, you can use regexs anywhere in a path pattern.
 
-The file `/path/to/pnd/path/filters.config.php` of Pnd.path define other aliases for named part patterns: `{foo:word}`, `{foo:alpha}`, `{foo:digits}`, `{foo:number}`, `{foo:any}`
+The file `/path/to/pnd/path/filters.config.php` of Pnd.path defines other aliases for named part patterns: `{foo:word}`, `{foo:alpha}`, `{foo:digits}`, `{foo:number}`, `{foo:any}`
 
 
 ## Bidirectional Pipeline
