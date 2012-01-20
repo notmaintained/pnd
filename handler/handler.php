@@ -81,6 +81,9 @@
 	function next_handler()
 	{
 		$args = func_get_args();
+		if (empty($args)) $args = array(request_());
+		$matches = array();
+
 		$handler = next_handler_match_($args[0], $matches);
 
 		if (!is_null($handler))
