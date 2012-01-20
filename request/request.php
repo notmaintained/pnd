@@ -27,6 +27,7 @@
 
 		function method_hack_($method, $form)
 		{
+			if (isset($form['_method']) and ctype_alpha($form['_method'])) return $form['_method'];
 			if (isset($form['_METHOD']) and ctype_alpha($form['_METHOD'])) return $form['_METHOD'];
 			return $method;
 		}
