@@ -92,9 +92,28 @@ index.php
 ```
 Request handlers are matched in the order they are declared. If non of the request handlers match the current HTTP request, Pnd.glue will return a 404 Not Found response. Notice how we `return` instead of `echo`. More on this later.
 
-TODO: info about matching multiple paths
+### Matching multiple paths
 
-TODO: info method override _METHOD for put and delete
+You can also map multiple paths by passing an array of paths:
+``` php
+index.php
+<?php
+
+	// 1. Require Pnd.glue
+	require '/path/to/pnd/glue/glue.php';
+
+	// 2. Define one or more request handlers
+	handle_get(array('/', '/home'), function ()
+	{
+		return 'Hello World';
+	});
+
+	// 3. Let Pnd.glue respond by finding the request handlers that match the current request.
+	respond();
+
+?>
+```
+
 
 ## Request
 TODO: info about $req, the first parameter passed to callback functions
